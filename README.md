@@ -10,16 +10,29 @@ Generated enum Storyboards with convenient interface (drop-in replacement for UI
 ```swift
 enum Storyboards: String {
     case Main = "Main"
-
-    private var instance:UIStoryboard { ... }
-    
-    func instantiateInitialViewController() -> UIViewController { ... }
-    func instantiateViewControllerWithIdentifier(identifier: String) -> UIViewController { ... }
+    case Second = "Second"
+    ...
 ```
 
 Instantiate ViewController for storyboard
 ```swift
 let vc:MyViewController = Storyboards.Main.instantiateInitialViewController()
+```
+
+example usage for prepareForSegue()
+
+```swift
+override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    if let selection = segue.selection() {
+        switch (selection) {
+        case MainViewController.Segue.ScreenOneSegue:
+            if let oneViewController = segue.destinationViewController as? ScreenOneViewController {
+                oneViewController.view.backgroundColor = UIColor.yellowColor()
+            }
+        break
+        }
+    }
+}
 ```
 
 ###Segues
@@ -48,27 +61,11 @@ extension MyCustomViewController {
         case expandGroup = "composeMessage"
 
         var kind: SegueKind? {
-            switch (self) {
-            case goToDetails:
-                return SegueKind(rawValue: "presentation")
-            case composeMessage:
-                return SegueKind(rawValue: "show")
-            default:
-                preconditionFailure("Invalid value")
-                break
-            }
+            ...
         }
 
         var destination: UIViewController.Type? {
-            switch (self) {
-            case goToDetails:
-                return DetailsViewController.self
-            case expandGroup:
-                return GroupViewController.self
-            default:
-                assertionFailure("Unknown destination")
-                return nil
-            }
+            ...
         }
 
         var identifier: String { return self.description } 
