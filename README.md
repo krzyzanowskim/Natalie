@@ -24,12 +24,10 @@ example usage for prepareForSegue()
 ```swift
 override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if let selection = segue.selection() {
-        switch (selection) {
-        case MainViewController.Segue.ScreenOneSegue:
-            if let oneViewController = segue.destinationViewController as? ScreenOneViewController {
-                oneViewController.view.backgroundColor = UIColor.yellowColor()
-            }
-        break
+        switch (selection, segue.destinationViewController) {
+        case (MainViewController.Segue.ScreenOneSegue, let oneViewController as ScreenOneViewController):
+            oneViewController.view.backgroundColor = UIColor.yellowColor()
+        default: break
         }
     }
 }
