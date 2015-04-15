@@ -91,6 +91,7 @@
 				75FBDF8D1ADE59A30056F7DA /* Sources */,
 				75FBDF8E1ADE59A30056F7DA /* Frameworks */,
 				75FBDF8F1ADE59A30056F7DA /* Resources */,
+				757ED5C21ADE785B00ACE9CF /* Natalie */,
 			);
 			buildRules = (
 			);
@@ -145,6 +146,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		757ED5C21ADE785B00ACE9CF /* Natalie */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = Natalie;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "echo \"run Natalie\"\n\ncd /Users/marcinkrzyzanowski/Devel/Natalie\n./natalie.swift NatalieExample/NatalieExample/Base.lproj/Main.storyboard > NatalieExample/NatalieExample/Storyboards.swift";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		75FBDF8D1ADE59A30056F7DA /* Sources */ = {
@@ -301,6 +320,7 @@
 				75FBDFB21ADE59A30056F7DA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
