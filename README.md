@@ -1,5 +1,5 @@
 # Natalie
-Natalie - Storyboard Code Generator Script (for Swift)
+Natalie - Storyboard Code Generator (for Swift)
 
 ## Synopsis
 Script generate Swift code based on storyboard files to make work with Storyboards and segues easier. Generated file **reduce usage of Strings** as identifiers for Segues or Storyboards.
@@ -76,12 +76,17 @@ extension MyCustomViewController {
 
 ##Installation
 
-There is no need but if you want regenerate dependencies, you'll need [Rome](https://github.com/neonichu/Rome) plugin for CocoaPods
+There is no need to install anything.
+
+Simply download `natalie.swift` file and use it.
+
+It is possible to integrate Natalie with Xcode using this **Run Script**
 
 ```
-$ gem install cocoapods-rome
-$ pod install --no-integrate --no-repo-update
+echo "Natalie generator"
+/usr/local/bin/natalie.swift "$PROJECT_DIR/$PROJECT_NAME" > "$PROJECT_DIR/$PROJECT_NAME/Storyboards.swift"
 ```
+don't forget to add generated `Storyboards.swift` to the project.
 
 ##Usage:
 
@@ -93,7 +98,7 @@ $ natalie.swift Main.storyboard > Storyboards.swift
 Generate file for any storyboard file found at given path
 
 ```
-$ natalie.swift path/toproject/with/storyboards > Storyboards.swift
+$ natalie.swift path/toproject > Storyboards.swift
 ```
  
 ## Author
