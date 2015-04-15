@@ -81,10 +81,23 @@ func processStoryboard(storyboardFile: String) {
         if let viewControllers = searchAll(xml, "sceneMemberID", "viewController") {
             for viewController in viewControllers {
                 if let customClass = viewController.element?.attributes["customClass"], let viewControllerId = viewController.element?.attributes["id"]  {
+                    let segues = viewController["connections"]["segue"].all.filter({ return $0.element?.attributes["identifier"] != nil })
+                    
+                    if segues.count > 0 {
+                        println("extension UIStoryboardSegue {")
+                        println("    func selection() -> \(customClass).Segue? {")
+                        println("        if let identifier = self.identifier {")
+                        println("            return \(customClass).Segue(rawValue: identifier)")
+                        println("        }")
+                        println("        return nil")
+                        println("    }")
+                        println("}")
+                        println()
+                    }
+                    
                     println("//MARK: - \(customClass)")
                     println("extension \(customClass) { ")
                     println("    var storyboardIdentifier:String { return \"\(viewControllerId)\" }")
-                    let segues = viewController["connections"]["segue"].all.filter({ return $0.element?.attributes["identifier"] != nil })
                     if segues.count > 0 {
                         println()
                         println("    enum Segue: String, Printable, SegueProtocol {")
