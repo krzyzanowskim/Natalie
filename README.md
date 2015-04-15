@@ -37,7 +37,12 @@ let vc:MyViewController = Storyboards.Main.instantiateInitialViewController()
 
 ###Segues
 
-Each custom view controller is extended with this code and provide list of available segues, and some additional informations taken from Storyboard.
+Perform segue
+```swift
+self.performSegue(MyCustomViewController.Segue.goToDetails, sender:nil)
+```
+
+Each custom view controller is extended with this code and provide list of available segues and additional informations from Storyboard.
 
 `storyboardIdentifier` is unique identifier of view controller in Storyboard
 
@@ -85,11 +90,14 @@ extension MyCustomViewController {
 }
 ```
 
-Perform segue
-```swift
-self.performSegue(MyCustomViewController.Segue.goToDetails, sender:nil)
-```
+##Installation
 
+There is no need but if you want regenerate dependencies, you'll need [Rome](https://github.com/neonichu/Rome) plugin for CocoaPods
+
+```
+$ gem install cocoapods-rome
+$ pod install --no-integrate --no-repo-update
+```
 
 ##Usage:
 
