@@ -569,13 +569,14 @@ private func searchAll(root: XMLIndexer, attributeKey: String, attributeValue: S
 }
 
 func findStoryboards(rootPath: String) -> [String]? {
+    var result = Array<String>()
     //let bundleRoot = NSBundle.mainBundle().bundlePath
     let fm = NSFileManager.defaultManager()
     var error:NSError?
-    if let dirContents = fm.contentsOfDirectoryAtPath(rootPath, error:&error) as? [String] {
-        return dirContents.filter({ return $0.hasSuffix(".storyboard")})
+    if let paths = fm.subpathsAtPath(rootPath) as? [String]  {
+        return paths.filter({ return $0.hasSuffix(".storyboard")})
     }
-    return nil
+    return result.count > 0 ? result : nil
 }
 
 func findInitialViewControllerClass(storyboardFile: String) -> String? {
