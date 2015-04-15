@@ -23,20 +23,18 @@ class MainViewController: UIViewController {
     //MARK: Navigation
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let segueIdentifier = segue.identifier {
-            switch (segueIdentifier) {
-            case "ScreenOneSegue":
-                    if let oneViewController = segue.destinationViewController as? ScreenOneViewController {
-                        oneViewController.view.backgroundColor = UIColor.yellowColor()
-                    }
-                break
-            case "ScreenTwoSegue":
+        if let selection = segue.selection() {
+            switch (selection) {
+            case MainViewController.Segue.ScreenOneSegue:
+                if let oneViewController = segue.destinationViewController as? ScreenOneViewController {
+                    oneViewController.view.backgroundColor = UIColor.yellowColor()
+                }
+                break;
+            case MainViewController.Segue.ScreenTwoSegue:
                 if let twoViewController = segue.destinationViewController as? ScreenTwoViewController {
                     twoViewController.view.backgroundColor = UIColor.magentaColor()
                 }
-                break
-            default:
-                break
+                break;
             }
         }
     }
@@ -44,11 +42,11 @@ class MainViewController: UIViewController {
     //MARK: Actions
     
     @IBAction func screen1ButtonPressed(button:UIButton) {
-        self.performSegueWithIdentifier("ScreenOneSegue", sender: self)
+        self.performSegue(MainViewController.Segue.ScreenOneSegue, sender: nil)
     }
-    
+
     @IBAction func screen22ButtonPressed(button:UIButton) {
-        self.performSegueWithIdentifier("ScreenTwoSegue", sender: self)
+        self.performSegue(MainViewController.Segue.ScreenTwoSegue, sender: nil)
     }
 
 }

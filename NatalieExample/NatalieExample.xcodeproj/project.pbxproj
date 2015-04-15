@@ -14,6 +14,7 @@
 		75FBDFA11ADE59A30056F7DA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75FBDF9F1ADE59A30056F7DA /* LaunchScreen.xib */; };
 		75FBDFB71ADE5F950056F7DA /* ScreenOneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBDFB61ADE5F950056F7DA /* ScreenOneViewController.swift */; };
 		75FBDFB91ADE5FA50056F7DA /* ScreenTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBDFB81ADE5FA50056F7DA /* ScreenTwoViewController.swift */; };
+		75FBDFBB1ADE65DA0056F7DA /* Storyboards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBDFBA1ADE65DA0056F7DA /* Storyboards.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		75FBDFA01ADE59A30056F7DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		75FBDFB61ADE5F950056F7DA /* ScreenOneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenOneViewController.swift; sourceTree = "<group>"; };
 		75FBDFB81ADE5FA50056F7DA /* ScreenTwoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenTwoViewController.swift; sourceTree = "<group>"; };
+		75FBDFBA1ADE65DA0056F7DA /* Storyboards.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storyboards.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				75FBDF981ADE59A30056F7DA /* MainViewController.swift */,
 				75FBDFB61ADE5F950056F7DA /* ScreenOneViewController.swift */,
 				75FBDFB81ADE5FA50056F7DA /* ScreenTwoViewController.swift */,
+				75FBDFBA1ADE65DA0056F7DA /* Storyboards.swift */,
 				75FBDF9A1ADE59A30056F7DA /* Main.storyboard */,
 				75FBDF9D1ADE59A30056F7DA /* Images.xcassets */,
 				75FBDF9F1ADE59A30056F7DA /* LaunchScreen.xib */,
@@ -149,6 +152,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75FBDF991ADE59A30056F7DA /* MainViewController.swift in Sources */,
+				75FBDFBB1ADE65DA0056F7DA /* Storyboards.swift in Sources */,
 				75FBDFB91ADE5FA50056F7DA /* ScreenTwoViewController.swift in Sources */,
 				75FBDF971ADE59A30056F7DA /* AppDelegate.swift in Sources */,
 				75FBDFB71ADE5F950056F7DA /* ScreenOneViewController.swift in Sources */,
