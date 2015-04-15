@@ -570,11 +570,14 @@ private func searchAll(root: XMLIndexer, attributeKey: String, attributeValue: S
 
 func findStoryboards(rootPath: String) -> [String]? {
     var result = Array<String>()
-    //let bundleRoot = NSBundle.mainBundle().bundlePath
     let fm = NSFileManager.defaultManager()
     var error:NSError?
     if let paths = fm.subpathsAtPath(rootPath) as? [String]  {
-        return paths.filter({ return $0.hasSuffix(".storyboard")})
+        let storyboardPaths = paths.filter({ return $0.hasSuffix(".storyboard")})
+        // result = storyboardPaths
+        for p in storyboardPaths {
+            result.append(rootPath.stringByAppendingPathComponent(p))
+        }
     }
     return result.count > 0 ? result : nil
 }
@@ -764,7 +767,7 @@ println("    }")
 println("}")
 println()
 
-for storyboard in storyboards {
-    processStoryboard(storyboard)
+for storyboardPath in storyboards {
+    processStoryboard(storyboardPath)
 }
 
