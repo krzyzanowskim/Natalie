@@ -11,23 +11,10 @@ Generated enum Storyboards with convenient interface (drop-in replacement for UI
 enum Storyboards: String {
     case Main = "Main"
 
-    private var instance:UIStoryboard {
-        return UIStoryboard(name: self.rawValue, bundle: nil)
-    }
-
-    func instantiateInitialViewController() -> UIViewController {
-        switch (self) {
-        case Main:
-            return self.instance.instantiateInitialViewController() as UINavigationController
-        default:
-            return self.instance.instantiateInitialViewController() as UIViewController
-        }
-    }
-
-    func instantiateViewControllerWithIdentifier(identifier: String) -> UIViewController {
-        return self.instance.instantiateViewControllerWithIdentifier(identifier) as UIViewController
-    }
-}
+    private var instance:UIStoryboard { ... }
+    
+    func instantiateInitialViewController() -> UIViewController { ... }
+    func instantiateViewControllerWithIdentifier(identifier: String) -> UIViewController { ... }
 ```
 
 Instantiate ViewController for storyboard
