@@ -4,6 +4,10 @@ Natalie - Storyboard Code Generator (for Swift)
 ## Synopsis
 Script generate Swift code based on storyboard files to make work with Storyboards and segues easier. Generated file **reduce usage of Strings** as identifiers for Segues or Storyboards.
 
+This is a proof of concept to address the String issue for strongly typed Swift language. Natalie is a Swift script (written in Swift) that produces a single `.swift` file with a bunch of extensions to project classes along the generated Storyboard enum.
+
+Since Natalie is a Swift script, that means it is written in Swift and requires Swift to run. The project uses [SWXMLHash](https://github.com/drmohundro/SWXMLHash) as a dependency to parse XML and due to framework limitations all code is in a single file.
+
 ###Enumerate Storyboards
 Generated enum Storyboards with convenient interface (drop-in replacement for UIStoryboard).
 
@@ -74,33 +78,50 @@ extension MyCustomViewController {
 
 ##Installation
 
-There is no need to install anything.
+There is no need to do any installation, however if you want easy Xcode integration you may want to install the script to be easily accessible for any application from `/usr/local/bin`
 
-Simply download `natalie.swift` file and use it.
+```
+$ git clone https://github.com/krzyzanowskim/Natalie.git
+$ sudo cp natalie.swift /usr/local/bin/natalie.swift
+```
 
-It is possible to integrate Natalie with Xcode using this **Run Script**
+###Xcode Integration
+
+Natalie can be integrated with Xcode in such a way that the `Storyboards.swift` file will be updated with every build of the project, so you don't have to do it manually every time.
+
+This is my setup created with **New Run Script Phase** on **Build Phase** Xcode target setting. It is important to move this phase above Compilation phase because this file is expected to be up to date for the rest of the application.
 
 ```
 echo "Natalie generator"
 /usr/local/bin/natalie.swift "$PROJECT_DIR/$PROJECT_NAME" > "$PROJECT_DIR/$PROJECT_NAME/Storyboards.swift"
 ```
-don't forget to add generated `Storyboards.swift` to the project.
+
+Don't forget to add `Storyboards.swift` to the project.
 
 ##Usage:
 
-Generate file for single storyboard
+Download Natalie from Github: https://github.com/krzyzanowskim/Natalie and use it in the console, for example like this:
 ```
-$ natalie.swift Main.storyboard > Storyboards.swift
+$ git clone https://github.com/krzyzanowskim/Natalie.git
+$ cd Natalie
 ```
 
-Generate file for any storyboard file found at given path
+The script expects one of two types of parameters:
+
+* path to a single .storyboard file 
+* path to a folder
+
+If the parameter is a Storyboard file, then this file will be used. If a path to a folder is provided Natalie will generate code for every storyboard found inside.
 
 ```
-$ natalie.swift path/toproject > Storyboards.swift
+$ natalie.swift NatalieExample/NatalieExample/Base.lproj/Main.storyboard > NatalieExample/NatalieExample/Storyboards.swift
 ```
- 
-## Author
-Marcin Krzyżanowski http://blog.krzyzanowskim.com
+
+## Author and contact
+Marcin Krzyżanowski 
+
+* [@krzyzanowskim](http://twitter.com/krzyzanowskim)
+* http://blog.krzyzanowskim.com
 
 ## Licence
 The MIT License (MIT)
