@@ -725,17 +725,17 @@ println("        return UIStoryboard(name: self.rawValue, bundle: nil)")
 println("    }")
 println()    
 println("    func instantiateInitialViewController() -> UIViewController? {")
+println("        switch (self) {")
 for storyboard in storyboards {
     let storyboardName = storyboard.lastPathComponent.stringByDeletingPathExtension
-    println("        switch (self) {")
     if let initialViewControllerClass = findInitialViewControllerClass(storyboard) {
         println("        case \(storyboardName):")
         println("            return self.instance.instantiateInitialViewController() as! \(initialViewControllerClass)")
     }
-    println("        default:")
-    println("            return self.instance.instantiateInitialViewController() as? UIViewController")
-    println("        }")
 }
+println("        default:")
+println("            return self.instance.instantiateInitialViewController() as? UIViewController")
+println("        }")
 println("    }")
 println()    
 println("    func instantiateViewControllerWithIdentifier(identifier: String) -> UIViewController {")
