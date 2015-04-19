@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Wjb-mG-J1I">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Wjb-mG-J1I">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
@@ -23,7 +23,7 @@
         <!--Chooser-->
         <scene sceneID="7Zv-9I-DEd">
             <objects>
-                <viewController id="soT-RO-G4u" customClass="MainViewController" customModule="NatalieExample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainViewController" id="soT-RO-G4u" customClass="MainViewController" customModule="NatalieExample" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PS3-vn-EBy"/>
                         <viewControllerLayoutGuide type="bottom" id="Vkd-vr-Ecq"/>
@@ -72,7 +72,7 @@
         <!--Screen Two View Controller-->
         <scene sceneID="zG9-rU-VjD">
             <objects>
-                <viewController id="YWf-QB-PHt" customClass="ScreenTwoViewController" customModule="NatalieExample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScreenTwoViewController" id="YWf-QB-PHt" customClass="ScreenTwoViewController" customModule="NatalieExample" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="keI-lC-uVD"/>
                         <viewControllerLayoutGuide type="bottom" id="jx7-9k-k5w"/>
@@ -103,7 +103,7 @@
         <!--Screen One View Controller-->
         <scene sceneID="rpd-x4-oS3">
             <objects>
-                <viewController id="H01-d9-gf7" customClass="ScreenOneViewController" customModule="NatalieExample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScreenOneViewController" id="H01-d9-gf7" customClass="ScreenOneViewController" customModule="NatalieExample" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9wl-0o-Yho"/>
                         <viewControllerLayoutGuide type="bottom" id="wJo-UH-XZ9"/>

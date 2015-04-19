@@ -61,6 +61,7 @@ extension UIStoryboardSegue {
 
 //MARK: - MainViewController
 extension MainViewController { 
+    class var storyboardIdentifier:String { return "MainViewController" }
 
     enum Segue: String, Printable, SegueProtocol {
         case ScreenOneSegue = "ScreenOneSegue"
@@ -98,9 +99,11 @@ extension MainViewController {
 
 //MARK: - ScreenTwoViewController
 extension ScreenTwoViewController { 
+    class var storyboardIdentifier:String { return "ScreenTwoViewController" }
 }
 
 //MARK: - ScreenOneViewController
 extension ScreenOneViewController { 
+    class var storyboardIdentifier:String { return "ScreenOneViewController" }
 }
 
