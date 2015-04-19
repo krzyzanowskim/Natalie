@@ -1,4 +1,4 @@
-#!/usr/bin/env xcrun swift
+#!/usr/bin/env xcrun -sdk macosx swift
 
 //
 // Natalie - Storyboard Generator Script
