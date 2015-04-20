@@ -608,6 +608,21 @@ func findInitialViewControllerClass(storyboardFile: String) -> String? {
     return nil
 }
 
+
+private func storyboardIdentifierExtenstion(viewController: XMLIndexer) -> String? {
+    var result:String? = nil
+    if let customClass = viewController.element?.attributes["customClass"] {
+        var output = String()
+        output += "extension \(customClass) {\n"
+        if let viewControllerId = viewController.element?.attributes["storyboardIdentifier"] {
+            output += "    override class var storyboardIdentifier:String? { return \"\(viewControllerId)\" }\n"
+        }
+        output += "}"
+        result = output
+    }
+    return result
+}
+
 func processStoryboard(storyboardFile: String) {
     if let data = NSData(contentsOfFile: storyboardFile) {
         let xml = SWXMLHash.parse(data)
@@ -616,7 +631,7 @@ func processStoryboard(storyboardFile: String) {
             for viewController in viewControllers {
                 if let customClass = viewController.element?.attributes["customClass"] {
                     let segues = viewController["connections"]["segue"].all.filter({ return $0.element?.attributes["identifier"] != nil })
-                    
+
                     if segues.count > 0 {
                         println("extension UIStoryboardSegue {")
                         println("    func selection() -> \(customClass).Segue? {")
@@ -626,16 +641,18 @@ func processStoryboard(storyboardFile: String) {
                         println("        return nil")
                         println("    }")
                         println("}")
+                    }
+
+                    println()
+                    println("//MARK: - \(customClass)")
+                    if let identifierExtenstionString = storyboardIdentifierExtenstion(viewController) {
+                        println()
+                        println(identifierExtenstionString)
                         println()
                     }
-                    
-                    println("//MARK: - \(customClass)")
-                    println("extension \(customClass) { ")
-                    if let viewControllerId = viewController.element?.attributes["storyboardIdentifier"] {
-                        println("    class var storyboardIdentifier:String { return \"\(viewControllerId)\" }")
-                    }
-                    
+
                     if segues.count > 0 {
+                        println("extension \(customClass) { ")
                         println()
                         println("    enum Segue: String, Printable, SegueProtocol {")
                         for segue in segues {
@@ -644,7 +661,6 @@ func processStoryboard(storyboardFile: String) {
                                 println("        case \(identifier) = \"\(identifier)\"")
                             }
                         }
-                        // println("        var kind: SegueKind { return SegueKind(rawValue: \"\(kind)\") }")
                         println()
                         println("        var kind: SegueKind? {")
                         println("            switch (self) {")
@@ -683,8 +699,8 @@ func processStoryboard(storyboardFile: String) {
                         println("        var description: String { return self.rawValue }")
                         println("    }")
                         println()
+                        println("}\n")
                     }
-                    println("}\n")
                 }
             }
         }
@@ -764,6 +780,7 @@ println()
 
 println("//MARK: - UIViewController extension")
 println("extension UIViewController {")
+println("    class var storyboardIdentifier:String? { return nil }")
 println("    func performSegue(segue: SegueProtocol, sender: AnyObject?) {")
 println("       performSegueWithIdentifier(segue.identifier, sender: sender)")
 println("    }")

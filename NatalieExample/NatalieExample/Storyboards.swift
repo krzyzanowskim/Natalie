@@ -45,6 +45,7 @@ protocol SegueProtocol {
 
 //MARK: - UIViewController extension
 extension UIViewController {
+    class var storyboardIdentifier:String? { return nil }
     func performSegue(segue: SegueProtocol, sender: AnyObject?) {
        performSegueWithIdentifier(segue.identifier, sender: sender)
     }
@@ -60,8 +61,12 @@ extension UIStoryboardSegue {
 }
 
 //MARK: - MainViewController
+
+extension MainViewController {
+    override class var storyboardIdentifier:String? { return "MainViewController" }
+}
+
 extension MainViewController { 
-    class var storyboardIdentifier:String { return "MainViewController" }
 
     enum Segue: String, Printable, SegueProtocol {
         case ScreenOneSegue = "ScreenOneSegue"
@@ -97,13 +102,17 @@ extension MainViewController {
 
 }
 
+
 //MARK: - ScreenTwoViewController
-extension ScreenTwoViewController { 
-    class var storyboardIdentifier:String { return "ScreenTwoViewController" }
+
+extension ScreenTwoViewController {
+    override class var storyboardIdentifier:String? { return "ScreenTwoViewController" }
 }
 
+
 //MARK: - ScreenOneViewController
-extension ScreenOneViewController { 
-    class var storyboardIdentifier:String { return "ScreenOneViewController" }
+
+extension ScreenOneViewController {
+    override class var storyboardIdentifier:String? { return "ScreenOneViewController" }
 }
 
