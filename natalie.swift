@@ -640,7 +640,7 @@ enum OS: String, Printable{
     
     var storyboardControllerReturnTypeCast: String {
         switch self {
-        case iOS: return "as! \(self.storyboardControllerReturnType)"
+        case iOS: return " as! \(self.storyboardControllerReturnType)"
         case OSX: return "!"
         }
     }
@@ -869,7 +869,7 @@ func processStoryboards(storyboards: [String], os: OS) {
     println("    }")
     println()
     println("    func instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier: String) -> \(os.storyboardControllerReturnType) {")
-    println("        return self.instance.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier) \(os.storyboardControllerReturnTypeCast)")
+    println("        return self.instance.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier)\(os.storyboardControllerReturnTypeCast)")
     println("    }")
     println("}")
     println()
