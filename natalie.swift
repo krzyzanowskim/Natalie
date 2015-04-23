@@ -555,6 +555,125 @@ extension XMLElement: Printable {
     }
 }
 
+
+enum OS: String, Printable{
+    case iOS = "iOS"
+    case OSX = "OSX"
+    
+    static func fromString(string: String) -> OS? {
+        for os in OS.allValues {
+            if  NSString(string: os.rawValue).caseInsensitiveCompare(string) == NSComparisonResult.OrderedSame {
+                return os
+            }
+        }
+        return nil
+    }
+    
+    static func fromTargetRuntime(targetRuntime: String) -> OS? {
+        for os in OS.allValues {
+            if  os.targetRuntime == targetRuntime {
+                return os
+            }
+        }
+        return nil
+    }
+    
+    static let allValues = [iOS, OSX]
+    
+    var description: String {return self.rawValue}
+    
+    var framework: String {
+        switch self {
+        case iOS: return "UIKit"
+        case OSX: return "Cocoa"
+        }
+    }
+    
+    var targetRuntime: String {
+        switch self {
+        case iOS: return "iOS.CocoaTouch"
+        case OSX: return "MacOSX.Cocoa"
+        }
+    }
+    
+    var storyboardType: String {
+        switch self {
+        case iOS: return "UIStoryboard"
+        case OSX: return "NSStoryboard"
+        }
+    }
+    
+    var storyboardTypeUnwrap: String {
+        switch self {
+        case iOS: return ""
+        case OSX: return "!"
+        }
+    }
+    
+    var storyboardControllerTypes: [String] {
+        switch self {
+        case iOS: return ["UIViewController"]
+        case OSX: return ["NSViewController", "NSWindowController"]
+        }
+    }
+    
+    var storyboardControllerSignatureType: String {
+        switch self {
+        case iOS: return "ViewController"
+        case OSX: return "Controller" // NSViewController or NSWindowController
+        }
+    }
+    
+    var storyboardControllerReturnType: String {
+        switch self {
+        case iOS: return "UIViewController"
+        case OSX: return "AnyObject" // NSViewController or NSWindowController
+        }
+    }
+    
+    var storyboardControllerInitialReturnTypeCast: String {
+        switch self {
+        case iOS: return "as? \(self.storyboardControllerReturnType)"
+        case OSX: return ""
+        }
+    }
+    
+    var storyboardControllerReturnTypeCast: String {
+        switch self {
+        case iOS: return " as! \(self.storyboardControllerReturnType)"
+        case OSX: return "!"
+        }
+    }
+    
+    func storyboardControllerInitialReturnTypeCast(initialClass: String) -> String {
+        switch self {
+        case iOS: return "as! \(initialClass)"
+        case OSX: return ""
+        }
+    }
+    
+    var storyboardSegueType: String {
+        switch self {
+        case iOS: return "UIStoryboardSegue"
+        case OSX: return "NSStoryboardSegue"
+        }
+    }
+    
+    var navigationControllerType: String {
+        switch self {
+        case iOS: return "UINavigationController"
+        case OSX: return ""
+        }
+    }
+    
+    var tableViewControllerType: String {
+        switch self {
+        case iOS: return "UITableViewController"
+        case OSX: return "NSTableViewController"
+        }
+    }
+}
+
 private func searchAll(root: XMLIndexer, attributeKey: String, attributeValue: String) -> [XMLIndexer]? {
     var result = Array<XMLIndexer>()
     for child in root.children {
@@ -582,23 +701,22 @@ func findStoryboards(rootPath: String) -> [String]? {
     return result.count > 0 ? result : nil
 }
 
-func findInitialViewControllerClass(storyboardFile: String) -> String? {
+func findInitialViewControllerClass(storyboardFile: String, os: OS) -> String? {
     if let data = NSData(contentsOfFile: storyboardFile) {
         let xml = SWXMLHash.parse(data)
         if let initialViewControllerId = xml["document"].element?.attributes["initialViewController"] {
             if let vc = searchAll(xml["document"], "id",initialViewControllerId)?.first {
-
                 if let customClassName = vc.element?.attributes["customClass"] {
                     return customClassName
                 }
 
                 switch (vc.element!.name) {
                     case "navigationController":
-                        return "UINavigationController"
+                        return "\(os.navigationControllerType)"
                     case "tableViewController":
-                        return "UITableViewController"
+                        return "\(os.tableViewControllerType)"
                     case "tableViewController":
-                        return "UITableViewController"
+                        return "\(os.tableViewControllerType)"
                     default:
                         break
                 }
@@ -608,6 +726,15 @@ func findInitialViewControllerClass(storyboardFile: String) -> String? {
     return nil
 }
 
+func findStoryboardOS(storyboardFile: String) -> OS? {
+    if let data = NSData(contentsOfFile: storyboardFile) {
+        let xml = SWXMLHash.parse(data)
+        if let targetRuntime = xml["document"].element?.attributes["targetRuntime"] {
+            return OS.fromTargetRuntime(targetRuntime)
+        }
+    }
+    return nil
+}
 
 private func storyboardIdentifierExtenstion(viewController: XMLIndexer) -> String? {
     var result:String? = nil
@@ -623,7 +750,7 @@ private func storyboardIdentifierExtenstion(viewController: XMLIndexer) -> Strin
     return result
 }
 
-func processStoryboard(storyboardFile: String) {
+func processStoryboard(storyboardFile: String, os: OS) {
     if let data = NSData(contentsOfFile: storyboardFile) {
         let xml = SWXMLHash.parse(data)
 
@@ -633,7 +760,7 @@ func processStoryboard(storyboardFile: String) {
                     let segues = viewController["connections"]["segue"].all.filter({ return $0.element?.attributes["identifier"] != nil })
 
                     if segues.count > 0 {
-                        println("extension UIStoryboardSegue {")
+                        println("extension \(os.storyboardSegueType) {")
                         println("    func selection() -> \(customClass).Segue? {")
                         println("        if let identifier = self.identifier {")
                         println("            return \(customClass).Segue(rawValue: identifier)")
@@ -707,6 +834,81 @@ func processStoryboard(storyboardFile: String) {
     }
 }
 
+func processStoryboards(storyboards: [String], os: OS) {
+    println("//")
+    println("// Autogenerated by Natalie - Storyboard Generator Script.")
+    println("// http://blog.krzyzanowskim.com")
+    println("//")
+    println()
+    println("import \(os.framework)")
+    println()
+    println("//MARK: - Storyboards")
+    println("enum Storyboards: String {")
+    for storyboard in storyboards {
+        let storyboardName = storyboard.lastPathComponent.stringByDeletingPathExtension
+        println("    case \(storyboardName) = \"\(storyboardName)\"")
+    }
+    println()
+    println("    private var instance:\(os.storyboardType) {")
+    println("        return \(os.storyboardType)(name: self.rawValue, bundle: nil)\(os.storyboardTypeUnwrap)")
+    println("    }")
+    println()
+    println("    func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(os.storyboardControllerReturnType)? {")
+    println("        switch (self) {")
+    for storyboard in storyboards {
+        let storyboardName = storyboard.lastPathComponent.stringByDeletingPathExtension
+        if let initialViewControllerClass = findInitialViewControllerClass(storyboard, os) {
+            println("        case \(storyboardName):")
+            println("            return self.instance.instantiateInitial\(os.storyboardControllerSignatureType)() \(os.storyboardControllerInitialReturnTypeCast(initialViewControllerClass))")
+
+        }
+    }
+    println("        default:")
+    println("            return self.instance.instantiateInitial\(os.storyboardControllerSignatureType)() \(os.storyboardControllerInitialReturnTypeCast)")
+    println("        }")
+    println("    }")
+    println()
+    println("    func instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier: String) -> \(os.storyboardControllerReturnType) {")
+    println("        return self.instance.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier)\(os.storyboardControllerReturnTypeCast)")
+    println("    }")
+    println("}")
+    println()
+    
+    println("//MARK: - SegueKind")
+    println("enum SegueKind: String, Printable {    ")
+    println("    case Relationship = \"relationship\" ")
+    println("    case Show = \"show\"                 ")
+    println("    case Presentation = \"presentation\" ")
+    println("    case Embed = \"embed\"               ")
+    println("    case Unwind = \"unwind\"             ")
+    println()
+    println("    var description: String { return self.rawValue } ")
+    println("}")
+    println()
+    
+    println("//MARK: - SegueProtocol")
+    println("protocol SegueProtocol {")
+    println("    var identifier: String { get }")
+    println("}")
+    println()
+    
+    for controllerType in os.storyboardControllerTypes {
+        println("//MARK: - \(controllerType) extension")
+        println("extension \(controllerType) {")
+        println("    class var storyboardIdentifier:String? { return nil }")
+        println("    func performSegue(segue: SegueProtocol, sender: AnyObject?) {")
+        println("       performSegueWithIdentifier(segue.identifier, sender: sender)")
+        println("    }")
+        println("}")
+        println()
+    }
+    
+    for storyboardPath in storyboards {
+        processStoryboard(storyboardPath, os)
+    }
+
+}
+
 //MARK: MAIN()
 
 if Process.arguments.count == 1 {
@@ -722,72 +924,9 @@ if argument.hasSuffix(".storyboard") {
     storyboards = s
 }
 
-println("//")
-println("// Autogenerated by Natalie - Storyboard Generator Script.")
-println("// http://blog.krzyzanowskim.com")
-println("//")
-println()
-println("import UIKit")
-println()
-println("//MARK: - Storyboards")
-println("enum Storyboards: String {")
-for storyboard in storyboards {
-    let storyboardName = storyboard.lastPathComponent.stringByDeletingPathExtension
-    println("    case \(storyboardName) = \"\(storyboardName)\"")
-}
-println()    
-println("    private var instance:UIStoryboard {")
-println("        return UIStoryboard(name: self.rawValue, bundle: nil)")
-println("    }")
-println()    
-println("    func instantiateInitialViewController() -> UIViewController? {")
-println("        switch (self) {")
-for storyboard in storyboards {
-    let storyboardName = storyboard.lastPathComponent.stringByDeletingPathExtension
-    if let initialViewControllerClass = findInitialViewControllerClass(storyboard) {
-        println("        case \(storyboardName):")
-        println("            return self.instance.instantiateInitialViewController() as! \(initialViewControllerClass)")
+for os in OS.allValues {
+    var storyboardsForOS = storyboards.filter { findStoryboardOS($0) ?? OS.iOS == os }
+    if !storyboardsForOS.isEmpty {
+        processStoryboards(storyboardsForOS, os)
     }
 }
-println("        default:")
-println("            return self.instance.instantiateInitialViewController() as? UIViewController")
-println("        }")
-println("    }")
-println()    
-println("    func instantiateViewControllerWithIdentifier(identifier: String) -> UIViewController {")
-println("        return self.instance.instantiateViewControllerWithIdentifier(identifier) as! UIViewController")
-println("    }")
-println("}")
-println()
-
-println("//MARK: - SegueKind")
-println("enum SegueKind: String, Printable {    ")
-println("    case Relationship = \"relationship\" ")
-println("    case Show = \"show\"                 ")
-println("    case Presentation = \"presentation\" ")
-println("    case Embed = \"embed\"               ")
-println("    case Unwind = \"unwind\"             ")
-println()
-println("    var description: String { return self.rawValue } ")
-println("}")
-println()
-
-println("//MARK: - SegueProtocol")
-println("protocol SegueProtocol {")
-println("    var identifier: String { get }")
-println("}")
-println()
-
-println("//MARK: - UIViewController extension")
-println("extension UIViewController {")
-println("    class var storyboardIdentifier:String? { return nil }")
-println("    func performSegue(segue: SegueProtocol, sender: AnyObject?) {")
-println("       performSegueWithIdentifier(segue.identifier, sender: sender)")
-println("    }")
-println("}")
-println()
-
-for storyboardPath in storyboards {
-    processStoryboard(storyboardPath)
-}
-
