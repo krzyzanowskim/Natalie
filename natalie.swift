@@ -596,11 +596,19 @@ enum OS: String, Printable{
         }
     }
     
-    var storyboardType: String {
+    var typePrefix: String {
         switch self {
-        case iOS: return "UIStoryboard"
-        case OSX: return "NSStoryboard"
+        case iOS: return "UI"
+        case OSX: return "NS"
         }
+    }
+    
+    var storyboardType: String {
+        return typePrefix + "Storyboard"
+    }
+
+    var storyboardSegueType: String {
+        return typePrefix + "StoryboardSegue"
     }
     
     var storyboardTypeUnwrap: String {
@@ -651,27 +659,38 @@ enum OS: String, Printable{
         case OSX: return ""
         }
     }
-    
-    var storyboardSegueType: String {
+
+    func controllerTypeForElementName(name: String) -> String? {
         switch self {
-        case iOS: return "UIStoryboardSegue"
-        case OSX: return "NSStoryboardSegue"
+        case iOS:
+            switch name {
+            case "navigationController":
+                return "UINavigationController"
+            case "tableViewController":
+                return "UITableViewController"
+            case "tabBarController":
+                return "UITabBarViewController"
+            case "splitViewController":
+                return "UISplitViewController"
+            case "pageViewController":
+                return "UIPageViewController"
+            default:
+                return nil
+            }
+        case OSX:
+            switch name {
+            case "pagecontroller":
+                return "NSPageController"
+            case "tabViewController":
+                return "NSTabViewController"
+            case "splitViewController":
+                return "NSSplitViewController"
+            default:
+                return nil
+            }
         }
     }
-    
-    var navigationControllerType: String {
-        switch self {
-        case iOS: return "UINavigationController"
-        case OSX: return ""
-        }
-    }
-    
-    var tableViewControllerType: String {
-        switch self {
-        case iOS: return "UITableViewController"
-        case OSX: return "NSTableViewController"
-        }
-    }
+
 }
 
 private func searchAll(root: XMLIndexer, attributeKey: String, attributeValue: String) -> [XMLIndexer]? {
@@ -710,15 +729,8 @@ func findInitialViewControllerClass(storyboardFile: String, os: OS) -> String? {
                     return customClassName
                 }
 
-                switch (vc.element!.name) {
-                    case "navigationController":
-                        return "\(os.navigationControllerType)"
-                    case "tableViewController":
-                        return "\(os.tableViewControllerType)"
-                    case "tableViewController":
-                        return "\(os.tableViewControllerType)"
-                    default:
-                        break
+                if let controllerType = os.controllerTypeForElementName(vc.element!.name) {
+                    return controllerType
                 }
             }
         }
