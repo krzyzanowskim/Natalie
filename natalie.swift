@@ -13,6 +13,7 @@
 // Author: Marcin Krzyżanowski http://blog.krzyzanowskim.com
 //
 
+//MARK: SWXMLHash
 //
 //  SWXMLHash.swift
 //
@@ -555,7 +556,20 @@ extension XMLElement: Printable {
     }
 }
 
+private func searchAll(root: XMLIndexer, attributeKey: String, attributeValue: String) -> [XMLIndexer]? {
+    var result = Array<XMLIndexer>()
+    for child in root.children {
+        if let element = child.element where element.attributes[attributeKey] == attributeValue {
+            return [child]
+        }
+        if let found = searchAll(child, attributeKey, attributeValue) {
+            result += found
+        }
+    }
+    return result.count > 0 ? result : nil
+}
 
+//MARK: Objects
 enum OS: String, Printable{
     case iOS = "iOS"
     case OSX = "OSX"
@@ -693,38 +707,36 @@ enum OS: String, Printable{
 
 }
 
-private func searchAll(root: XMLIndexer, attributeKey: String, attributeValue: String) -> [XMLIndexer]? {
-    var result = Array<XMLIndexer>()
-    for child in root.children {
-        if let element = child.element where element.attributes[attributeKey] == attributeValue {
-            return [child]
-        }
-        if let found = searchAll(child, attributeKey, attributeValue) {
-            result += found
-        }
+class StoryboardFile {
+    
+    let filePath: String
+    init(filePath: String){
+        self.filePath = filePath
     }
-    return result.count > 0 ? result : nil
-}
-
-func findStoryboards(rootPath: String) -> [String]? {
-    var result = Array<String>()
-    let fm = NSFileManager.defaultManager()
-    var error:NSError?
-    if let paths = fm.subpathsAtPath(rootPath) as? [String]  {
-        let storyboardPaths = paths.filter({ return $0.hasSuffix(".storyboard")})
-        // result = storyboardPaths
-        for p in storyboardPaths {
-            result.append(rootPath.stringByAppendingPathComponent(p))
+    
+    lazy var storyboardName: String = self.filePath.lastPathComponent.stringByDeletingPathExtension
+    
+    lazy var data: NSData? = NSData(contentsOfFile: self.filePath)
+    lazy var xml: XMLIndexer? = {
+        if let d = self.data {
+            return SWXMLHash.parse(d)
         }
+        return nil
+        }()
+    
+    lazy var os:OS = self.initOS() ?? OS.iOS
+    private func initOS() -> OS? {
+        if let xml = self.xml, targetRuntime = xml["document"].element?.attributes["targetRuntime"] {
+            return OS.fromTargetRuntime(targetRuntime)
+        }
+        return nil
     }
-    return result.count > 0 ? result : nil
-}
-
-func findInitialViewControllerClass(storyboardFile: String, os: OS) -> String? {
-    if let data = NSData(contentsOfFile: storyboardFile) {
-        let xml = SWXMLHash.parse(data)
-        if let initialViewControllerId = xml["document"].element?.attributes["initialViewController"] {
-            if let vc = searchAll(xml["document"], "id",initialViewControllerId)?.first {
+    
+    lazy var initialViewControllerClass: String? = self.initOInitialViewControllerClass()
+    private func initOInitialViewControllerClass() -> String? {
+        if let xml = self.xml,
+            initialViewControllerId = xml["document"].element?.attributes["initialViewController"],
+            vc = searchAll(xml["document"], "id",initialViewControllerId)?.first {
                 if let customClassName = vc.element?.attributes["customClass"] {
                     return customClassName
                 }
@@ -732,41 +744,12 @@ func findInitialViewControllerClass(storyboardFile: String, os: OS) -> String? {
                 if let controllerType = os.controllerTypeForElementName(vc.element!.name) {
                     return controllerType
                 }
-            }
         }
+        return nil
     }
-    return nil
-}
 
-func findStoryboardOS(storyboardFile: String) -> OS? {
-    if let data = NSData(contentsOfFile: storyboardFile) {
-        let xml = SWXMLHash.parse(data)
-        if let targetRuntime = xml["document"].element?.attributes["targetRuntime"] {
-            return OS.fromTargetRuntime(targetRuntime)
-        }
-    }
-    return nil
-}
-
-private func storyboardIdentifierExtenstion(viewController: XMLIndexer) -> String? {
-    var result:String? = nil
-    if let customClass = viewController.element?.attributes["customClass"] {
-        var output = String()
-        output += "extension \(customClass) {\n"
-        if let viewControllerId = viewController.element?.attributes["storyboardIdentifier"] {
-            output += "    override class var storyboardIdentifier:String? { return \"\(viewControllerId)\" }\n"
-        }
-        output += "}"
-        result = output
-    }
-    return result
-}
-
-func processStoryboard(storyboardFile: String, os: OS) {
-    if let data = NSData(contentsOfFile: storyboardFile) {
-        let xml = SWXMLHash.parse(data)
-
-        if let viewControllers = searchAll(xml, "sceneMemberID", "viewController") {
+    func processStoryboard() {
+        if let xml = self.xml, viewControllers = searchAll(xml, "sceneMemberID", "viewController") {
             for viewController in viewControllers {
                 if let customClass = viewController.element?.attributes["customClass"] {
                     let segues = viewController["connections"]["segue"].all.filter({ return $0.element?.attributes["identifier"] != nil })
@@ -816,7 +799,7 @@ func processStoryboard(storyboardFile: String, os: OS) {
                         println("            }")
                         println("        }")
                         println()
-                        println("        var destination: UIViewController.Type? {")
+                        println("        var destination: \(self.os.storyboardControllerReturnType).Type? {")
                         println("            switch (self) {")
                         for segue in segues {
                             if let identifier = segue.element?.attributes["identifier"],
@@ -844,9 +827,40 @@ func processStoryboard(storyboardFile: String, os: OS) {
             }
         }
     }
+    
+    private func storyboardIdentifierExtenstion(viewController: XMLIndexer) -> String? {
+        var result:String? = nil
+        if let customClass = viewController.element?.attributes["customClass"] {
+            var output = String()
+            output += "extension \(customClass) {\n"
+            if let viewControllerId = viewController.element?.attributes["storyboardIdentifier"] {
+                output += "    override class var storyboardIdentifier:String? { return \"\(viewControllerId)\" }\n"
+            }
+            output += "}"
+            result = output
+        }
+        return result
+    }
 }
 
-func processStoryboards(storyboards: [String], os: OS) {
+
+//MARK: Functions Storyboards
+
+func findStoryboards(rootPath: String, suffix: String) -> [String]? {
+    var result = Array<String>()
+    let fm = NSFileManager.defaultManager()
+    var error:NSError?
+    if let paths = fm.subpathsAtPath(rootPath) as? [String]  {
+        let storyboardPaths = paths.filter({ return $0.hasSuffix(suffix)})
+        // result = storyboardPaths
+        for p in storyboardPaths {
+            result.append(rootPath.stringByAppendingPathComponent(p))
+        }
+    }
+    return result.count > 0 ? result : nil
+}
+
+func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     println("//")
     println("// Autogenerated by Natalie - Storyboard Generator Script.")
     println("// http://blog.krzyzanowskim.com")
@@ -857,7 +871,7 @@ func processStoryboards(storyboards: [String], os: OS) {
     println("//MARK: - Storyboards")
     println("enum Storyboards: String {")
     for storyboard in storyboards {
-        let storyboardName = storyboard.lastPathComponent.stringByDeletingPathExtension
+        let storyboardName = storyboard.storyboardName
         println("    case \(storyboardName) = \"\(storyboardName)\"")
     }
     println()
@@ -868,8 +882,8 @@ func processStoryboards(storyboards: [String], os: OS) {
     println("    func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(os.storyboardControllerReturnType)? {")
     println("        switch (self) {")
     for storyboard in storyboards {
-        let storyboardName = storyboard.lastPathComponent.stringByDeletingPathExtension
-        if let initialViewControllerClass = findInitialViewControllerClass(storyboard, os) {
+        if let initialViewControllerClass = storyboard.initialViewControllerClass {
+            let storyboardName = storyboard.storyboardName
             println("        case \(storyboardName):")
             println("            return self.instance.instantiateInitial\(os.storyboardControllerSignatureType)() \(os.storyboardControllerInitialReturnTypeCast(initialViewControllerClass))")
 
@@ -915,8 +929,8 @@ func processStoryboards(storyboards: [String], os: OS) {
         println()
     }
     
-    for storyboardPath in storyboards {
-        processStoryboard(storyboardPath, os)
+    for storyboard in storyboards {
+        storyboard.processStoryboard()
     }
 
 }
@@ -930,15 +944,19 @@ if Process.arguments.count == 1 {
 
 let argument = Process.arguments[1]
 var storyboards:[String] = []
-if argument.hasSuffix(".storyboard") {
+let storyboardSuffix = ".storyboard"
+if argument.hasSuffix(storyboardSuffix) {
     storyboards = [argument]
-} else if let s = findStoryboards(argument) {
+} else if let s = findStoryboards(argument, storyboardSuffix) {
     storyboards = s
 }
+let storyboardFiles: [StoryboardFile] = storyboards.map { StoryboardFile(filePath: $0) }
 
 for os in OS.allValues {
-    var storyboardsForOS = storyboards.filter { findStoryboardOS($0) ?? OS.iOS == os }
+    var storyboardsForOS = storyboardFiles.filter { $0.os == os }
     if !storyboardsForOS.isEmpty {
+        if storyboardsForOS.count != storyboardFiles.count { println("#if os(\(os.rawValue))") }
         processStoryboards(storyboardsForOS, os)
+        if storyboardsForOS.count != storyboardFiles.count { println("#endif") }
     }
 }
