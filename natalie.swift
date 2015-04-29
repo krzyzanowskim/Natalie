@@ -767,7 +767,7 @@ class StoryboardFile {
 
                     println()
                     println("//MARK: - \(customClass)")
-                    if let identifierExtenstionString = storyboardIdentifierExtenstion(viewController) {
+                    if let identifierExtenstionString = storyboardIdentifierExtension(viewController) {
                         println()
                         println(identifierExtenstionString)
                         println()
@@ -828,10 +828,15 @@ class StoryboardFile {
         }
     }
     
-    private func storyboardIdentifierExtenstion(viewController: XMLIndexer) -> String? {
+    private func storyboardIdentifierExtension(viewController: XMLIndexer) -> String? {
         var result:String? = nil
         if let customClass = viewController.element?.attributes["customClass"] {
             var output = String()
+            //check if the customModule belongs to the main application target, if so the import isn't necessary
+            let targetModule = viewController.element?.attributes["customModuleProvider"]
+            if let customModule = viewController.element?.attributes["customModule"] where targetModule == nil {
+                output += "import \(customModule)\n"
+            }
             output += "extension \(customClass) {\n"
             if let viewControllerId = viewController.element?.attributes["storyboardIdentifier"] {
                 output += "    override class var storyboardIdentifier:String? { return \"\(viewControllerId)\" }\n"
