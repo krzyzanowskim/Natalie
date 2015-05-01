@@ -556,121 +556,145 @@ extension XMLElement: Printable {
     }
 }
 
-private func searchAll(root: XMLIndexer, attributeKey: String, attributeValue: String) -> [XMLIndexer]? {
-    var result = Array<XMLIndexer>()
-    for child in root.children {
-        if let element = child.element where element.attributes[attributeKey] == attributeValue {
-            return [child]
-        }
-        if let found = searchAll(child, attributeKey, attributeValue) {
-            result += found
-        }
-    }
-    return result.count > 0 ? result : nil
-}
+//MARK: - Natalie
 
 //MARK: Objects
-enum OS: String, Printable{
+enum OS: String, Printable {
     case iOS = "iOS"
     case OSX = "OSX"
     
-    static func fromString(string: String) -> OS? {
-        for os in OS.allValues {
-            if  NSString(string: os.rawValue).caseInsensitiveCompare(string) == NSComparisonResult.OrderedSame {
-                return os
-            }
-        }
-        return nil
-    }
-    
-    static func fromTargetRuntime(targetRuntime: String) -> OS? {
-        for os in OS.allValues {
-            if  os.targetRuntime == targetRuntime {
-                return os
-            }
-        }
-        return nil
-    }
-    
     static let allValues = [iOS, OSX]
-    
-    var description: String {return self.rawValue}
-    
-    var framework: String {
-        switch self {
-        case iOS: return "UIKit"
-        case OSX: return "Cocoa"
+
+    enum Runtime: String {
+        case iOSCocoaTouch = "iOS.CocoaTouch"
+        case MacOSXCocoa = "MacOSX.Cocoa"
+        
+        init(os: OS) {
+            switch os {
+            case iOS:
+                self = .iOSCocoaTouch
+            case OSX:
+                self = .MacOSXCocoa
+            }
         }
+
+    }
+    
+    enum Framework: String {
+        case UIKit = "UIKit"
+        case Cocoa = "Cocoa"
+        
+        init(os: OS) {
+            switch os {
+            case iOS:
+                self = .UIKit
+            case OSX:
+                self = .Cocoa
+            }
+        }
+    }
+
+    init(targetRuntime: String) {
+        switch (targetRuntime) {
+        case Runtime.iOSCocoaTouch.rawValue:
+            self = .iOS
+        case Runtime.MacOSXCocoa.rawValue:
+            self = .OSX
+        default:
+            fatalError("Unsupported")
+        }
+    }
+
+    var description: String {
+        return self.rawValue
+    }
+
+    var framework: String {
+        return Framework(os: self).rawValue
     }
     
     var targetRuntime: String {
-        switch self {
-        case iOS: return "iOS.CocoaTouch"
-        case OSX: return "MacOSX.Cocoa"
-        }
-    }
-    
-    var typePrefix: String {
-        switch self {
-        case iOS: return "UI"
-        case OSX: return "NS"
-        }
+        return Runtime(os: self).rawValue
     }
     
     var storyboardType: String {
-        return typePrefix + "Storyboard"
+        switch self {
+        case iOS:
+            return "UIStoryboard"
+        case OSX:
+            return "NSStoryboard"
+        }
     }
 
     var storyboardSegueType: String {
-        return typePrefix + "StoryboardSegue"
+        switch self {
+        case iOS:
+            return "UIStoryboardSegue"
+        case OSX:
+            return "NSStoryboardSegue"
+        }
     }
     
     var storyboardTypeUnwrap: String {
         switch self {
-        case iOS: return ""
-        case OSX: return "!"
+        case iOS:
+            return ""
+        case OSX:
+            return "!"
         }
     }
     
     var storyboardControllerTypes: [String] {
         switch self {
-        case iOS: return ["UIViewController"]
-        case OSX: return ["NSViewController", "NSWindowController"]
+        case iOS:
+            return ["UIViewController"]
+        case OSX:
+            return ["NSViewController", "NSWindowController"]
         }
     }
     
     var storyboardControllerSignatureType: String {
         switch self {
-        case iOS: return "ViewController"
-        case OSX: return "Controller" // NSViewController or NSWindowController
+        case iOS:
+            return "ViewController"
+        case OSX:
+            return "Controller" // NSViewController or NSWindowController
         }
     }
     
     var storyboardControllerReturnType: String {
         switch self {
-        case iOS: return "UIViewController"
-        case OSX: return "AnyObject" // NSViewController or NSWindowController
+        case iOS:
+            return "UIViewController"
+        case OSX:
+            return "AnyObject" // NSViewController or NSWindowController
         }
     }
     
     var storyboardControllerInitialReturnTypeCast: String {
         switch self {
-        case iOS: return "as? \(self.storyboardControllerReturnType)"
-        case OSX: return ""
+        case iOS:
+            return "as? \(self.storyboardControllerReturnType)"
+        case OSX:
+            return ""
         }
     }
     
     var storyboardControllerReturnTypeCast: String {
         switch self {
-        case iOS: return " as! \(self.storyboardControllerReturnType)"
-        case OSX: return "!"
+        case iOS:
+            return " as! \(self.storyboardControllerReturnType)"
+        case OSX:
+            return "!"
         }
     }
     
     func storyboardControllerInitialReturnTypeCast(initialClass: String) -> String {
         switch self {
-        case iOS: return "as! \(initialClass)"
-        case OSX: return ""
+        case iOS:
+            return "as! \(initialClass)"
+        case OSX:
+            return ""
         }
     }
 
@@ -726,8 +750,8 @@ class StoryboardFile {
     
     lazy var os:OS = self.initOS() ?? OS.iOS
     private func initOS() -> OS? {
-        if let xml = self.xml, targetRuntime = xml["document"].element?.attributes["targetRuntime"] {
-            return OS.fromTargetRuntime(targetRuntime)
+        if let targetRuntime = self.xml?["document"].element?.attributes["targetRuntime"] {
+            return OS(targetRuntime: targetRuntime)
         }
         return nil
     }
@@ -852,7 +876,20 @@ class StoryboardFile {
 }
 
 
-//MARK: Functions Storyboards
+//MARK: Functions
+
+private func searchAll(root: XMLIndexer, attributeKey: String, attributeValue: String) -> [XMLIndexer]? {
+    var result = Array<XMLIndexer>()
+    for child in root.children {
+        if let element = child.element where element.attributes[attributeKey] == attributeValue {
+            return [child]
+        }
+        if let found = searchAll(child, attributeKey, attributeValue) {
+            result += found
+        }
+    }
+    return result.count > 0 ? result : nil
+}
 
 func findStoryboards(rootPath: String, suffix: String) -> [String]? {
     var result = Array<String>()
@@ -963,8 +1000,15 @@ let storyboardFiles: [StoryboardFile] = storyboards.map { StoryboardFile(filePat
 for os in OS.allValues {
     var storyboardsForOS = storyboardFiles.filter { $0.os == os }
     if !storyboardsForOS.isEmpty {
-        if storyboardsForOS.count != storyboardFiles.count { println("#if os(\(os.rawValue))") }
+        
+        if storyboardsForOS.count != storyboardFiles.count {
+            println("#if os(\(os.rawValue))")
+        }
+        
         processStoryboards(storyboardsForOS, os)
-        if storyboardsForOS.count != storyboardFiles.count { println("#endif") }
+        
+        if storyboardsForOS.count != storyboardFiles.count {
+            println("#endif")
+        }
     }
 }
