@@ -840,8 +840,11 @@ class StoryboardFile {
             output += "extension \(customClass) {\n"
             if let viewControllerId = viewController.element?.attributes["storyboardIdentifier"] {
                 output += "    override class var storyboardIdentifier:String? { return \"\(viewControllerId)\" }\n"
+                output += "    class func instantiateFromStoryboard(storyboard: Storyboards) -> \(customClass)! {\n"
+                output += "        return storyboard.instantiateViewControllerWithIdentifier(self.storyboardIdentifier!) as? \(customClass)\n"
+                output += "    }\n"
             }
-            output += "}"
+            output += "}"            
             result = output
         }
         return result
