@@ -29,12 +29,18 @@ class MainViewController: UIViewController {
                 if let oneViewController = segue.destinationViewController as? ScreenOneViewController {
                     oneViewController.view.backgroundColor = UIColor.yellowColor()
                 }
-                break;
+                break
+            case MainViewController.Segue.ScreenOneSegueButton:
+                if let oneViewController = segue.destinationViewController as? ScreenOneViewController {
+                    oneViewController.view.backgroundColor = UIColor.brownColor()
+                }
+                break
             case MainViewController.Segue.ScreenTwoSegue:
                 if let twoViewController = segue.destinationViewController as? ScreenTwoViewController {
                     twoViewController.view.backgroundColor = UIColor.magentaColor()
                 }
-                break;
+                break
+
             }
         }
     }

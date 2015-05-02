@@ -64,16 +64,22 @@ extension UIStoryboardSegue {
 
 extension MainViewController {
     override class var storyboardIdentifier:String? { return "MainViewController" }
+    class func instantiateFromStoryboard(storyboard: Storyboards) -> MainViewController! {
+        return storyboard.instantiateViewControllerWithIdentifier(self.storyboardIdentifier!) as? MainViewController
+    }
 }
 
 extension MainViewController { 
 
     enum Segue: String, Printable, SegueProtocol {
+        case ScreenOneSegueButton = "ScreenOneSegueButton"
         case ScreenOneSegue = "ScreenOneSegue"
         case ScreenTwoSegue = "ScreenTwoSegue"
 
         var kind: SegueKind? {
             switch (self) {
+            case ScreenOneSegueButton:
+                return SegueKind(rawValue: "push")
             case ScreenOneSegue:
                 return SegueKind(rawValue: "push")
             case ScreenTwoSegue:
@@ -86,6 +92,8 @@ extension MainViewController {
 
         var destination: UIViewController.Type? {
             switch (self) {
+            case ScreenOneSegueButton:
+                return ScreenOneViewController.self
             case ScreenOneSegue:
                 return ScreenOneViewController.self
             case ScreenTwoSegue:
@@ -100,19 +108,5 @@ extension MainViewController {
         var description: String { return self.rawValue }
     }
 
-}
-
-
-//MARK: - ScreenTwoViewController
-
-extension ScreenTwoViewController {
-    override class var storyboardIdentifier:String? { return "ScreenTwoViewController" }
-}
-
-
-//MARK: - ScreenOneViewController
-
-extension ScreenOneViewController {
-    override class var storyboardIdentifier:String? { return "ScreenOneViewController" }
 }
 

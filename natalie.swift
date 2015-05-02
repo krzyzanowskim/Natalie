@@ -775,8 +775,8 @@ class StoryboardFile {
     func processStoryboard() {
         if let xml = self.xml, viewControllers = searchAll(xml, "sceneMemberID", "viewController") {
             for viewController in viewControllers {
-                if let customClass = viewController.element?.attributes["customClass"] {
-                    let segues = viewController["connections"]["segue"].all.filter({ return $0.element?.attributes["identifier"] != nil })
+                if let customClass = viewController.element?.attributes["customClass"],
+                   let segues = searchNamed(viewController, "segue")?.filter({ return $0.element?.attributes["identifier"] != nil }) {
 
                     if segues.count > 0 {
                         println("extension \(os.storyboardSegueType) {")
@@ -878,14 +878,38 @@ class StoryboardFile {
 
 //MARK: Functions
 
-private func searchAll(root: XMLIndexer, attributeKey: String, attributeValue: String) -> [XMLIndexer]? {
+private func searchAll(root: XMLIndexer, attributeKey: String, _ attributeValue: String? = nil) -> [XMLIndexer]? {
     var result = Array<XMLIndexer>()
     for child in root.children {
-        if let element = child.element where element.attributes[attributeKey] == attributeValue {
-            return [child]
+        
+        for childAtLevel in child.all {
+            if let attributeValue = attributeValue {
+                if let element = childAtLevel.element where element.attributes[attributeKey] == attributeValue {
+                    result += [childAtLevel]
+                }
+            } else if let element = childAtLevel.element where element.attributes[attributeKey] != nil {
+                result += [childAtLevel]
+            }
+            
+            if let found = searchAll(childAtLevel, attributeKey, attributeValue) {
+                result += found
+            }
         }
-        if let found = searchAll(child, attributeKey, attributeValue) {
-            result += found
+    }
+    return result.count > 0 ? result : nil
+}
+
+private func searchNamed(root: XMLIndexer, name: String) -> [XMLIndexer]? {
+    var result = Array<XMLIndexer>()
+    for child in root.children {
+
+        for childAtLevel in child.all {
+            if let elementName = childAtLevel.element?.name where elementName == name {
+                result += [child]
+            }
+            if let found = searchNamed(childAtLevel, name) {
+                result += found
+            }
         }
     }
     return result.count > 0 ? result : nil

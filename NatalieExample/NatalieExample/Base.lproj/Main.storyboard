@@ -50,11 +50,22 @@
                                     <action selector="screen1ButtonPressed:" destination="soT-RO-G4u" eventType="touchUpInside" id="7CH-jn-IGd"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J7J-zu-N6U">
+                                <rect key="frame" x="81" y="235" width="159" height="30"/>
+                                <state key="normal" title="Screen 1 Button Segue">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="H01-d9-gf7" kind="push" identifier="ScreenOneSegueButton" id="0VR-ft-sgf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="2ta-XX-XmY" firstAttribute="centerX" secondItem="Tdz-cR-4J7" secondAttribute="centerX" id="0yW-bq-sWP"/>
+                            <constraint firstItem="2ta-XX-XmY" firstAttribute="centerX" secondItem="J7J-zu-N6U" secondAttribute="centerX" id="F6E-LK-775"/>
                             <constraint firstItem="h7R-xk-Pzn" firstAttribute="leading" secondItem="2ta-XX-XmY" secondAttribute="leading" id="InD-u7-cWp"/>
+                            <constraint firstItem="J7J-zu-N6U" firstAttribute="top" secondItem="2ta-XX-XmY" secondAttribute="bottom" constant="23" id="MKj-Ou-K2Z"/>
                             <constraint firstItem="2ta-XX-XmY" firstAttribute="top" secondItem="h7R-xk-Pzn" secondAttribute="bottom" constant="23" id="Sgq-5I-5UZ"/>
                             <constraint firstItem="h7R-xk-Pzn" firstAttribute="top" secondItem="PS3-vn-EBy" secondAttribute="bottom" constant="65" id="nN7-Fw-RSf"/>
                         </constraints>
@@ -84,7 +95,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Screen 2" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B8k-bv-GZ8">
                                 <rect key="frame" x="126" y="273" width="68" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -115,7 +126,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Screen 1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3qw-K4-qRq">
                                 <rect key="frame" x="126" y="273" width="68" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -137,4 +148,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="0VR-ft-sgf"/>
+    </inferredMetricsTieBreakers>
 </document>
