@@ -707,7 +707,7 @@ enum OS: String, Printable {
             case "tableViewController":
                 return "UITableViewController"
             case "tabBarController":
-                return "UITabBarViewController"
+                return "UITabBarController"
             case "splitViewController":
                 return "UISplitViewController"
             case "pageViewController":
