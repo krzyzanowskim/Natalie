@@ -75,6 +75,7 @@ extension MainViewController {
         case ScreenOneSegueButton = "ScreenOneSegueButton"
         case ScreenOneSegue = "ScreenOneSegue"
         case ScreenTwoSegue = "ScreenTwoSegue"
+        case SceneOneGestureRecognizerSegue = "SceneOneGestureRecognizerSegue"
 
         var kind: SegueKind? {
             switch (self) {
@@ -83,6 +84,8 @@ extension MainViewController {
             case ScreenOneSegue:
                 return SegueKind(rawValue: "push")
             case ScreenTwoSegue:
+                return SegueKind(rawValue: "push")
+            case SceneOneGestureRecognizerSegue:
                 return SegueKind(rawValue: "push")
             default:
                 preconditionFailure("Invalid value")
@@ -98,6 +101,8 @@ extension MainViewController {
                 return ScreenOneViewController.self
             case ScreenTwoSegue:
                 return ScreenTwoViewController.self
+            case SceneOneGestureRecognizerSegue:
+                return ScreenOneViewController.self
             default:
                 assertionFailure("Unknown destination")
                 return nil
