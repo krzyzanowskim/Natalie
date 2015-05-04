@@ -773,11 +773,11 @@ class StoryboardFile {
     }
 
     func processStoryboard() {
-        if let xml = self.xml, viewControllers = searchAll(xml, "sceneMemberID", "viewController") {
-            for viewController in viewControllers {
+        if let xml = self.xml, viewControllers = searchAll(xml, "sceneMemberID", "viewController"), scenes = searchAll(xml, "sceneID") {
+            for scene in scenes {
+                let viewController = searchAll(scene, "sceneMemberID", "viewController")![0]
                 if let customClass = viewController.element?.attributes["customClass"],
-                   let segues = searchNamed(viewController, "segue")?.filter({ return $0.element?.attributes["identifier"] != nil }) {
-
+                   let segues = searchNamed(scene, "segue")?.filter({ return $0.element?.attributes["identifier"] != nil }) {
                     if segues.count > 0 {
                         println("extension \(os.storyboardSegueType) {")
                         println("    func selection() -> \(customClass).Segue? {")
