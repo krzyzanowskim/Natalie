@@ -773,7 +773,7 @@ class StoryboardFile {
     }
 
     func processStoryboard() {
-        if let xml = self.xml, viewControllers = searchAll(xml, "sceneMemberID", "viewController"), scenes = searchAll(xml, "sceneID") {
+        if let xml = self.xml, scenes = searchAll(xml, "sceneID") {
             for scene in scenes {
                 let viewController = searchAll(scene, "sceneMemberID", "viewController")![0]
                 if let customClass = viewController.element?.attributes["customClass"],
