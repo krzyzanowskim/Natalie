@@ -868,7 +868,7 @@ class StoryboardFile {
             }
             output += "extension \(customClass) {\n"
             if let viewControllerId = viewController.element?.attributes["storyboardIdentifier"] {
-                output += "    override class var storyboardIdentifier:String? { return \"\(viewControllerId)\" }\n"
+                output += "    override class var storyboardIdentifier: String? { return \"\(viewControllerId)\" }\n"
                 output += "    class func instantiateFromStoryboard(storyboard: Storyboards) -> \(customClass)! {\n"
                 output += "        return storyboard.instantiateViewControllerWithIdentifier(self.storyboardIdentifier!) as? \(customClass)\n"
                 output += "    }\n"
@@ -995,7 +995,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     for controllerType in os.storyboardControllerTypes {
         println("//MARK: - \(controllerType) extension")
         println("extension \(controllerType) {")
-        println("    class var storyboardIdentifier:String? { return nil }")
+        println("    class var storyboardIdentifier: String? { return nil }")
         println("    func performSegue(segue: SegueProtocol, sender: AnyObject?) {")
         println("       performSegueWithIdentifier(segue.identifier, sender: sender)")
         println("    }")
