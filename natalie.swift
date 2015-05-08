@@ -788,7 +788,9 @@ class StoryboardFile {
                         println("    }")
                         println("}")
                     }
-
+                }
+                
+                if let customClass = viewController.element?.attributes["customClass"] {
                     println()
                     println("//MARK: - \(customClass)")
                     if let identifierExtenstionString = storyboardIdentifierExtension(viewController) {
@@ -796,7 +798,10 @@ class StoryboardFile {
                         println(identifierExtenstionString)
                         println()
                     }
+                }
 
+                if let customClass = viewController.element?.attributes["customClass"],
+                    let segues = searchNamed(viewController, "segue")?.filter({ return $0.element?.attributes["identifier"] != nil }) {
                     if segues.count > 0 {
                         println("extension \(customClass) { ")
                         println()
