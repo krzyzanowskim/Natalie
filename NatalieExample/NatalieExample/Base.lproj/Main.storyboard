@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Wjb-mG-J1I">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Wjb-mG-J1I">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -59,15 +59,27 @@
                                     <segue destination="H01-d9-gf7" kind="push" identifier="ScreenOneSegueButton" id="0VR-ft-sgf"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Screen 1 Gesture Recognizer Segue" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tv5-gO-yQr">
+                                <rect key="frame" x="21" y="288" width="278" height="21"/>
+                                <gestureRecognizers/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="ued-lM-SxI" appends="YES" id="Pi6-Oe-bBe"/>
+                                </connections>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="2ta-XX-XmY" firstAttribute="centerX" secondItem="Tdz-cR-4J7" secondAttribute="centerX" id="0yW-bq-sWP"/>
                             <constraint firstItem="2ta-XX-XmY" firstAttribute="centerX" secondItem="J7J-zu-N6U" secondAttribute="centerX" id="F6E-LK-775"/>
+                            <constraint firstItem="tv5-gO-yQr" firstAttribute="top" secondItem="J7J-zu-N6U" secondAttribute="bottom" constant="23" id="GOS-Up-SES"/>
                             <constraint firstItem="h7R-xk-Pzn" firstAttribute="leading" secondItem="2ta-XX-XmY" secondAttribute="leading" id="InD-u7-cWp"/>
                             <constraint firstItem="J7J-zu-N6U" firstAttribute="top" secondItem="2ta-XX-XmY" secondAttribute="bottom" constant="23" id="MKj-Ou-K2Z"/>
                             <constraint firstItem="2ta-XX-XmY" firstAttribute="top" secondItem="h7R-xk-Pzn" secondAttribute="bottom" constant="23" id="Sgq-5I-5UZ"/>
                             <constraint firstItem="h7R-xk-Pzn" firstAttribute="top" secondItem="PS3-vn-EBy" secondAttribute="bottom" constant="65" id="nN7-Fw-RSf"/>
+                            <constraint firstAttribute="centerX" secondItem="tv5-gO-yQr" secondAttribute="centerX" id="yL2-rQ-7Ti"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Chooser" id="2tQ-Wk-WYx"/>
@@ -77,6 +89,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wod-Zg-RO6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="ued-lM-SxI">
+                    <connections>
+                        <segue destination="H01-d9-gf7" kind="push" identifier="SceneOneGestureRecognizerSegue" id="tRQ-ZB-XZP"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="369" y="395"/>
         </scene>
@@ -124,7 +141,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Screen 1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3qw-K4-qRq">
-                                <rect key="frame" x="126" y="273" width="68" height="21"/>
+                                <rect key="frame" x="126" y="229" width="68" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -149,6 +166,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="0VR-ft-sgf"/>
+        <segue reference="tRQ-ZB-XZP"/>
     </inferredMetricsTieBreakers>
 </document>

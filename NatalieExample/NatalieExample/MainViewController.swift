@@ -40,7 +40,11 @@ class MainViewController: UIViewController {
                     twoViewController.view.backgroundColor = UIColor.magentaColor()
                 }
                 break
-
+            case MainViewController.Segue.SceneOneGestureRecognizerSegue:
+                if let oneViewController = segue.destinationViewController as? ScreenOneViewController {
+                    oneViewController.view.backgroundColor = UIColor.greenColor()
+                }
+                
             }
         }
     }
