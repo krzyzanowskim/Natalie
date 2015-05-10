@@ -773,84 +773,82 @@ class StoryboardFile {
     }
 
     func processStoryboard() {
-        if let xml = self.xml, viewControllers = searchAll(xml, "sceneMemberID", "viewController") {
-            for viewController in viewControllers {
-                if let customClass = viewController.element?.attributes["customClass"],
-                   let segues = searchNamed(viewController, "segue")?.filter({ return $0.element?.attributes["identifier"] != nil }) {
-
-                    if segues.count > 0 {
-                        println("extension \(os.storyboardSegueType) {")
-                        println("    func selection() -> \(customClass).Segue? {")
-                        println("        if let identifier = self.identifier {")
-                        println("            return \(customClass).Segue(rawValue: identifier)")
-                        println("        }")
-                        println("        return nil")
-                        println("    }")
-                        println("}")
-                    }
-                }
-                
-                if let customClass = viewController.element?.attributes["customClass"] {
-                    println()
-                    println("//MARK: - \(customClass)")
-                    if let identifierExtenstionString = storyboardIdentifierExtension(viewController) {
-                        println()
-                        println(identifierExtenstionString)
-                        println()
-                    }
-                }
-
-                if let customClass = viewController.element?.attributes["customClass"],
-                    let segues = searchNamed(viewController, "segue")?.filter({ return $0.element?.attributes["identifier"] != nil }) {
-                    if segues.count > 0 {
-                        println("extension \(customClass) { ")
-                        println()
-                        println("    enum Segue: String, Printable, SegueProtocol {")
-                        for segue in segues {
-                            if let identifier = segue.element?.attributes["identifier"]
-                            {
-                                println("        case \(identifier) = \"\(identifier)\"")
-                            }
+        if let xml = self.xml, scenes = searchAll(xml, "sceneID") {
+            for scene in scenes {
+                if let viewController = searchAll(scene, "sceneMemberID", "viewController")?[0] {
+                    if let customClass = viewController.element?.attributes["customClass"] {
+                        if let segues = searchNamed(scene, "segue")?.filter({ return $0.element?.attributes["identifier"] != nil })
+                        where segues.count > 0 {
+                            println("extension \(os.storyboardSegueType) {")
+                            println("    func selection() -> \(customClass).Segue? {")
+                            println("        if let identifier = self.identifier {")
+                            println("            return \(customClass).Segue(rawValue: identifier)")
+                            println("        }")
+                            println("        return nil")
+                            println("    }")
+                            println("}")
                         }
-                        println()
-                        println("        var kind: SegueKind? {")
-                        println("            switch (self) {")
-                        for segue in segues {
-                            if let identifier = segue.element?.attributes["identifier"],
-                               let kind = segue.element?.attributes["kind"] {
-                                println("            case \(identifier):")
-                                println("                return SegueKind(rawValue: \"\(kind)\")")
-                            }
-                        }
-                        println("            default:")
-                        println("                preconditionFailure(\"Invalid value\")")
-                        println("                break")
-                        println("            }")
-                        println("        }")
-                        println()
-                        println("        var destination: \(self.os.storyboardControllerReturnType).Type? {")
-                        println("            switch (self) {")
-                        for segue in segues {
-                            if let identifier = segue.element?.attributes["identifier"],
-                               let destination = segue.element?.attributes["destination"],
-                               let destinationCustomClass = searchAll(xml, "id", destination)?.first?.element?.attributes["customClass"] {
+                        
 
-                                // let dstCustomClass = destinationViewController.element!.attributes["customClass"]
-                                println("            case \(identifier):")
-                                println("                return \(destinationCustomClass).self")                                
-                            }
+                        println()
+                        println("//MARK: - \(customClass)")
+                        if let identifierExtenstionString = storyboardIdentifierExtension(viewController) {
+                            println()
+                            println(identifierExtenstionString)
+                            println()
                         }
-                        println("            default:")
-                        println("                assertionFailure(\"Unknown destination\")")                                
-                        println("                return nil")        
-                        println("            }")
-                        println("        }")
-                        println()
-                        println("        var identifier: String { return self.description } ")
-                        println("        var description: String { return self.rawValue }")
-                        println("    }")
-                        println()
-                        println("}\n")
+
+                        if let segues = searchNamed(scene, "segue")?.filter({ return $0.element?.attributes["identifier"] != nil })
+                        where segues.count > 0 {
+                            println("extension \(customClass) { ")
+                            println()
+                            println("    enum Segue: String, Printable, SegueProtocol {")
+                            for segue in segues {
+                                if let identifier = segue.element?.attributes["identifier"]
+                                {
+                                    println("        case \(identifier) = \"\(identifier)\"")
+                                }
+                            }
+                            println()
+                            println("        var kind: SegueKind? {")
+                            println("            switch (self) {")
+                            for segue in segues {
+                                if let identifier = segue.element?.attributes["identifier"],
+                                   let kind = segue.element?.attributes["kind"] {
+                                    println("            case \(identifier):")
+                                    println("                return SegueKind(rawValue: \"\(kind)\")")
+                                }
+                            }
+                            println("            default:")
+                            println("                preconditionFailure(\"Invalid value\")")
+                            println("                break")
+                            println("            }")
+                            println("        }")
+                            println()
+                            println("        var destination: \(self.os.storyboardControllerReturnType).Type? {")
+                            println("            switch (self) {")
+                            for segue in segues {
+                                if let identifier = segue.element?.attributes["identifier"],
+                                   let destination = segue.element?.attributes["destination"],
+                                   let destinationCustomClass = searchAll(xml, "id", destination)?.first?.element?.attributes["customClass"] {
+
+                                    // let dstCustomClass = destinationViewController.element!.attributes["customClass"]
+                                    println("            case \(identifier):")
+                                    println("                return \(destinationCustomClass).self")                                
+                                }
+                            }
+                            println("            default:")
+                            println("                assertionFailure(\"Unknown destination\")")                                
+                            println("                return nil")        
+                            println("            }")
+                            println("        }")
+                            println()
+                            println("        var identifier: String { return self.description } ")
+                            println("        var description: String { return self.rawValue }")
+                            println("    }")
+                            println()
+                            println("}\n")
+                        }
                     }
                 }
             }
@@ -868,7 +866,7 @@ class StoryboardFile {
             }
             output += "extension \(customClass) {\n"
             if let viewControllerId = viewController.element?.attributes["storyboardIdentifier"] {
-                output += "    override class var storyboardIdentifier: String? { return \"\(viewControllerId)\" }\n"
+                output += "    override class var storyboardIdentifier:String? { return \"\(viewControllerId)\" }\n"
                 output += "    class func instantiateFromStoryboard(storyboard: Storyboards) -> \(customClass)! {\n"
                 output += "        return storyboard.instantiateViewControllerWithIdentifier(self.storyboardIdentifier!) as? \(customClass)\n"
                 output += "    }\n"
@@ -995,7 +993,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     for controllerType in os.storyboardControllerTypes {
         println("//MARK: - \(controllerType) extension")
         println("extension \(controllerType) {")
-        println("    class var storyboardIdentifier: String? { return nil }")
+        println("    class var storyboardIdentifier:String? { return nil }")
         println("    func performSegue(segue: SegueProtocol, sender: AnyObject?) {")
         println("       performSegueWithIdentifier(segue.identifier, sender: sender)")
         println("    }")
