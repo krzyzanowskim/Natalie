@@ -776,9 +776,9 @@ class StoryboardFile {
         if let xml = self.xml, scenes = searchAll(xml, "sceneID") {
             for scene in scenes {
                 if let viewController = searchAll(scene, "sceneMemberID", "viewController")?[0] {
-                    if let customClass = viewController.element?.attributes["customClass"],
-                       let segues = searchNamed(scene, "segue")?.filter({ return $0.element?.attributes["identifier"] != nil }) {
-                        if segues.count > 0 {
+                    if let customClass = viewController.element?.attributes["customClass"] {
+                        if let segues = searchNamed(scene, "segue")?.filter({ return $0.element?.attributes["identifier"] != nil })
+                        where segues.count > 0 {
                             println("extension \(os.storyboardSegueType) {")
                             println("    func selection() -> \(customClass).Segue? {")
                             println("        if let identifier = self.identifier {")
@@ -788,6 +788,7 @@ class StoryboardFile {
                             println("    }")
                             println("}")
                         }
+                        
 
                         println()
                         println("//MARK: - \(customClass)")
@@ -797,7 +798,8 @@ class StoryboardFile {
                             println()
                         }
 
-                        if segues.count > 0 {
+                        if let segues = searchNamed(scene, "segue")?.filter({ return $0.element?.attributes["identifier"] != nil })
+                        where segues.count > 0 {
                             println("extension \(customClass) { ")
                             println()
                             println("    enum Segue: String, Printable, SegueProtocol {")
