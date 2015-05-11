@@ -843,7 +843,7 @@ class StoryboardFile {
                             println("            }")
                             println("        }")
                             println()
-                            println("        var identifier: String { return self.description } ")
+                            println("        var identifier: String? { return self.description } ")
                             println("        var description: String { return self.rawValue }")
                             println("    }")
                             println()
@@ -985,8 +985,13 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     println()
     
     println("//MARK: - SegueProtocol")
-    println("protocol SegueProtocol {")
-    println("    var identifier: String { get }")
+    println("public protocol SegueProtocol: Equatable {")
+    println("    var identifier: String? { get }")
+    println("}")
+    println()
+    
+    println("public func ==<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {")
+    println("   return lhs.identifier == rhs.identifier")
     println("}")
     println()
     
@@ -994,12 +999,16 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
         println("//MARK: - \(controllerType) extension")
         println("extension \(controllerType) {")
         println("    class var storyboardIdentifier:String? { return nil }")
-        println("    func performSegue(segue: SegueProtocol, sender: AnyObject?) {")
+        println("    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {")
         println("       performSegueWithIdentifier(segue.identifier, sender: sender)")
         println("    }")
         println("}")
         println()
     }
+	
+	println("extension UIStoryboardSegue: SegueProtocol {")
+	println("}")
+	println()
     
     for storyboard in storyboards {
         storyboard.processStoryboard()
