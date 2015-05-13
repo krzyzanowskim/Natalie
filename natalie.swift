@@ -643,6 +643,15 @@ enum OS: String, Printable {
             return "!"
         }
     }
+
+    var storyboardSegueUnwrap: String {
+        switch self {
+        case iOS:
+            return ""
+        case OSX:
+            return "!"
+        }
+    }
     
     var storyboardControllerTypes: [String] {
         switch self {
@@ -868,7 +877,7 @@ class StoryboardFile {
             if let viewControllerId = viewController.element?.attributes["storyboardIdentifier"] {
                 output += "    override class var storyboardIdentifier:String? { return \"\(viewControllerId)\" }\n"
                 output += "    class func instantiateFromStoryboard(storyboard: Storyboards) -> \(customClass)! {\n"
-                output += "        return storyboard.instantiateViewControllerWithIdentifier(self.storyboardIdentifier!) as? \(customClass)\n"
+                output += "        return storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(self.storyboardIdentifier!) as? \(customClass)\n"
                 output += "    }\n"
             }
             output += "}"            
@@ -1000,13 +1009,13 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
         println("extension \(controllerType) {")
         println("    class var storyboardIdentifier:String? { return nil }")
         println("    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {")
-        println("       performSegueWithIdentifier(segue.identifier, sender: sender)")
+        println("       performSegueWithIdentifier(segue.identifier\(os.storyboardSegueUnwrap), sender: sender)")
         println("    }")
         println("}")
         println()
     }
 	
-	println("extension UIStoryboardSegue: SegueProtocol {")
+	println("extension \(os.storyboardSegueType): SegueProtocol {")
 	println("}")
 	println()
     
