@@ -60,7 +60,7 @@ class XNatalie: NSObject {
     
     // MARK: config
     
-    static let pluginEnabledString = "XNathalieEnabled"
+    static let pluginEnabledString = "XNatalieEnabled"
     var pluginEnabled: Bool {
         get {
             return Defaults.boolForKey(XNatalie.pluginEnabledString)
@@ -70,7 +70,7 @@ class XNatalie: NSObject {
         }
     }
     
-    static let launchPathString = "XNathaliePath"
+    static let launchPathString = "XNataliePath"
     var launchPath: String {
         get {
             return Defaults.stringForKey(XNatalie.launchPathString) ?? "/usr/local/bin/natalie.swift"
