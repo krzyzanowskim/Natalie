@@ -80,6 +80,8 @@ class XNatalie: NSObject {
         }
     }
     
+    var swiftFile = "Storyboards.swift"
+    
     // MARK: notifications
     
     func addObservers() {
@@ -146,8 +148,8 @@ class XNatalie: NSObject {
         return pipe.fileHandleForReading.readDataToEndOfFile()
     }
     
-    func writeSwiftFile(data: NSData, path: String) {
-        let outputFolder = path.stringByAppendingPathComponent("Storyboards.swift")
+    func writeSwiftFile(data: NSData, path: String) -> String? {
+        let outputFolder = path.stringByAppendingPathComponent(self.swiftFile)
         
         if NSFileManager.defaultManager().fileExistsAtPath(outputFolder) {
             NSFileManager.defaultManager().removeItemAtPath(outputFolder, error: nil)
@@ -157,7 +159,9 @@ class XNatalie: NSObject {
         if let forWriting = NSFileHandle(forWritingAtPath: outputFolder) {
             println("writing to \(outputFolder)")
             forWriting.writeData(data)
+            return outputFolder
         }
+        return nil
     }
     
     var workingPath: String? {
@@ -175,7 +179,11 @@ class XNatalie: NSObject {
             
             let pluginMenu = NSMenu()
             
-            self.storyboardEnabledMenuItem = NSMenuItem(title:"Enable", action:"enableMenu:", keyEquivalent:"")
+            let generateMenuItem = NSMenuItem(title:"Generate", action:"generate:", keyEquivalent:"")
+            generateMenuItem.target = self
+            pluginMenu.addItem(generateMenuItem)
+            
+            self.storyboardEnabledMenuItem = NSMenuItem(title:"Enable generate when saving", action:"enableMenu:", keyEquivalent:"")
             self.storyboardEnabledMenuItem.target = self
             pluginMenu.addItem(self.storyboardEnabledMenuItem)
             updateStoryboardEnabledMenuItem()
@@ -184,11 +192,45 @@ class XNatalie: NSObject {
             editLaunchPathMenuItem.target = self
             pluginMenu.addItem(editLaunchPathMenuItem)
             
+            
             pluginMenuItem.submenu = pluginMenu
             
             topItem.submenu!.addItem(NSMenuItem.separatorItem())
             topItem.submenu!.addItem(pluginMenuItem)
             
+        }
+    }
+    
+    
+    func generate(sender: NSMenuItem!) {
+        if  let storyboardPath = self.workingPath {
+            let data = taskForStoryboardAtPath(storyboardPath)
+
+            let alert = NSAlert()
+            
+            if let dst = writeSwiftFile(data, path: storyboardPath) {
+              
+                alert.messageText = "File generated at path: \(dst)"
+               
+            } else {
+                 alert.messageText = "Failed to write \(swiftFile)"
+            }
+        
+            
+            alert.beginSheetModalForWindow(NSApp.keyWindow!!, completionHandler: { (response) -> Void in
+                
+            })
+            
+            let timer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("closeAlert:"), userInfo: alert, repeats: false)
+        }
+        else {
+            println("not able to find project path")
+        }
+    }
+    
+    func closeAlert(timer: NSTimer) {
+        if let alert = timer.userInfo as? NSAlert, window = alert.window as? NSWindow {
+            window.orderOut(nil)
         }
     }
     
@@ -213,7 +255,7 @@ class XNatalie: NSObject {
             }
         }
     }
-    
+
     func updateStoryboardEnabledMenuItem() {
         self.storyboardEnabledMenuItem.state = self.pluginEnabled ? NSOnState : NSOffState
     }
