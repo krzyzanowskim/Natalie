@@ -252,8 +252,8 @@
 				DSTROOT = "$(HOME)";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/phimage/Dev/WS/Frameworks,
+					/Applications/Xcode.app/Contents/SharedFrameworks,
+					/Applications/Xcode.app/Contents/Frameworks,
 				);
 				INFOPLIST_FILE = XNatalie/Info.plist;
 				INSTALL_PATH = "/Library/Application Support/Developer/Shared/Xcode/Plug-ins";
@@ -273,8 +273,8 @@
 				DSTROOT = "$(HOME)";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					/Users/phimage/Dev/WS/Frameworks,
+					/Applications/Xcode.app/Contents/SharedFrameworks,
+					/Applications/Xcode.app/Contents/Frameworks,
 				);
 				INFOPLIST_FILE = XNatalie/Info.plist;
 				INSTALL_PATH = "/Library/Application Support/Developer/Shared/Xcode/Plug-ins";
