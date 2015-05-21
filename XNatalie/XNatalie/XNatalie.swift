@@ -50,16 +50,15 @@ class XNatalie: NSObject {
         self.bundle = bundle
 
         super.init()
-        createMenuItems()
         addObservers()
     }
 
     deinit {
         removeObservers()
     }
-    
+
     // MARK: config
-    
+
     static let pluginEnabledString = "XNatalieEnabled"
     var pluginEnabled: Bool {
         get {
@@ -85,13 +84,20 @@ class XNatalie: NSObject {
     // MARK: notifications
     
     func addObservers() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "applicationDidFinishLaunching:", name: NSApplicationDidFinishLaunchingNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "transitionFromOneFileToAnother:", name: "transition from one file to another", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "ideEditorDocumentDidSave:", name: "IDEEditorDocumentDidSaveNotification", object: nil)
     }
     func removeObservers() {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-    
+
+    func applicationDidFinishLaunching(notification: NSNotification!) {
+        createMenuItems()
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NSApplicationDidFinishLaunchingNotification, object: nil)
+    }
+
     func transitionFromOneFileToAnother(notification: NSNotification!) {
         if let url = documentURLFromNotification(notification) {
             let urlString = url.description
@@ -173,7 +179,7 @@ class XNatalie: NSObject {
     
     // MARK: menu
     func createMenuItems() {
-        if let topItem = NSApp.mainMenu!!.itemWithTitle("Product") {
+        if let topItem = NSApp.mainMenu??.itemWithTitle("Product") {
             let pluginMenuItem = NSMenuItem()
             pluginMenuItem.title = "Natalie"
             
