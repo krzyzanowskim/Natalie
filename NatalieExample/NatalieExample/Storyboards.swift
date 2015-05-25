@@ -39,16 +39,23 @@ enum SegueKind: String, Printable {
 }
 
 //MARK: - SegueProtocol
-protocol SegueProtocol {
-    var identifier: String { get }
+public protocol SegueProtocol: Equatable {
+    var identifier: String? { get }
+}
+
+public func ==<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {
+   return lhs.identifier == rhs.identifier
 }
 
 //MARK: - UIViewController extension
 extension UIViewController {
     class var storyboardIdentifier:String? { return nil }
-    func performSegue(segue: SegueProtocol, sender: AnyObject?) {
+    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {
        performSegueWithIdentifier(segue.identifier, sender: sender)
     }
+}
+
+extension UIStoryboardSegue: SegueProtocol {
 }
 
 extension UIStoryboardSegue {
@@ -109,9 +116,29 @@ extension MainViewController {
             }
         }
 
-        var identifier: String { return self.description } 
+        var identifier: String? { return self.description } 
         var description: String { return self.rawValue }
     }
 
+}
+
+
+//MARK: - ScreenTwoViewController
+
+extension ScreenTwoViewController {
+    override class var storyboardIdentifier:String? { return "ScreenTwoViewController" }
+    class func instantiateFromStoryboard(storyboard: Storyboards) -> ScreenTwoViewController! {
+        return storyboard.instantiateViewControllerWithIdentifier(self.storyboardIdentifier!) as? ScreenTwoViewController
+    }
+}
+
+
+//MARK: - ScreenOneViewController
+
+extension ScreenOneViewController {
+    override class var storyboardIdentifier:String? { return "ScreenOneViewController" }
+    class func instantiateFromStoryboard(storyboard: Storyboards) -> ScreenOneViewController! {
+        return storyboard.instantiateViewControllerWithIdentifier(self.storyboardIdentifier!) as? ScreenOneViewController
+    }
 }
 
