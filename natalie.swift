@@ -600,6 +600,8 @@ enum OS: String, Printable {
             self = .iOS
         case Runtime.MacOSXCocoa.rawValue:
             self = .OSX
+        case "iOS.CocoaTouch.iPad":
+            self = iOS
         default:
             fatalError("Unsupported")
         }
@@ -740,53 +742,160 @@ enum OS: String, Printable {
 
 }
 
-class StoryboardFile {
+class XMLObject {
+
+    var xml: XMLIndexer
+
+    lazy var name: String? = self.xml.element?.name
     
-    let filePath: String
-    init(filePath: String){
-        self.filePath = filePath
+    init(xml: XMLIndexer) {
+        self.xml = xml
+    }
+
+    func searchAll(attributeKey: String, attributeValue: String? = nil) -> [XMLIndexer]? {
+        return searchAll(self.xml, attributeKey: attributeKey, attributeValue: attributeValue)
+    }
+
+    func searchAll(root: XMLIndexer, attributeKey: String, attributeValue: String? = nil) -> [XMLIndexer]? {
+        var result = Array<XMLIndexer>()
+        for child in root.children {
+            
+            for childAtLevel in child.all {
+                if let attributeValue = attributeValue {
+                    if let element = childAtLevel.element where element.attributes[attributeKey] == attributeValue {
+                        result += [childAtLevel]
+                    }
+                } else if let element = childAtLevel.element where element.attributes[attributeKey] != nil {
+                    result += [childAtLevel]
+                }
+                
+                if let found = searchAll(childAtLevel, attributeKey: attributeKey, attributeValue: attributeValue) {
+                    result += found
+                }
+            }
+        }
+        return result.count > 0 ? result : nil
     }
     
-    lazy var storyboardName: String = self.filePath.lastPathComponent.stringByDeletingPathExtension
+    func searchNamed(name: String) -> [XMLIndexer]? {
+        return self.searchNamed(self.xml, name: name)
+    }
+
+    func searchNamed(root: XMLIndexer, name: String) -> [XMLIndexer]? {
+        var result = Array<XMLIndexer>()
+        for child in root.children {
+            
+            for childAtLevel in child.all {
+                if let elementName = childAtLevel.element?.name where elementName == name {
+                    result += [child]
+                }
+                if let found = searchNamed(childAtLevel, name: name) {
+                    result += found
+                }
+            }
+        }
+        return result.count > 0 ? result : nil
+    }
+
+    func searchById(id: String) -> XMLIndexer? {
+        return searchAll("id", attributeValue: id)?.first
+    }
+}
+
+class Scene: XMLObject {
     
-    lazy var data: NSData? = NSData(contentsOfFile: self.filePath)
-    lazy var xml: XMLIndexer? = {
-        if let d = self.data {
-            return SWXMLHash.parse(d)
+    lazy var viewController: ViewController? = {
+        if let vcs = self.searchAll("sceneMemberID", attributeValue: "viewController"), vc = vcs.first {
+            return ViewController(xml: vc)
         }
         return nil
-        }()
+    }()
+    
+    lazy var segues: [Segue]? = {
+        return self.searchNamed("segue")?.map { Segue(xml: $0) }
+    }()
+}
+
+class ViewController: XMLObject {
+ 
+    lazy var customClass: String? = self.xml.element?.attributes["customClass"]
+    lazy var customModuleProvider: String? = self.xml.element?.attributes["customModuleProvider"]
+    lazy var storyboardIdentifier: String? = self.xml.element?.attributes["storyboardIdentifier"]
+    lazy var customModule: String? = self.xml.element?.attributes["customModule"]
+    
+    
+    private func storyboardIdentifierExtension(os:OS) -> String? {
+        var result:String? = nil
+        if let customClass = self.customClass {
+            var output = String()
+            //check if the customModule belongs to the main application target, if so the import isn't necessary
+            if let customModule = self.customModule where self.customModuleProvider == nil {
+                output += "import \(customModule)\n"
+            }
+            output += "extension \(customClass) {\n"
+            if let viewControllerId = self.storyboardIdentifier {
+                output += "    override class var storyboardIdentifier:String? { return \"\(viewControllerId)\" }\n"
+                output += "    class func instantiateFromStoryboard(storyboard: Storyboards) -> \(customClass)! {\n"
+                output += "        return storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(self.storyboardIdentifier!) as? \(customClass)\n"
+                output += "    }\n"
+            }
+            output += "}"
+            result = output
+        }
+        return result
+    }
+    
+}
+
+class Segue: XMLObject {
+ 
+    lazy var identifier: String? = self.xml.element?.attributes["identifier"]
+    lazy var kind: String? = self.xml.element?.attributes["kind"]
+    lazy var destination: String? = self.xml.element?.attributes["destination"]
+}
+
+
+class Storyboard: XMLObject {
     
     lazy var os:OS = self.initOS() ?? OS.iOS
     private func initOS() -> OS? {
-        if let targetRuntime = self.xml?["document"].element?.attributes["targetRuntime"] {
+        if let targetRuntime = self.xml["document"].element?.attributes["targetRuntime"] {
             return OS(targetRuntime: targetRuntime)
         }
         return nil
     }
     
-    lazy var initialViewControllerClass: String? = self.initOInitialViewControllerClass()
-    private func initOInitialViewControllerClass() -> String? {
-        if let xml = self.xml,
-            initialViewControllerId = xml["document"].element?.attributes["initialViewController"],
-            vc = searchAll(xml["document"], "id",initialViewControllerId)?.first {
-                if let customClassName = vc.element?.attributes["customClass"] {
-                    return customClassName
-                }
-
-                if let controllerType = os.controllerTypeForElementName(vc.element!.name) {
-                    return controllerType
-                }
+    lazy var initialViewControllerClass: String? = self.initInitialViewControllerClass()
+    private func initInitialViewControllerClass() -> String? {
+        if let initialViewControllerId = xml["document"].element?.attributes["initialViewController"],
+            xmlVC = searchById(initialViewControllerId)
+        {
+            let vc = ViewController(xml: xmlVC)
+            if let customClassName = vc.customClass {
+                return customClassName
+            }
+            
+            if let name = vc.name, controllerType = os.controllerTypeForElementName(name) {
+                return controllerType
+            }
         }
         return nil
     }
+    
+    lazy var version: String? = self.xml["document"].element?.attributes["version"]
+    
+    lazy var scenes: [Scene] = {
+        if let scenes = self.searchAll(self.xml, attributeKey: "sceneID"){
+            return scenes.map { Scene(xml: $0) }
+        }
+        return []
+    }()
 
     func processStoryboard() {
-        if let xml = self.xml, scenes = searchAll(xml, "sceneID") {
-            for scene in scenes {
-                if let viewController = searchAll(scene, "sceneMemberID", "viewController")?[0] {
-                    if let customClass = viewController.element?.attributes["customClass"] {
-                        if let segues = searchNamed(scene, "segue")?.filter({ return $0.element?.attributes["identifier"] != nil })
+        for scene in self.scenes {
+            if let viewController = scene.viewController {
+                if let customClass = viewController.customClass {
+                    if let segues = scene.segues?.filter({ return $0.identifier != nil })
                         where segues.count > 0 {
                             println("extension \(os.storyboardSegueType) {")
                             println("    func selection() -> \(customClass).Segue? {")
@@ -796,24 +905,23 @@ class StoryboardFile {
                             println("        return nil")
                             println("    }")
                             println("}")
-                        }
-                        
-
+                    }
+                    
+                    
+                    println()
+                    println("//MARK: - \(customClass)")
+                    if let identifierExtenstionString = viewController.storyboardIdentifierExtension(os) {
                         println()
-                        println("//MARK: - \(customClass)")
-                        if let identifierExtenstionString = storyboardIdentifierExtension(viewController) {
-                            println()
-                            println(identifierExtenstionString)
-                            println()
-                        }
-
-                        if let segues = searchNamed(scene, "segue")?.filter({ return $0.element?.attributes["identifier"] != nil })
+                        println(identifierExtenstionString)
+                        println()
+                    }
+                    if let segues = scene.segues?.filter({ return $0.identifier != nil })
                         where segues.count > 0 {
                             println("extension \(customClass) { ")
                             println()
                             println("    enum Segue: String, Printable, SegueProtocol {")
                             for segue in segues {
-                                if let identifier = segue.element?.attributes["identifier"]
+                                if let identifier = segue.identifier
                                 {
                                     println("        case \(identifier) = \"\(identifier)\"")
                                 }
@@ -822,8 +930,7 @@ class StoryboardFile {
                             println("        var kind: SegueKind? {")
                             println("            switch (self) {")
                             for segue in segues {
-                                if let identifier = segue.element?.attributes["identifier"],
-                                   let kind = segue.element?.attributes["kind"] {
+                                if let identifier = segue.identifier, kind = segue.kind {
                                     println("            case \(identifier):")
                                     println("                return SegueKind(rawValue: \"\(kind)\")")
                                 }
@@ -837,11 +944,9 @@ class StoryboardFile {
                             println("        var destination: \(self.os.storyboardControllerReturnType).Type? {")
                             println("            switch (self) {")
                             for segue in segues {
-                                if let identifier = segue.element?.attributes["identifier"],
-                                   let destination = segue.element?.attributes["destination"],
-                                   let destinationCustomClass = searchAll(xml, "id", destination)?.first?.element?.attributes["customClass"] {
-
-                                    // let dstCustomClass = destinationViewController.element!.attributes["customClass"]
+                                if let identifier = segue.identifier, destination = segue.destination,
+                                    destinationCustomClass = searchById(destination)?.element?.attributes["customClass"]
+                                {
                                     println("            case \(identifier):")
                                     println("                return \(destinationCustomClass).self")                                
                                 }
@@ -857,75 +962,41 @@ class StoryboardFile {
                             println("    }")
                             println()
                             println("}\n")
-                        }
                     }
                 }
             }
         }
     }
     
-    private func storyboardIdentifierExtension(viewController: XMLIndexer) -> String? {
-        var result:String? = nil
-        if let customClass = viewController.element?.attributes["customClass"] {
-            var output = String()
-            //check if the customModule belongs to the main application target, if so the import isn't necessary
-            let targetModule = viewController.element?.attributes["customModuleProvider"]
-            if let customModule = viewController.element?.attributes["customModule"] where targetModule == nil {
-                output += "import \(customModule)\n"
-            }
-            output += "extension \(customClass) {\n"
-            if let viewControllerId = viewController.element?.attributes["storyboardIdentifier"] {
-                output += "    override class var storyboardIdentifier:String? { return \"\(viewControllerId)\" }\n"
-                output += "    class func instantiateFromStoryboard(storyboard: Storyboards) -> \(customClass)! {\n"
-                output += "        return storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(self.storyboardIdentifier!) as? \(customClass)\n"
-                output += "    }\n"
-            }
-            output += "}"            
-            result = output
-        }
-        return result
+}
+
+class StoryboardFile {
+
+    let filePath: String
+    init(filePath: String){
+        self.filePath = filePath
     }
+
+    lazy var storyboardName: String = self.filePath.lastPathComponent.stringByDeletingPathExtension
+    
+    lazy var data: NSData? = NSData(contentsOfFile: self.filePath)
+    lazy var xml: XMLIndexer? = {
+        if let d = self.data {
+            return SWXMLHash.parse(d)
+        }
+        return nil
+        }()
+    
+    lazy var storyboard: Storyboard? = {
+        if let xml = self.xml {
+            return Storyboard(xml:xml)
+        }
+        return nil
+        }()
 }
 
 
 //MARK: Functions
-
-private func searchAll(root: XMLIndexer, attributeKey: String, _ attributeValue: String? = nil) -> [XMLIndexer]? {
-    var result = Array<XMLIndexer>()
-    for child in root.children {
-        
-        for childAtLevel in child.all {
-            if let attributeValue = attributeValue {
-                if let element = childAtLevel.element where element.attributes[attributeKey] == attributeValue {
-                    result += [childAtLevel]
-                }
-            } else if let element = childAtLevel.element where element.attributes[attributeKey] != nil {
-                result += [childAtLevel]
-            }
-            
-            if let found = searchAll(childAtLevel, attributeKey, attributeValue) {
-                result += found
-            }
-        }
-    }
-    return result.count > 0 ? result : nil
-}
-
-private func searchNamed(root: XMLIndexer, name: String) -> [XMLIndexer]? {
-    var result = Array<XMLIndexer>()
-    for child in root.children {
-
-        for childAtLevel in child.all {
-            if let elementName = childAtLevel.element?.name where elementName == name {
-                result += [child]
-            }
-            if let found = searchNamed(childAtLevel, name) {
-                result += found
-            }
-        }
-    }
-    return result.count > 0 ? result : nil
-}
 
 func findStoryboards(rootPath: String, suffix: String) -> [String]? {
     var result = Array<String>()
@@ -962,9 +1033,9 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     println()
     println("    func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(os.storyboardControllerReturnType)? {")
     println("        switch (self) {")
-    for storyboard in storyboards {
-        if let initialViewControllerClass = storyboard.initialViewControllerClass {
-            let storyboardName = storyboard.storyboardName
+    for file in storyboards {
+        if let initialViewControllerClass = file.storyboard?.initialViewControllerClass {
+            let storyboardName = file.storyboardName
             println("        case \(storyboardName):")
             println("            return self.instance.instantiateInitial\(os.storyboardControllerSignatureType)() \(os.storyboardControllerInitialReturnTypeCast(initialViewControllerClass))")
 
@@ -1019,8 +1090,8 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
 	println("}")
 	println()
     
-    for storyboard in storyboards {
-        storyboard.processStoryboard()
+    for file in storyboards {
+        file.storyboard?.processStoryboard()
     }
 
 }
@@ -1043,7 +1114,7 @@ if argument.hasSuffix(storyboardSuffix) {
 let storyboardFiles: [StoryboardFile] = storyboards.map { StoryboardFile(filePath: $0) }
 
 for os in OS.allValues {
-    var storyboardsForOS = storyboardFiles.filter { $0.os == os }
+    var storyboardsForOS = storyboardFiles.filter { $0.storyboard?.os == os }
     if !storyboardsForOS.isEmpty {
         
         if storyboardsForOS.count != storyboardFiles.count {
