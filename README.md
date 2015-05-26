@@ -76,6 +76,44 @@ extension MyCustomViewController {
 }
 ```
 
+###Reusable Views To Improve Performance
+
+Collections and tables views use `reuseidentifier` on cell to recycle a view.
+
+If you define it, their custom view controllers will be extended with an `Reusable` enumeration, which contains list of available reusable identifiers
+
+example to dequeue a view with `Reusable` enumeration
+```swift
+class MyCustomTableViewController: UITableViewController, UITableViewDataSource {
+
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        return self.dequeueReusableCell(Reusable.myCellId, forIndexPath: indexPath) as! UITableViewCell
+    }
+```
+
+Before dequeuing your view, you must register a class or a xib for each identifier.
+If your cell view has custom class definied in storyboard, in your controller you can call directly
+```swift
+override func viewDidLoad()  {
+     self.registerReusableCell(Reusable.myCellId)
+```
+You can pass the view instead - the view must define the `reuseidentifier`
+```swift
+     self.registerReusableCell(theView) // view from IBOutlet or new instance
+```
+
+If your custom reusable view, you can also execute code according to reusable values
+```swift
+class MyCustomTableViewCell: UITableViewCell {
+    override func prepareForReuse() {
+        if self == MyCustomTableViewController.Reusable.myCellId {
+            ...
+        }
+        else if self == MyCustomTableViewController.Reusable.mySecondCellId {
+            ...
+        }
+```
+
 ##Installation
 
 There is no need to do any installation, however if you want easy Xcode integration you may want to install the script to be easily accessible for any application from `/usr/local/bin`

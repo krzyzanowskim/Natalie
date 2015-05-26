@@ -673,6 +673,24 @@ enum OS: String, Printable {
         }
     }
     
+    var viewType: String {
+        switch self {
+        case iOS:
+            return "UIView"
+        case OSX:
+            return "NSView"
+        }
+    }
+    
+    var resuableViews: [String]? {
+        switch self {
+        case iOS:
+            return ["UICollectionReusableView","UITableViewCell"]
+        case OSX:
+            return nil
+        }
+    }
+    
     var storyboardControllerReturnType: String {
         switch self {
         case iOS:
@@ -823,6 +841,12 @@ class ViewController: XMLObject {
     lazy var storyboardIdentifier: String? = self.xml.element?.attributes["storyboardIdentifier"]
     lazy var customModule: String? = self.xml.element?.attributes["customModule"]
     
+    lazy var reusables: [Reusable]? = {
+        if let reusables = self.searchAll(self.xml, attributeKey: "reuseIdentifier"){
+            return reusables.map { Reusable(xml: $0) }
+        }
+        return nil
+        }()
     
     private func storyboardIdentifierExtension(os:OS) -> String? {
         var result:String? = nil
@@ -854,6 +878,12 @@ class Segue: XMLObject {
     lazy var destination: String? = self.xml.element?.attributes["destination"]
 }
 
+class Reusable: XMLObject {
+    
+    lazy var reuseIdentifier: String? = self.xml.element?.attributes["reuseIdentifier"]
+    lazy var customClass: String? = self.xml.element?.attributes["customClass"]
+    lazy var kind: String? = self.xml.element?.name
+}
 
 class Storyboard: XMLObject {
     
@@ -906,7 +936,6 @@ class Storyboard: XMLObject {
                             println("    }")
                             println("}")
                     }
-                    
                     
                     println()
                     println("//MARK: - \(customClass)")
@@ -963,11 +992,58 @@ class Storyboard: XMLObject {
                             println()
                             println("}\n")
                     }
+
+                    if let reusables = viewController.reusables?.filter({ return $0.reuseIdentifier != nil })
+                        where reusables.count > 0 {
+                            
+                            println("extension \(customClass) { ")
+                            println()
+                            println("    enum Reusable: String, Printable, ReusableProtocol {")
+                            for reusable in reusables {
+                                if let identifier = reusable.reuseIdentifier
+                                {
+                                    println("        case \(identifier) = \"\(identifier)\"")
+                                }
+                            }
+                            println()
+                            println("        var kind: ReusableKind? {")
+                            println("            switch (self) {")
+                            for reusable in reusables {
+                                if let identifier = reusable.reuseIdentifier, kind = reusable.kind {
+                                    println("            case \(identifier):")
+                                    println("                return ReusableKind(rawValue: \"\(kind)\")")
+                                }
+                            }
+                            println("            default:")
+                            println("                preconditionFailure(\"Invalid value\")")
+                            println("                break")
+                            println("            }")
+                            println("        }")
+                            println()
+                            println("        var viewType: \(self.os.viewType).Type? {")
+                            println("            switch (self) {")
+                            for reusable in reusables {
+                                if let identifier = reusable.reuseIdentifier, customClass = reusable.customClass
+                                {
+                                    println("            case \(identifier):")
+                                    println("                return \(customClass).self")
+                                }
+                            }
+                            println("            default:")
+                            println("                return nil")
+                            println("            }")
+                            println("        }")
+                            println()
+                            println("        var identifier: String? { return self.description } ")
+                            println("        var description: String { return self.rawValue }")
+                            println("    }")
+                            println()
+                            println("}\n")
+                    }
                 }
             }
         }
     }
-    
 }
 
 class StoryboardFile {
@@ -1052,6 +1128,15 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     println("}")
     println()
     
+    println("//MARK: - ReusableKind")
+    println("enum ReusableKind: String, Printable {")
+    println("    case TableViewCell = \"tableViewCell\"")
+    println("    case CollectionViewCell = \"collectionViewCell\"")
+    println()
+    println("    var description: String { return self.rawValue }")
+    println("}")
+    println()
+    
     println("//MARK: - SegueKind")
     println("enum SegueKind: String, Printable {    ")
     println("    case Relationship = \"relationship\" ")
@@ -1065,8 +1150,11 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     println()
     
     println("//MARK: - SegueProtocol")
-    println("public protocol SegueProtocol: Equatable {")
+    println("public protocol IdentifiableProtocol: Equatable {")
     println("    var identifier: String? { get }")
+    println("}")
+    println()
+    println("public protocol SegueProtocol: IdentifiableProtocol {")
     println("}")
     println()
     
@@ -1074,6 +1162,32 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     println("   return lhs.identifier == rhs.identifier")
     println("}")
     println()
+    
+    println("//MARK: - ReusableProtocol")
+    println("public protocol ReusableProtocol: IdentifiableProtocol {")
+    println("    var viewType: \(os.viewType).Type? {get}")
+    println("}")
+    println()
+    
+    println("public func ==<T: ReusableProtocol, U: ReusableProtocol>(lhs: T, rhs: U) -> Bool {")
+    println("   return lhs.identifier == rhs.identifier")
+    println("}")
+    println()
+    
+    println("//MARK: - Protocol Implementation")
+    println("extension \(os.storyboardSegueType): SegueProtocol {")
+    println("}")
+    println()
+    
+    if let reusableViews = os.resuableViews {
+        for reusableView in reusableViews {
+            println("extension \(reusableView): ReusableProtocol {")
+            println("    public var viewType: UIView.Type? { return self.dynamicType}")
+            println("    public var identifier: String? { return self.reuseIdentifier}")
+            println("}")
+            println()
+        }
+    }
     
     for controllerType in os.storyboardControllerTypes {
         println("//MARK: - \(controllerType) extension")
@@ -1085,11 +1199,62 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
         println("}")
         println()
     }
-	
-	println("extension \(os.storyboardSegueType): SegueProtocol {")
-	println("}")
-	println()
     
+    if os == OS.iOS {
+        println("//MARK: - UICollectionViewController")
+        println()
+        println("extension UICollectionViewController {")
+        println()
+        println("    func dequeueReusableCell<T: ReusableProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> AnyObject {")
+        println("        return self.collectionView!.dequeueReusableCellWithReuseIdentifier(reusable.identifier!, forIndexPath: forIndexPath)")
+        println("    }")
+        println()
+        println("    func registerReusable<T: ReusableProtocol>(reusable: T) {")
+        println("        if let type = reusable.viewType, identifier = reusable.identifier {")
+        println("            self.collectionView?.registerClass(type, forCellWithReuseIdentifier: identifier)")
+        println("        }")
+        println("    }")
+        println()
+        println("    func dequeueReusableSupplementaryViewOfKind<T: ReusableProtocol>(elementKind: String, withReusable reusable: T, forIndexPath: NSIndexPath!) -> AnyObject {")
+        println("        return self.collectionView!.dequeueReusableSupplementaryViewOfKind(elementKind, withReuseIdentifier: reusable.identifier!, forIndexPath: forIndexPath)")
+        println("    }")
+        println()
+        println("    func registerReusable<T: ReusableProtocol>(reusable: T, forSupplementaryViewOfKind elementKind: String) {")
+        println("        if let type = reusable.viewType, identifier = reusable.identifier {")
+        println("            self.collectionView?.registerClass(type, forSupplementaryViewOfKind: elementKind, withReuseIdentifier: identifier)")
+        println("        }")
+        println("    }")
+        println("}")
+    
+        println("//MARK: - UITableViewController")
+        println()
+        println("extension UITableViewController {")
+        println()
+        println("    func dequeueReusableCell<T: ReusableProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> AnyObject {")
+        println("        return self.tableView!.dequeueReusableCellWithIdentifier(reusable.identifier!, forIndexPath: forIndexPath)")
+        println("    }")
+        println()
+        println("    func registerReusableCell<T: ReusableProtocol>(reusable: T) {")
+        println("        if let type = reusable.viewType, identifier = reusable.identifier {")
+        println("            self.tableView?.registerClass(type, forCellReuseIdentifier: identifier)")
+        println("        }")
+        println("    }")
+        println()
+        println("    func dequeueReusableHeaderFooter<T: ReusableProtocol>(reusable: T) -> AnyObject? {")
+        println("        if let identifier = reusable.identifier {")
+        println("            return self.tableView?.dequeueReusableHeaderFooterViewWithIdentifier(identifier)")
+        println("        }")
+        println("        return nil")
+        println("    }")
+        println()
+        println("    func registerReusableHeaderFooter<T: ReusableProtocol>(reusable: T) {")
+        println("        if let type = reusable.viewType, identifier = reusable.identifier {")
+        println("             self.tableView?.registerClass(type, forHeaderFooterViewReuseIdentifier: identifier)")
+        println("        }")
+        println("    }")
+        println("}")
+    }
+
     for file in storyboards {
         file.storyboard?.processStoryboard()
     }
