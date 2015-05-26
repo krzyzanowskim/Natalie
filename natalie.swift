@@ -885,7 +885,7 @@ class Storyboard: XMLObject {
         println("        }")
         if let initialViewControllerClass = self.initialViewControllerClass {
             println()
-            println("        static func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(os.storyboardControllerReturnType)? {")
+            println("        static func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(initialViewControllerClass)! {")
             println("            return self.storyboard.instantiateInitial\(os.storyboardControllerSignatureType)() \(os.storyboardControllerInitialReturnTypeCast(initialViewControllerClass))")
             println("        }")
         }
@@ -897,7 +897,7 @@ class Storyboard: XMLObject {
             if let viewController = scene.viewController, customClass = viewController.customClass, storyboardIdentifier = viewController.storyboardIdentifier {
                 println()
                 println("        static func \(storyboardIdentifier)() -> \(customClass)! {")
-                println("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as? \(customClass)\n")
+                println("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)\n")
                 println("        }")
             }
         }
