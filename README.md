@@ -12,15 +12,20 @@ Since Natalie is a Swift script, that means it is written in Swift and requires 
 Generated enum Storyboards with convenient interface (drop-in replacement for UIStoryboard).
 
 ```swift
-enum Storyboards: String {
-    case Main = "Main"
-    case Second = "Second"
+struct Storyboards {
+    struct Main {...}
+    struct Second {...}
     ...
 ```
 
-Instantiate ViewController for storyboard
+Instantiate initial ViewController for storyboard
 ```swift
-let vc:MyViewController = Storyboards.Main.instantiateInitialViewController()
+let vc = Storyboards.Main.instantiateInitialViewController()
+```
+
+Instantiate ViewController in storyboard using storyboard id
+```swift
+let vc = Storyboards.Main.LoginVC()
 ```
 
 example usage for prepareForSegue()
@@ -46,18 +51,14 @@ self.performSegue(MyCustomViewController.Segue.goToDetails, sender:nil)
 
 Each custom view controller is extended with this code and provide list of available segues and additional informations from Storyboard.
 
-`storyboardIdentifier` is unique identifier of view controller in Storyboard
-
 `Segue` enumeration contains list of available segues
 
 `kind` property represent types Segue
 
-`destination` property return type of destinated view controller.
+`destination` property return type of destination view controller.
 
 ```swift
 extension MyCustomViewController { 
-    var storyboardIdentifier:String { return "oEB-rK-hJd" }
-
     enum Segue: String, Printable {
         case goToDetails = "goToDetails"
         case expandGroup = "composeMessage"
