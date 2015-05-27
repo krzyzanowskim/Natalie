@@ -1065,6 +1065,10 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     println("   return lhs.identifier == rhs.identifier")
     println("}")
     println()
+    println("public func ~=<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {")
+    println("   return lhs.identifier == rhs.identifier")
+    println("}")
+    println()
     
     for controllerType in os.storyboardControllerTypes {
         println("//MARK: - \(controllerType) extension")
