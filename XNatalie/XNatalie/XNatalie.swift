@@ -145,13 +145,22 @@ class XNatalie: NSObject {
         let pipe = NSPipe()
         task.standardOutput = pipe
         
+        let errorpipe = NSPipe()
+        task.standardError = errorpipe
+        
         task.arguments = [path]
         task.currentDirectoryPath = path
         
         task.launch()
         task.waitUntilExit()
+
+        let errorData = errorpipe.fileHandleForReading.readDataToEndOfFile()
+        if errorData.length > 0 {
+            println(NSString(data: errorData, encoding: NSUTF8StringEncoding))
+        }
         
-        return pipe.fileHandleForReading.readDataToEndOfFile()
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        return data
     }
     
     func writeSwiftFile(data: NSData, path: String) -> String? {

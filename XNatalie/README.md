@@ -5,6 +5,8 @@ XNatalie use [natalie.swift](https://github.com/krzyzanowskim/Natalie) to genera
 - Directory passed to natalie.swift is: project(workspace) file directory + project name
 - The generated `Storyboards.swift` is generated to: project(workspace) file directory + project name
 
+![ScreenShot](ScreenShot.png)
+
 ## Setup
 Open project and compile it
 
@@ -13,6 +15,7 @@ XNatalie.xcplugin will be copied to `~/Library/Application Support/Developer/Sha
 Restart Xcode
 
 ## Configuration
+
 ### Enable auto generation when user save storyboard file (File > Save or ⌘S)
 
 Go to menu `Product > Natalie > Enable generate when saving`
@@ -28,6 +31,10 @@ The default value is `/usr/local/bin/natalie.swift`
 
 Xcode works on a UUID whitelist system, meaning each new version of Xcode needs to have its UUID added to plugin Info.plist file. If plugin isn't updated in time, you can do this update yourself (and by all means send a pull request afterwards!).
 
+### Using script
+You can use https://github.com/phimage/XcodePluginsAddUUID
+
+### Manually
 Get the UUID by running the following in the terminal:
 `defaults read /Applications/Xcode.app/Contents/Info DVTPlugInCompatibilityUUID`
 
@@ -35,6 +42,6 @@ Then, open the plugin project and edit the *Supporting Files > Info.plist* file.
 
 Rebuild the plugin, restart Xcode and you should see the menu reappear.
 
-### TODO
+## Roadmap
 - Allow to customize directory passed to script and output file directory
-- Compatibility with xcode package manager Alcatraz?
+- Compatibility with xcode package manager Alcatraz (integrate or install automatically script?)
