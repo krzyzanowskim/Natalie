@@ -848,25 +848,8 @@ class ViewController: XMLObject {
         return nil
         }()
     
-    private func storyboardIdentifierExtension(os:OS) -> String? {
-        var result:String? = nil
-        if let customClass = self.customClass {
-            var output = String()
-            //check if the customModule belongs to the main application target, if so the import isn't necessary
-            if let customModule = self.customModule where self.customModuleProvider == nil {
-                output += "import \(customModule)\n"
-            }
-            output += "extension \(customClass) {\n"
-            if let viewControllerId = self.storyboardIdentifier {
-                output += "    override class var storyboardIdentifier:String? { return \"\(viewControllerId)\" }\n"
-                output += "    class func instantiateFromStoryboard(storyboard: Storyboards) -> \(customClass)! {\n"
-                output += "        return storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(self.storyboardIdentifier!) as? \(customClass)\n"
-                output += "    }\n"
-            }
-            output += "}"
-            result = output
-        }
-        return result
+    private func showCustomImport() -> Bool {
+        return self.customModule != nil && self.customModuleProvider == nil
     }
     
 }
@@ -921,10 +904,48 @@ class Storyboard: XMLObject {
         return []
     }()
 
-    func processStoryboard() {
+    func processStoryboard(storyboardName: String, os: OS) {
+        println()
+        println("    struct \(storyboardName) {")
+        println()
+        println("        static let identifier = \"\(storyboardName)\"")
+        println()
+        println("        static var storyboard:\(os.storyboardType) {")
+        println("            return \(os.storyboardType)(name: self.identifier, bundle: nil)\(os.storyboardTypeUnwrap)")
+        println("        }")
+        if let initialViewControllerClass = self.initialViewControllerClass {
+            println()
+            println("        static func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(initialViewControllerClass)! {")
+            println("            return self.storyboard.instantiateInitial\(os.storyboardControllerSignatureType)() \(os.storyboardControllerInitialReturnTypeCast(initialViewControllerClass))")
+            println("        }")
+        }
+        println()
+        println("        static func instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier: String) -> \(os.storyboardControllerReturnType) {")
+        println("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier)\(os.storyboardControllerReturnTypeCast)")
+        println("        }")
+        for scene in self.scenes {
+            if let viewController = scene.viewController, customClass = viewController.customClass, storyboardIdentifier = viewController.storyboardIdentifier {
+                println()
+                println("        static func \(storyboardIdentifier)() -> \(customClass)! {")
+                println("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)\n")
+                println("        }")
+            }
+        }
+        println("    }")
+    }
+    
+    func processViewControllers() {
         for scene in self.scenes {
             if let viewController = scene.viewController {
                 if let customClass = viewController.customClass {
+                    println()
+                    println("//MARK: - \(customClass)")
+                    
+                    if viewController.showCustomImport() {
+                        println("import \(viewController.customModule)")
+                        println()
+                    }
+
                     if let segues = scene.segues?.filter({ return $0.identifier != nil })
                         where segues.count > 0 {
                             println("extension \(os.storyboardSegueType) {")
@@ -935,15 +956,9 @@ class Storyboard: XMLObject {
                             println("        return nil")
                             println("    }")
                             println("}")
+                            println()
                     }
                     
-                    println()
-                    println("//MARK: - \(customClass)")
-                    if let identifierExtenstionString = viewController.storyboardIdentifierExtension(os) {
-                        println()
-                        println(identifierExtenstionString)
-                        println()
-                    }
                     if let segues = scene.segues?.filter({ return $0.identifier != nil })
                         where segues.count > 0 {
                             println("extension \(customClass) { ")
@@ -990,7 +1005,7 @@ class Storyboard: XMLObject {
                             println("        var description: String { return self.rawValue }")
                             println("    }")
                             println()
-                            println("}\n")
+                            println("}")
                     }
 
                     if let reusables = viewController.reusables?.filter({ return $0.reuseIdentifier != nil })
@@ -1089,6 +1104,7 @@ func findStoryboards(rootPath: String, suffix: String) -> [String]? {
 }
 
 func processStoryboards(storyboards: [StoryboardFile], os: OS) {
+    
     println("//")
     println("// Autogenerated by Natalie - Storyboard Generator Script.")
     println("// http://blog.krzyzanowskim.com")
@@ -1097,34 +1113,10 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     println("import \(os.framework)")
     println()
     println("//MARK: - Storyboards")
-    println("enum Storyboards: String {")
-    for storyboard in storyboards {
-        let storyboardName = storyboard.storyboardName
-        println("    case \(storyboardName) = \"\(storyboardName)\"")
-    }
-    println()
-    println("    private var instance:\(os.storyboardType) {")
-    println("        return \(os.storyboardType)(name: self.rawValue, bundle: nil)\(os.storyboardTypeUnwrap)")
-    println("    }")
-    println()
-    println("    func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(os.storyboardControllerReturnType)? {")
-    println("        switch (self) {")
+    println("struct Storyboards {")
     for file in storyboards {
-        if let initialViewControllerClass = file.storyboard?.initialViewControllerClass {
-            let storyboardName = file.storyboardName
-            println("        case \(storyboardName):")
-            println("            return self.instance.instantiateInitial\(os.storyboardControllerSignatureType)() \(os.storyboardControllerInitialReturnTypeCast(initialViewControllerClass))")
-
-        }
+        file.storyboard?.processStoryboard(file.storyboardName, os: os)
     }
-    println("        default:")
-    println("            return self.instance.instantiateInitial\(os.storyboardControllerSignatureType)() \(os.storyboardControllerInitialReturnTypeCast)")
-    println("        }")
-    println("    }")
-    println()
-    println("    func instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier: String) -> \(os.storyboardControllerReturnType) {")
-    println("        return self.instance.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier)\(os.storyboardControllerReturnTypeCast)")
-    println("    }")
     println("}")
     println()
     
@@ -1192,7 +1184,6 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     for controllerType in os.storyboardControllerTypes {
         println("//MARK: - \(controllerType) extension")
         println("extension \(controllerType) {")
-        println("    class var storyboardIdentifier:String? { return nil }")
         println("    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {")
         println("       performSegueWithIdentifier(segue.identifier\(os.storyboardSegueUnwrap), sender: sender)")
         println("    }")
@@ -1256,7 +1247,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     }
 
     for file in storyboards {
-        file.storyboard?.processStoryboard()
+        file.storyboard?.processViewControllers()
     }
 
 }

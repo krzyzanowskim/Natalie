@@ -6,24 +6,38 @@
 import UIKit
 
 //MARK: - Storyboards
-enum Storyboards: String {
-    case Main = "Main"
+struct Storyboards {
 
-    private var instance:UIStoryboard {
-        return UIStoryboard(name: self.rawValue, bundle: nil)
-    }
+    struct Main {
 
-    func instantiateInitialViewController() -> UIViewController? {
-        switch (self) {
-        case Main:
-            return self.instance.instantiateInitialViewController() as! UINavigationController
-        default:
-            return self.instance.instantiateInitialViewController() as? UIViewController
+        static let identifier = "Main"
+
+        static var storyboard:UIStoryboard {
+            return UIStoryboard(name: self.identifier, bundle: nil)
         }
-    }
 
-    func instantiateViewControllerWithIdentifier(identifier: String) -> UIViewController {
-        return self.instance.instantiateViewControllerWithIdentifier(identifier) as! UIViewController
+        static func instantiateInitialViewController() -> UINavigationController! {
+            return self.storyboard.instantiateInitialViewController() as! UINavigationController
+        }
+
+        static func instantiateViewControllerWithIdentifier(identifier: String) -> UIViewController {
+            return self.storyboard.instantiateViewControllerWithIdentifier(identifier) as! UIViewController
+        }
+
+        static func MainViewController() -> MainViewController! {
+            return self.storyboard.instantiateViewControllerWithIdentifier("MainViewController") as! MainViewController
+
+        }
+
+        static func ScreenTwoViewController() -> ScreenTwoViewController! {
+            return self.storyboard.instantiateViewControllerWithIdentifier("ScreenTwoViewController") as! ScreenTwoViewController
+
+        }
+
+        static func ScreenOneViewController() -> ScreenOneViewController! {
+            return self.storyboard.instantiateViewControllerWithIdentifier("ScreenOneViewController") as! ScreenOneViewController
+
+        }
     }
 }
 
@@ -39,33 +53,33 @@ enum SegueKind: String, Printable {
 }
 
 //MARK: - SegueProtocol
-protocol SegueProtocol {
-    var identifier: String { get }
+public protocol SegueProtocol: Equatable {
+    var identifier: String? { get }
+}
+
+public func ==<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {
+   return lhs.identifier == rhs.identifier
 }
 
 //MARK: - UIViewController extension
 extension UIViewController {
     class var storyboardIdentifier:String? { return nil }
-    func performSegue(segue: SegueProtocol, sender: AnyObject?) {
+    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {
        performSegueWithIdentifier(segue.identifier, sender: sender)
     }
 }
 
+extension UIStoryboardSegue: SegueProtocol {
+}
+
+
+//MARK: - MainViewController
 extension UIStoryboardSegue {
     func selection() -> MainViewController.Segue? {
         if let identifier = self.identifier {
             return MainViewController.Segue(rawValue: identifier)
         }
         return nil
-    }
-}
-
-//MARK: - MainViewController
-
-extension MainViewController {
-    override class var storyboardIdentifier:String? { return "MainViewController" }
-    class func instantiateFromStoryboard(storyboard: Storyboards) -> MainViewController! {
-        return storyboard.instantiateViewControllerWithIdentifier(self.storyboardIdentifier!) as? MainViewController
     }
 }
 
@@ -109,9 +123,12 @@ extension MainViewController {
             }
         }
 
-        var identifier: String { return self.description } 
+        var identifier: String? { return self.description } 
         var description: String { return self.rawValue }
     }
 
 }
 
+//MARK: - ScreenTwoViewController
+
+//MARK: - ScreenOneViewController
