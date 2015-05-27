@@ -896,7 +896,7 @@ class Storyboard: XMLObject {
         for scene in self.scenes {
             if let viewController = scene.viewController, customClass = viewController.customClass, storyboardIdentifier = viewController.storyboardIdentifier {
                 println()
-                println("        static func \(storyboardIdentifier)() -> \(customClass)! {")
+                println("        static func instantiate\(storyboardIdentifier)() -> \(customClass)! {")
                 println("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)\n")
                 println("        }")
             }
