@@ -25,7 +25,7 @@ let vc = Storyboards.Main.instantiateInitialViewController()
 
 Instantiate ViewController in storyboard using storyboard id
 ```swift
-let vc = Storyboards.Main.LoginVC()
+let vc = Storyboards.Main.instantiateMainViewController()
 ```
 
 example usage for prepareForSegue()

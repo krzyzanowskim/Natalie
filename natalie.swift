@@ -926,7 +926,7 @@ class Storyboard: XMLObject {
         for scene in self.scenes {
             if let viewController = scene.viewController, customClass = viewController.customClass, storyboardIdentifier = viewController.storyboardIdentifier {
                 println()
-                println("        static func \(storyboardIdentifier)() -> \(customClass)! {")
+                println("        static func instantiate\(storyboardIdentifier)() -> \(customClass)! {")
                 println("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)\n")
                 println("        }")
             }
@@ -1151,6 +1151,10 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     println()
     
     println("public func ==<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {")
+    println("   return lhs.identifier == rhs.identifier")
+    println("}")
+    println()
+    println("public func ~=<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {")
     println("   return lhs.identifier == rhs.identifier")
     println("}")
     println()

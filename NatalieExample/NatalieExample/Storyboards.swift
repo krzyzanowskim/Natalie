@@ -24,17 +24,17 @@ struct Storyboards {
             return self.storyboard.instantiateViewControllerWithIdentifier(identifier) as! UIViewController
         }
 
-        static func MainViewController() -> MainViewController! {
+        static func instantiateMainViewController() -> MainViewController! {
             return self.storyboard.instantiateViewControllerWithIdentifier("MainViewController") as! MainViewController
 
         }
 
-        static func ScreenTwoViewController() -> ScreenTwoViewController! {
+        static func instantiateScreenTwoViewController() -> ScreenTwoViewController! {
             return self.storyboard.instantiateViewControllerWithIdentifier("ScreenTwoViewController") as! ScreenTwoViewController
 
         }
 
-        static func ScreenOneViewController() -> ScreenOneViewController! {
+        static func instantiateScreenOneViewController() -> ScreenOneViewController! {
             return self.storyboard.instantiateViewControllerWithIdentifier("ScreenOneViewController") as! ScreenOneViewController
 
         }
@@ -63,7 +63,6 @@ public func ==<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {
 
 //MARK: - UIViewController extension
 extension UIViewController {
-    class var storyboardIdentifier:String? { return nil }
     func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {
        performSegueWithIdentifier(segue.identifier, sender: sender)
     }
