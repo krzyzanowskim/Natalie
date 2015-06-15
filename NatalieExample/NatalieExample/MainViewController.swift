@@ -25,26 +25,25 @@ class MainViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let selection = segue.selection() {
             switch (selection) {
-            case MainViewController.Segue.ScreenOneSegue:
+            case .ScreenOneSegue:
                 if let oneViewController = segue.destinationViewController as? ScreenOneViewController {
                     oneViewController.view.backgroundColor = UIColor.yellowColor()
                 }
                 break
-            case MainViewController.Segue.ScreenOneSegueButton:
+            case .ScreenOneSegueButton:
                 if let oneViewController = segue.destinationViewController as? ScreenOneViewController {
                     oneViewController.view.backgroundColor = UIColor.brownColor()
                 }
                 break
-            case MainViewController.Segue.ScreenTwoSegue:
+            case .ScreenTwoSegue:
                 if let twoViewController = segue.destinationViewController as? ScreenTwoViewController {
                     twoViewController.view.backgroundColor = UIColor.magentaColor()
                 }
                 break
-            case MainViewController.Segue.SceneOneGestureRecognizerSegue:
+            case .SceneOneGestureRecognizerSegue:
                 if let oneViewController = segue.destinationViewController as? ScreenOneViewController {
                     oneViewController.view.backgroundColor = UIColor.greenColor()
                 }
-                
             }
         }
     }
