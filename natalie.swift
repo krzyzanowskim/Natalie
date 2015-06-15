@@ -832,6 +832,9 @@ class Scene: XMLObject {
     lazy var segues: [Segue]? = {
         return self.searchNamed("segue")?.map { Segue(xml: $0) }
     }()
+    
+    lazy var customModule: String? = self.viewController?.customModule
+    lazy var customModuleProvider: String? = self.viewController?.customModuleProvider
 }
 
 class ViewController: XMLObject {
@@ -847,11 +850,6 @@ class ViewController: XMLObject {
         }
         return nil
         }()
-    
-    private func showCustomImport() -> Bool {
-        return self.customModule != nil && self.customModuleProvider == nil
-    }
-    
 }
 
 class Segue: XMLObject {
@@ -903,6 +901,8 @@ class Storyboard: XMLObject {
         }
         return []
     }()
+    
+    lazy var customModules: [String] = self.scenes.filter{ $0.customModule != nil && $0.customModuleProvider == nil  }.map{ $0.customModule! }
 
     func processStoryboard(storyboardName: String, os: OS) {
         println()
@@ -940,11 +940,6 @@ class Storyboard: XMLObject {
                 if let customClass = viewController.customClass {
                     println()
                     println("//MARK: - \(customClass)")
-                    
-                    if viewController.showCustomImport() {
-                        println("import \(viewController.customModule)")
-                        println()
-                    }
 
                     if let segues = scene.segues?.filter({ return $0.identifier != nil })
                         where segues.count > 0 {
@@ -1111,7 +1106,12 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     println("//")
     println()
     println("import \(os.framework)")
+    let modules = storyboards.filter{ $0.storyboard != nil }.flatMap{ $0.storyboard!.customModules }
+    for module in Set<String>(modules) {
+        println("import \(module)")
+    }
     println()
+    
     println("//MARK: - Storyboards")
     println("struct Storyboards {")
     for file in storyboards {
