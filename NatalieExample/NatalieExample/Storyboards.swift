@@ -171,7 +171,7 @@ extension UIStoryboardSegue {
 extension MainViewController { 
 
     enum Segue: String, Printable, SegueProtocol {
-        case ScreenOneSegueButton = "ScreenOneSegueButton"
+        case ScreenOneSegueButton = "Screen One Segue Button"
         case ScreenOneSegue = "ScreenOneSegue"
         case ScreenTwoSegue = "ScreenTwoSegue"
         case SceneOneGestureRecognizerSegue = "SceneOneGestureRecognizerSegue"
