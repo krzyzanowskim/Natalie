@@ -41,6 +41,14 @@ struct Storyboards {
     }
 }
 
+//MARK: - ReusableKind
+enum ReusableKind: String, Printable {
+    case TableViewCell = "tableViewCell"
+    case CollectionViewCell = "collectionViewCell"
+
+    var description: String { return self.rawValue }
+}
+
 //MARK: - SegueKind
 enum SegueKind: String, Printable {    
     case Relationship = "relationship" 
@@ -53,12 +61,42 @@ enum SegueKind: String, Printable {
 }
 
 //MARK: - SegueProtocol
-public protocol SegueProtocol: Equatable {
+public protocol IdentifiableProtocol: Equatable {
     var identifier: String? { get }
+}
+
+public protocol SegueProtocol: IdentifiableProtocol {
 }
 
 public func ==<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {
    return lhs.identifier == rhs.identifier
+}
+
+public func ~=<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {
+   return lhs.identifier == rhs.identifier
+}
+
+//MARK: - ReusableProtocol
+public protocol ReusableProtocol: IdentifiableProtocol {
+    var viewType: UIView.Type? {get}
+}
+
+public func ==<T: ReusableProtocol, U: ReusableProtocol>(lhs: T, rhs: U) -> Bool {
+   return lhs.identifier == rhs.identifier
+}
+
+//MARK: - Protocol Implementation
+extension UIStoryboardSegue: SegueProtocol {
+}
+
+extension UICollectionReusableView: ReusableProtocol {
+    public var viewType: UIView.Type? { return self.dynamicType}
+    public var identifier: String? { return self.reuseIdentifier}
+}
+
+extension UITableViewCell: ReusableProtocol {
+    public var viewType: UIView.Type? { return self.dynamicType}
+    public var identifier: String? { return self.reuseIdentifier}
 }
 
 //MARK: - UIViewController extension
@@ -68,9 +106,57 @@ extension UIViewController {
     }
 }
 
-extension UIStoryboardSegue: SegueProtocol {
-}
+//MARK: - UICollectionViewController
 
+extension UICollectionViewController {
+
+    func dequeueReusableCell<T: ReusableProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> AnyObject {
+        return self.collectionView!.dequeueReusableCellWithReuseIdentifier(reusable.identifier!, forIndexPath: forIndexPath)
+    }
+
+    func registerReusable<T: ReusableProtocol>(reusable: T) {
+        if let type = reusable.viewType, identifier = reusable.identifier {
+            self.collectionView?.registerClass(type, forCellWithReuseIdentifier: identifier)
+        }
+    }
+
+    func dequeueReusableSupplementaryViewOfKind<T: ReusableProtocol>(elementKind: String, withReusable reusable: T, forIndexPath: NSIndexPath!) -> AnyObject {
+        return self.collectionView!.dequeueReusableSupplementaryViewOfKind(elementKind, withReuseIdentifier: reusable.identifier!, forIndexPath: forIndexPath)
+    }
+
+    func registerReusable<T: ReusableProtocol>(reusable: T, forSupplementaryViewOfKind elementKind: String) {
+        if let type = reusable.viewType, identifier = reusable.identifier {
+            self.collectionView?.registerClass(type, forSupplementaryViewOfKind: elementKind, withReuseIdentifier: identifier)
+        }
+    }
+}
+//MARK: - UITableViewController
+
+extension UITableViewController {
+
+    func dequeueReusableCell<T: ReusableProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> AnyObject {
+        return self.tableView!.dequeueReusableCellWithIdentifier(reusable.identifier!, forIndexPath: forIndexPath)
+    }
+
+    func registerReusableCell<T: ReusableProtocol>(reusable: T) {
+        if let type = reusable.viewType, identifier = reusable.identifier {
+            self.tableView?.registerClass(type, forCellReuseIdentifier: identifier)
+        }
+    }
+
+    func dequeueReusableHeaderFooter<T: ReusableProtocol>(reusable: T) -> AnyObject? {
+        if let identifier = reusable.identifier {
+            return self.tableView?.dequeueReusableHeaderFooterViewWithIdentifier(identifier)
+        }
+        return nil
+    }
+
+    func registerReusableHeaderFooter<T: ReusableProtocol>(reusable: T) {
+        if let type = reusable.viewType, identifier = reusable.identifier {
+             self.tableView?.registerClass(type, forHeaderFooterViewReuseIdentifier: identifier)
+        }
+    }
+}
 
 //MARK: - MainViewController
 extension UIStoryboardSegue {
