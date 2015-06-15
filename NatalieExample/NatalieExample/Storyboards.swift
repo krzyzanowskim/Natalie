@@ -12,7 +12,7 @@ struct Storyboards {
 
         static let identifier = "Main"
 
-        static var storyboard:UIStoryboard {
+        static var storyboard: UIStoryboard {
             return UIStoryboard(name: self.identifier, bundle: nil)
         }
 
@@ -26,17 +26,14 @@ struct Storyboards {
 
         static func instantiateMainViewController() -> MainViewController! {
             return self.storyboard.instantiateViewControllerWithIdentifier("MainViewController") as! MainViewController
-
         }
 
         static func instantiateScreenTwoViewController() -> ScreenTwoViewController! {
             return self.storyboard.instantiateViewControllerWithIdentifier("ScreenTwoViewController") as! ScreenTwoViewController
-
         }
 
         static func instantiateScreenOneViewController() -> ScreenOneViewController! {
             return self.storyboard.instantiateViewControllerWithIdentifier("Screen One ViewController") as! ScreenOneViewController
-
         }
     }
 }

@@ -920,7 +920,7 @@ class Storyboard: XMLObject {
         println()
         println("        static let identifier = \"\(storyboardName)\"")
         println()
-        println("        static var storyboard:\(os.storyboardType) {")
+        println("        static var storyboard: \(os.storyboardType) {")
         println("            return \(os.storyboardType)(name: self.identifier, bundle: nil)\(os.storyboardTypeUnwrap)")
         println("        }")
         if let initialViewControllerClass = self.initialViewControllerClass {
@@ -937,7 +937,7 @@ class Storyboard: XMLObject {
             if let viewController = scene.viewController, customClass = viewController.customClass, storyboardIdentifier = viewController.storyboardIdentifier {
                 println()
                 println("        static func instantiate\(storyboardIdentifier.trimAllWhitespaces)() -> \(customClass)! {")
-                println("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)\n")
+                println("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)")
                 println("        }")
             }
         }
