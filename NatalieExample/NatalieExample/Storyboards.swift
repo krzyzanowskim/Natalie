@@ -35,7 +35,7 @@ struct Storyboards {
         }
 
         static func instantiateScreenOneViewController() -> ScreenOneViewController! {
-            return self.storyboard.instantiateViewControllerWithIdentifier("ScreenOneViewController") as! ScreenOneViewController
+            return self.storyboard.instantiateViewControllerWithIdentifier("Screen One ViewController") as! ScreenOneViewController
 
         }
     }

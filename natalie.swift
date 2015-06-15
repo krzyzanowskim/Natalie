@@ -39,6 +39,16 @@
 
 import Foundation
 
+//MARK: Extensions
+
+public extension String {
+  public func trimAllWhitespaces () -> String {
+    return self.stringByReplacingOccurrencesOfString(" ", withString: "")
+  }
+}
+
+//MARK: Parser
+
 let rootElementName = "SWXMLHash_Root_Element"
 
 /// Simple XML parser.
@@ -926,7 +936,7 @@ class Storyboard: XMLObject {
         for scene in self.scenes {
             if let viewController = scene.viewController, customClass = viewController.customClass, storyboardIdentifier = viewController.storyboardIdentifier {
                 println()
-                println("        static func instantiate\(storyboardIdentifier)() -> \(customClass)! {")
+                println("        static func instantiate\(storyboardIdentifier.trimAllWhitespaces())() -> \(customClass)! {")
                 println("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)\n")
                 println("        }")
             }
@@ -1287,4 +1297,4 @@ for os in OS.allValues {
             println("#endif")
         }
     }
-}
+} 
