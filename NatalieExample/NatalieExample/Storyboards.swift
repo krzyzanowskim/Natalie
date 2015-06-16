@@ -98,7 +98,7 @@ extension UITableViewCell: ReusableProtocol {
 
 //MARK: - UIViewController extension
 extension UIViewController {
-    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {
+    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject? = nil) {
        performSegueWithIdentifier(segue.identifier, sender: sender)
     }
 }

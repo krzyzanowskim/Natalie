@@ -1198,7 +1198,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     for controllerType in os.storyboardControllerTypes {
         println("//MARK: - \(controllerType) extension")
         println("extension \(controllerType) {")
-        println("    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {")
+        println("    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject? = nil) {")
         println("       performSegueWithIdentifier(segue.identifier\(os.storyboardSegueUnwrap), sender: sender)")
         println("    }")
         println("}")
