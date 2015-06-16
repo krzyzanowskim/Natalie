@@ -39,6 +39,16 @@
 
 import Foundation
 
+//MARK: Extensions
+
+public extension String {
+  var trimAllWhitespaces: String {
+    return self.stringByReplacingOccurrencesOfString(" ", withString: "")
+  }
+}
+
+//MARK: Parser
+
 let rootElementName = "SWXMLHash_Root_Element"
 
 /// Simple XML parser.
@@ -910,7 +920,7 @@ class Storyboard: XMLObject {
         println()
         println("        static let identifier = \"\(storyboardName)\"")
         println()
-        println("        static var storyboard:\(os.storyboardType) {")
+        println("        static var storyboard: \(os.storyboardType) {")
         println("            return \(os.storyboardType)(name: self.identifier, bundle: nil)\(os.storyboardTypeUnwrap)")
         println("        }")
         if let initialViewControllerClass = self.initialViewControllerClass {
@@ -926,8 +936,8 @@ class Storyboard: XMLObject {
         for scene in self.scenes {
             if let viewController = scene.viewController, customClass = viewController.customClass, storyboardIdentifier = viewController.storyboardIdentifier {
                 println()
-                println("        static func instantiate\(storyboardIdentifier)() -> \(customClass)! {")
-                println("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)\n")
+                println("        static func instantiate\(storyboardIdentifier.trimAllWhitespaces)() -> \(customClass)! {")
+                println("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)")
                 println("        }")
             }
         }
@@ -967,7 +977,7 @@ class Storyboard: XMLObject {
                             for segue in segues {
                                 if let identifier = segue.identifier
                                 {
-                                    println("        case \(identifier) = \"\(identifier)\"")
+                                    println("        case \(identifier.trimAllWhitespaces) = \"\(identifier)\"")
                                 }
                             }
                             println()
@@ -975,7 +985,7 @@ class Storyboard: XMLObject {
                             println("            switch (self) {")
                             for segue in segues {
                                 if let identifier = segue.identifier, kind = segue.kind {
-                                    println("            case \(identifier):")
+                                    println("            case \(identifier.trimAllWhitespaces):")
                                     println("                return SegueKind(rawValue: \"\(kind)\")")
                                 }
                             }
@@ -991,7 +1001,7 @@ class Storyboard: XMLObject {
                                 if let identifier = segue.identifier, destination = segue.destination,
                                     destinationCustomClass = searchById(destination)?.element?.attributes["customClass"]
                                 {
-                                    println("            case \(identifier):")
+                                    println("            case \(identifier.trimAllWhitespaces):")
                                     println("                return \(destinationCustomClass).self")                                
                                 }
                             }
@@ -1288,3 +1298,4 @@ for os in OS.allValues {
         }
     }
 }
+

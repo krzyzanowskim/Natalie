@@ -12,7 +12,7 @@ struct Storyboards {
 
         static let identifier = "Main"
 
-        static var storyboard:UIStoryboard {
+        static var storyboard: UIStoryboard {
             return UIStoryboard(name: self.identifier, bundle: nil)
         }
 
@@ -26,17 +26,14 @@ struct Storyboards {
 
         static func instantiateMainViewController() -> MainViewController! {
             return self.storyboard.instantiateViewControllerWithIdentifier("MainViewController") as! MainViewController
-
         }
 
         static func instantiateScreenTwoViewController() -> ScreenTwoViewController! {
             return self.storyboard.instantiateViewControllerWithIdentifier("ScreenTwoViewController") as! ScreenTwoViewController
-
         }
 
         static func instantiateScreenOneViewController() -> ScreenOneViewController! {
-            return self.storyboard.instantiateViewControllerWithIdentifier("ScreenOneViewController") as! ScreenOneViewController
-
+            return self.storyboard.instantiateViewControllerWithIdentifier("Screen One ViewController") as! ScreenOneViewController
         }
     }
 }
@@ -171,7 +168,7 @@ extension UIStoryboardSegue {
 extension MainViewController { 
 
     enum Segue: String, Printable, SegueProtocol {
-        case ScreenOneSegueButton = "ScreenOneSegueButton"
+        case ScreenOneSegueButton = "Screen One Segue Button"
         case ScreenOneSegue = "ScreenOneSegue"
         case ScreenTwoSegue = "ScreenTwoSegue"
         case SceneOneGestureRecognizerSegue = "SceneOneGestureRecognizerSegue"
