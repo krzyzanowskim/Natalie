@@ -1198,13 +1198,17 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     for controllerType in os.storyboardControllerTypes {
         println("//MARK: - \(controllerType) extension")
         println("extension \(controllerType) {")
-        println("    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject? = nil) {")
+        println("    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {")
         println("       performSegueWithIdentifier(segue.identifier\(os.storyboardSegueUnwrap), sender: sender)")
+        println("    }")
+        println()
+        println("    func performSegue<T: SegueProtocol>(segue: T) {")
+        println("       performSegue(segue, sender: nil)")
         println("    }")
         println("}")
         println()
     }
-    
+  
     if os == OS.iOS {
         println("//MARK: - UICollectionViewController")
         println()
