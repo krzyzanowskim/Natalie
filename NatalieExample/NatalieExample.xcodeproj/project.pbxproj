@@ -18,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		755C35071B32B56F0007CC3C /* natalie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = natalie.swift; path = ../../natalie.swift; sourceTree = "<group>"; };
 		75FBDF911ADE59A30056F7DA /* NatalieExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NatalieExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75FBDF951ADE59A30056F7DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75FBDF961ADE59A30056F7DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -41,6 +42,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		755C35081B32B57C0007CC3C /* External */ = {
+			isa = PBXGroup;
+			children = (
+				755C35071B32B56F0007CC3C /* natalie.swift */,
+			);
+			name = External;
+			sourceTree = "<group>";
+		};
 		75FBDF881ADE59A30056F7DA = {
 			isa = PBXGroup;
 			children = (
@@ -60,6 +69,7 @@
 		75FBDF931ADE59A30056F7DA /* NatalieExample */ = {
 			isa = PBXGroup;
 			children = (
+				755C35081B32B57C0007CC3C /* External */,
 				75FBDF961ADE59A30056F7DA /* AppDelegate.swift */,
 				75FBDF981ADE59A30056F7DA /* MainViewController.swift */,
 				75FBDFB61ADE5F950056F7DA /* ScreenOneViewController.swift */,
