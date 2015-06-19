@@ -73,6 +73,14 @@ public func ~=<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {
    return lhs.identifier == rhs.identifier
 }
 
+public func ==<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {
+   return lhs.identifier == rhs
+}
+
+public func ~=<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {
+   return lhs.identifier == rhs
+}
+
 //MARK: - ReusableProtocol
 public protocol ReusableProtocol: IdentifiableProtocol {
     var viewType: UIView.Type? {get}
