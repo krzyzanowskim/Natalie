@@ -18,35 +18,34 @@ struct Storyboards {
     ...
 ```
 
-Instantiate initial ViewController for storyboard
+Instantiate initial view controller for storyboard
 ```swift
 let vc = Storyboards.Main.instantiateInitialViewController()
 ```
 
-Instantiate ViewController in storyboard using storyboard id
+Instantiate ScreenTwoViewController in storyboard, using storyboard id
 ```swift
-let vc = Storyboards.Main.instantiateMainViewController()
+let vc = Storyboards.Main.instantiateScreenTwoViewController()
 ```
 
 example usage for prepareForSegue()
 
 ```swift
 override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    if let selection = segue.selection() {
-        switch (selection, segue.destinationViewController) {
-        case (MainViewController.Segue.ScreenOneSegue, let oneViewController as ScreenOneViewController):
-            oneViewController.view.backgroundColor = UIColor.yellowColor()
-        default: break
-        }
-    }
+  if segue == MainViewController.Segue.ScreenOneSegue {	
+	let viewController = segue.destinationViewController as? MyViewController
+    viewController?.view.backgroundColor = UIColor.yellowColor()
+  }
 }
 ```
+
+...it could be `switch { }` statement, but [it's broken](https://twitter.com/krzyzanowskim/status/611686899732869121).
 
 ###Segues
 
 Perform segue
 ```swift
-self.performSegue(MyCustomViewController.Segue.goToDetails, sender:nil)
+self.performSegue(MainViewController.Segue.ScreenOneSegue, sender:nil)
 ```
 
 Each custom view controller is extended with this code and provide list of available segues and additional informations from Storyboard.
@@ -58,17 +57,26 @@ Each custom view controller is extended with this code and provide list of avail
 `destination` property return type of destination view controller.
 
 ```swift
-extension MyCustomViewController { 
-    enum Segue: String, Printable {
-        case goToDetails = "goToDetails"
-        case expandGroup = "composeMessage"
+extension MainViewController { 
+
+    enum Segue: String, Printable, SegueProtocol {
+        case ScreenOneSegueButton = "Screen One Segue Button"
+        case ScreenOneSegue = "ScreenOneSegue"
 
         var kind: SegueKind? {
             ...
         }
 
         var destination: UIViewController.Type? {
-            ...
+            switch (self) {
+            case ScreenOneSegueButton:
+                return ScreenOneViewController.self
+            case ScreenOneSegue:
+                return ScreenOneViewController.self
+            default:
+                assertionFailure("Unknown destination")
+                return nil
+            }
         }
 
         var identifier: String { return self.description } 
@@ -83,36 +91,39 @@ Collections and tables views use `reuseidentifier` on cell to recycle a view.
 
 If you define it, their custom view controllers will be extended with an `Reusable` enumeration, which contains list of available reusable identifiers
 
-example to dequeue a view with `Reusable` enumeration
+example to dequeue a view with `Reusable` enumeration with `UITableView`:
 ```swift
-class MyCustomTableViewController: UITableViewController, UITableViewDataSource {
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return self.dequeueReusableCell(Reusable.myCellId, forIndexPath: indexPath) as! UITableViewCell
-    }
+func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(ScreenTwoViewController.Reusable.MyCell, forIndexPath: indexPath) as! UITableViewCell
+    cell.textLabel?.text = "\(indexPath.row)"
+    return cell
+}
 ```
 
 Before dequeuing your view, you must register a class or a xib for each identifier.
-If your cell view has custom class definied in storyboard, in your controller you can call directly
+If your cell view has custom class defined in storyboard, in your controller you can call directly
 ```swift
 override func viewDidLoad()  {
-     self.registerReusableCell(Reusable.myCellId)
+    tableView.registerReusableCell(MainViewController.Reusable.MyCell)
+}
 ```
 You can pass the view instead - the view must define the `reuseidentifier`
 ```swift
-     self.registerReusableCell(theView) // view from IBOutlet or new instance
+    tableView.registerReusableCell(tableViewCell)
 ```
 
 If your custom reusable view, you can also execute code according to reusable values
 ```swift
 class MyCustomTableViewCell: UITableViewCell {
     override func prepareForReuse() {
-        if self == MyCustomTableViewController.Reusable.myCellId {
+        if self == MyCustomTableViewController.Reusable.MyCell {
             ...
         }
         else if self == MyCustomTableViewController.Reusable.mySecondCellId {
             ...
         }
+    }
+}
 ```
 
 ##Installation
