@@ -149,7 +149,13 @@ This is my setup created with **New Run Script Phase** on **Build Phase** Xcode 
 
 ```
 echo "Natalie generator"
-/usr/local/bin/natalie.swift "$PROJECT_DIR/$PROJECT_NAME" > "$PROJECT_DIR/$PROJECT_NAME/Storyboards.swift"
+
+NATALIE_PATH="/usr/local/bin/natalie.swift"
+
+if [ -f $NATALIE_PATH ]
+then
+    $NATALIE_PATH "$PROJECT_DIR/$PROJECT_NAME" > "$PROJECT_DIR/$PROJECT_NAME/Storyboards.swift"
+fi
 ```
 
 Don't forget to add `Storyboards.swift` to the project.
