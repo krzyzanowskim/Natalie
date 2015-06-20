@@ -131,6 +131,12 @@ class MyCustomTableViewCell: UITableViewCell {
 There is no need to do any installation, however if you want easy Xcode integration you may want to install the script to be easily accessible for any application from `/usr/local/bin`
 
 ```
+$ brew install natalie
+```
+
+or
+
+```
 $ git clone https://github.com/krzyzanowskim/Natalie.git
 $ sudo cp natalie.swift /usr/local/bin/natalie.swift
 ```
