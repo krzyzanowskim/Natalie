@@ -1209,10 +1209,14 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
         println("    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {")
         println("       performSegueWithIdentifier(segue.identifier\(os.storyboardSegueUnwrap), sender: sender)")
         println("    }")
+        println()
+        println("    func performSegue<T: SegueProtocol>(segue: T) {")
+        println("       performSegue(segue, sender: nil)")
+        println("    }")
         println("}")
         println()
     }
-    
+  
     if os == OS.iOS {
         println("//MARK: - UICollectionView")
         println()

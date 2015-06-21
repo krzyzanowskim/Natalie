@@ -31,7 +31,7 @@ class MainViewController: UIViewController {
     //MARK: Actions
     
     @IBAction func screen1ButtonPressed(button:UIButton) {
-        self.performSegue(MainViewController.Segue.ScreenOneSegue, sender: nil)
+        self.performSegue(MainViewController.Segue.ScreenOneSegue)
     }
 
     @IBAction func screen22ButtonPressed(button:UIButton) {
