@@ -42,9 +42,9 @@ import Foundation
 //MARK: Extensions
 
 public extension String {
-  var trimAllWhitespaces: String {
-    return self.stringByReplacingOccurrencesOfString(" ", withString: "")
-  }
+    var trimAllWhitespaces: String {
+        return self.stringByReplacingOccurrencesOfString(" ", withString: "")
+    }
 }
 
 //MARK: Parser
@@ -55,33 +55,33 @@ let rootElementName = "SWXMLHash_Root_Element"
 public class SWXMLHash {
     /**
     Method to parse XML passed in as a string.
-
-    :param: xml The XML to be parsed
-
-    :returns: An XMLIndexer instance that is used to look up elements in the XML
+    
+    - parameter xml: The XML to be parsed
+    
+    - returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(xml: String) -> XMLIndexer {
         return parse((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding)!)
     }
-
+    
     /**
     Method to parse XML passed in as an NSData instance.
-
-    :param: xml The XML to be parsed
-
-    :returns: An XMLIndexer instance that is used to look up elements in the XML
+    
+    - parameter xml: The XML to be parsed
+    
+    - returns: An XMLIndexer instance that is used to look up elements in the XML
     */
     class public func parse(data: NSData) -> XMLIndexer {
-        var parser = XMLParser()
+        let parser = XMLParser()
         return parser.parse(data)
     }
-
+    
     class public func lazy(xml: String) -> XMLIndexer {
         return lazy((xml as NSString).dataUsingEncoding(NSUTF8StringEncoding)!)
     }
-
+    
     class public func lazy(data: NSData) -> XMLIndexer {
-        var parser = LazyXMLParser()
+        let parser = LazyXMLParser()
         return parser.parse(data)
     }
 }
@@ -106,73 +106,73 @@ class LazyXMLParser : NSObject, NSXMLParserDelegate {
     override init() {
         super.init()
     }
-
+    
     var root = XMLElement(name: rootElementName)
     var parentStack = Stack<XMLElement>()
     var elementStack = Stack<String>()
-
+    
     var data: NSData?
     var ops: [IndexOp] = []
-
+    
     func parse(data: NSData) -> XMLIndexer {
         self.data = data
         return XMLIndexer(self)
     }
-
+    
     func startParsing(ops: [IndexOp]) {
         // clear any prior runs of parse... expected that this won't be necessary, but you never know
         parentStack.removeAll()
         root = XMLElement(name: rootElementName)
         parentStack.push(root)
-
+        
         self.ops = ops
         let parser = NSXMLParser(data: data!)
         parser.delegate = self
         parser.parse()
     }
-
-    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [NSObject : AnyObject]) {
-
+    
+    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String]) {
+        
         elementStack.push(elementName)
-
+        
         if !onMatch() {
             return
         }
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
         parentStack.push(currentNode)
     }
-
+    
     func parser(parser: NSXMLParser, foundCharacters string: String?) {
         if !onMatch() {
             return
         }
-
+        
         let current = parentStack.top()
         if current.text == nil {
             current.text = ""
         }
-
+        
         parentStack.top().text! += string!
     }
-
+    
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         let match = onMatch()
-
+        
         elementStack.pop()
-
+        
         if match {
             parentStack.pop()
         }
     }
-
+    
     func onMatch() -> Bool {
         // we typically want to compare against the elementStack to see if it matches ops, *but*
         // if we're on the first element, we'll instead compare the other direction.
         if elementStack.items.count > ops.count {
-            return startsWith(elementStack.items, ops.map { $0.key })
+            return elementStack.items.startsWith(ops.map { $0.key })
         }
         else {
-            return startsWith(ops.map { $0.key }, elementStack.items)
+            return ops.map { $0.key }.startsWith(elementStack.items)
         }
     }
 }
@@ -182,38 +182,38 @@ class XMLParser : NSObject, NSXMLParserDelegate {
     override init() {
         super.init()
     }
-
+    
     var root = XMLElement(name: rootElementName)
     var parentStack = Stack<XMLElement>()
-
+    
     func parse(data: NSData) -> XMLIndexer {
         // clear any prior runs of parse... expected that this won't be necessary, but you never know
         parentStack.removeAll()
-
+        
         parentStack.push(root)
-
+        
         let parser = NSXMLParser(data: data)
         parser.delegate = self
         parser.parse()
-
+        
         return XMLIndexer(root)
     }
-
-    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [NSObject : AnyObject]) {
-
+    
+    func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String]) {
+        
         let currentNode = parentStack.top().addElement(elementName, withAttributes: attributeDict)
         parentStack.push(currentNode)
     }
-
+    
     func parser(parser: NSXMLParser, foundCharacters string: String?) {
         let current = parentStack.top()
         if current.text == nil {
             current.text = ""
         }
-
+        
         parentStack.top().text! += string!
     }
-
+    
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         parentStack.pop()
     }
@@ -222,30 +222,30 @@ class XMLParser : NSObject, NSXMLParserDelegate {
 public class IndexOp {
     var index: Int
     let key: String
-
+    
     init(_ key: String) {
         self.key = key
         self.index = -1
     }
-
+    
     func toString() -> String {
         if index >= 0 {
             return key + " " + index.description
         }
-
+        
         return key
     }
 }
 
 public class IndexOps {
     var ops: [IndexOp] = []
-
+    
     let parser: LazyXMLParser
-
+    
     init(parser: LazyXMLParser) {
         self.parser = parser
     }
-
+    
     func findElements() -> XMLIndexer {
         parser.startParsing(ops)
         let indexer = XMLIndexer(parser.root)
@@ -259,7 +259,7 @@ public class IndexOps {
         ops.removeAll(keepCapacity: false)
         return childIndex
     }
-
+    
     func stringify() -> String {
         var s = ""
         for op in ops {
@@ -275,7 +275,7 @@ public enum XMLIndexer : SequenceType {
     case List([XMLElement])
     case Stream(IndexOps)
     case Error(NSError)
-
+    
     /// The underlying XMLElement at the currently indexed level of XML.
     public var element: XMLElement? {
         get {
@@ -290,7 +290,7 @@ public enum XMLIndexer : SequenceType {
             }
         }
     }
-
+    
     /// All elements at the currently indexed level
     public var all: [XMLIndexer] {
         get {
@@ -311,7 +311,7 @@ public enum XMLIndexer : SequenceType {
             }
         }
     }
-
+    
     /// All child elements from the currently indexed level
     public var children: [XMLIndexer] {
         get {
@@ -324,14 +324,14 @@ public enum XMLIndexer : SequenceType {
             return list
         }
     }
-
+    
     /**
     Allows for element lookup by matching attribute values.
-
-    :param: attr should the name of the attribute to match on
-    :param: _ should be the value of the attribute to match on
-
-    :returns: instance of XMLIndexer
+    
+    - parameter attr: should the name of the attribute to match on
+    - parameter _: should be the value of the attribute to match on
+    
+    - returns: instance of XMLIndexer
     */
     public func withAttr(attr: String, _ value: String) -> XMLIndexer {
         let attrUserInfo = [NSLocalizedDescriptionKey: "XML Attribute Error: Missing attribute [\"\(attr)\"]"]
@@ -358,13 +358,13 @@ public enum XMLIndexer : SequenceType {
             return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: attrUserInfo))
         }
     }
-
+    
     /**
     Initializes the XMLIndexer
-
-    :param: _ should be an instance of XMLElement, but supports other values for error handling
-
-    :returns: instance of XMLIndexer
+    
+    - parameter _: should be an instance of XMLElement, but supports other values for error handling
+    
+    - returns: instance of XMLIndexer
     */
     public init(_ rawObject: AnyObject) {
         switch rawObject {
@@ -376,13 +376,13 @@ public enum XMLIndexer : SequenceType {
             self = .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: nil))
         }
     }
-
+    
     /**
     Find an XML element at the current level by element name
-
-    :param: key The element name to index by
-
-    :returns: instance of XMLIndexer to match the element (or elements) found by key
+    
+    - parameter key: The element name to index by
+    
+    - returns: instance of XMLIndexer to match the element (or elements) found by key
     */
     public subscript(key: String) -> XMLIndexer {
         get {
@@ -408,13 +408,13 @@ public enum XMLIndexer : SequenceType {
             }
         }
     }
-
+    
     /**
     Find an XML element by index within a list of XML Elements at the current level
-
-    :param: index The 0-based index to index by
-
-    :returns: instance of XMLIndexer to match the element (or elements) found by key
+    
+    - parameter index: The 0-based index to index by
+    
+    - returns: instance of XMLIndexer to match the element (or elements) found by key
     */
     public subscript(index: Int) -> XMLIndexer {
         get {
@@ -440,9 +440,9 @@ public enum XMLIndexer : SequenceType {
             }
         }
     }
-
+    
     typealias GeneratorType = XMLIndexer
-
+    
     public func generate() -> IndexingGenerator<[XMLIndexer]> {
         return all.generate()
     }
@@ -463,7 +463,7 @@ extension XMLIndexer: BooleanType {
     }
 }
 
-extension XMLIndexer: Printable {
+extension XMLIndexer: CustomStringConvertible {
     public var description: String {
         get {
             switch self {
@@ -473,7 +473,7 @@ extension XMLIndexer: Printable {
                 if elem.name == rootElementName {
                     return "\n".join(elem.children.map { $0.description })
                 }
-
+                
                 return elem.description
             default:
                 return ""
@@ -490,48 +490,48 @@ public class XMLElement {
     public var text: String?
     /// The attributes of the element
     public var attributes = [String:String]()
-
+    
     var children = [XMLElement]()
     var count: Int = 0
     var index: Int
-
+    
     /**
     Initialize an XMLElement instance
-
-    :param: name The name of the element to be initialized
-
-    :returns: a new instance of XMLElement
+    
+    - parameter name: The name of the element to be initialized
+    
+    - returns: a new instance of XMLElement
     */
     init(name: String, index: Int = 0) {
         self.name = name
         self.index = index
     }
-
+    
     /**
     Adds a new XMLElement underneath this instance of XMLElement
-
-    :param: name The name of the new element to be added
-    :param: withAttributes The attributes dictionary for the element being added
-
-    :returns: The XMLElement that has now been added
+    
+    - parameter name: The name of the new element to be added
+    - parameter withAttributes: The attributes dictionary for the element being added
+    
+    - returns: The XMLElement that has now been added
     */
     func addElement(name: String, withAttributes attributes: NSDictionary) -> XMLElement {
         let element = XMLElement(name: name, index: count)
         count++
-
+        
         children.append(element)
-
+        
         for (keyAny,valueAny) in attributes {
             let key = keyAny as! String
             let value = valueAny as! String
             element.attributes[key] = value
         }
-
+        
         return element
     }
 }
 
-extension XMLElement: Printable {
+extension XMLElement: CustomStringConvertible {
     public var description:String {
         get {
             var attributesStringList = [String]()
@@ -540,12 +540,12 @@ extension XMLElement: Printable {
                     attributesStringList.append("\(key)=\"\(val)\"")
                 }
             }
-
+            
             var attributesString = " ".join(attributesStringList)
             if (!attributesString.isEmpty) {
                 attributesString = " " + attributesString
             }
-
+            
             if children.count > 0 {
                 var xmlReturn = [String]()
                 xmlReturn.append("<\(name)\(attributesString)>")
@@ -555,7 +555,7 @@ extension XMLElement: Printable {
                 xmlReturn.append("</\(name)>")
                 return "\n".join(xmlReturn)
             }
-
+            
             if text != nil {
                 return "<\(name)\(attributesString)>\(text!)</\(name)>"
             }
@@ -569,12 +569,12 @@ extension XMLElement: Printable {
 //MARK: - Natalie
 
 //MARK: Objects
-enum OS: String, Printable {
+enum OS: String, CustomStringConvertible {
     case iOS = "iOS"
     case OSX = "OSX"
     
     static let allValues = [iOS, OSX]
-
+    
     enum Runtime: String {
         case iOSCocoaTouch = "iOS.CocoaTouch"
         case MacOSXCocoa = "MacOSX.Cocoa"
@@ -587,7 +587,7 @@ enum OS: String, Printable {
                 self = .MacOSXCocoa
             }
         }
-
+        
     }
     
     enum Framework: String {
@@ -603,7 +603,7 @@ enum OS: String, Printable {
             }
         }
     }
-
+    
     init(targetRuntime: String) {
         switch (targetRuntime) {
         case Runtime.iOSCocoaTouch.rawValue:
@@ -616,11 +616,11 @@ enum OS: String, Printable {
             fatalError("Unsupported")
         }
     }
-
+    
     var description: String {
         return self.rawValue
     }
-
+    
     var framework: String {
         return Framework(os: self).rawValue
     }
@@ -637,7 +637,7 @@ enum OS: String, Printable {
             return "NSStoryboard"
         }
     }
-
+    
     var storyboardSegueType: String {
         switch self {
         case iOS:
@@ -655,7 +655,7 @@ enum OS: String, Printable {
             return "!"
         }
     }
-
+    
     var storyboardSegueUnwrap: String {
         switch self {
         case iOS:
@@ -736,7 +736,7 @@ enum OS: String, Printable {
             return ""
         }
     }
-
+    
     func controllerTypeForElementName(name: String) -> String? {
         switch self {
         case iOS:
@@ -767,23 +767,23 @@ enum OS: String, Printable {
             }
         }
     }
-
+    
 }
 
 class XMLObject {
-
+    
     var xml: XMLIndexer
-
+    
     lazy var name: String? = self.xml.element?.name
     
     init(xml: XMLIndexer) {
         self.xml = xml
     }
-
+    
     func searchAll(attributeKey: String, attributeValue: String? = nil) -> [XMLIndexer]? {
         return searchAll(self.xml, attributeKey: attributeKey, attributeValue: attributeValue)
     }
-
+    
     func searchAll(root: XMLIndexer, attributeKey: String, attributeValue: String? = nil) -> [XMLIndexer]? {
         var result = Array<XMLIndexer>()
         for child in root.children {
@@ -808,7 +808,7 @@ class XMLObject {
     func searchNamed(name: String) -> [XMLIndexer]? {
         return self.searchNamed(self.xml, name: name)
     }
-
+    
     func searchNamed(root: XMLIndexer, name: String) -> [XMLIndexer]? {
         var result = Array<XMLIndexer>()
         for child in root.children {
@@ -824,7 +824,7 @@ class XMLObject {
         }
         return result.count > 0 ? result : nil
     }
-
+    
     func searchById(id: String) -> XMLIndexer? {
         return searchAll("id", attributeValue: id)?.first
     }
@@ -837,18 +837,18 @@ class Scene: XMLObject {
             return ViewController(xml: vc)
         }
         return nil
-    }()
+        }()
     
     lazy var segues: [Segue]? = {
         return self.searchNamed("segue")?.map { Segue(xml: $0) }
-    }()
+        }()
     
     lazy var customModule: String? = self.viewController?.customModule
     lazy var customModuleProvider: String? = self.viewController?.customModuleProvider
 }
 
 class ViewController: XMLObject {
- 
+    
     lazy var customClass: String? = self.xml.element?.attributes["customClass"]
     lazy var customModuleProvider: String? = self.xml.element?.attributes["customModuleProvider"]
     lazy var storyboardIdentifier: String? = self.xml.element?.attributes["storyboardIdentifier"]
@@ -863,7 +863,7 @@ class ViewController: XMLObject {
 }
 
 class Segue: XMLObject {
- 
+    
     lazy var identifier: String? = self.xml.element?.attributes["identifier"]
     lazy var kind: String? = self.xml.element?.attributes["kind"]
     lazy var destination: String? = self.xml.element?.attributes["destination"]
@@ -910,155 +910,155 @@ class Storyboard: XMLObject {
             return scenes.map { Scene(xml: $0) }
         }
         return []
-    }()
+        }()
     
     lazy var customModules: [String] = self.scenes.filter{ $0.customModule != nil && $0.customModuleProvider == nil  }.map{ $0.customModule! }
-
+    
     func processStoryboard(storyboardName: String, os: OS) {
-        println()
-        println("    struct \(storyboardName) {")
-        println()
-        println("        static let identifier = \"\(storyboardName)\"")
-        println()
-        println("        static var storyboard: \(os.storyboardType) {")
-        println("            return \(os.storyboardType)(name: self.identifier, bundle: nil)\(os.storyboardTypeUnwrap)")
-        println("        }")
+        print("")
+        print("    struct \(storyboardName) {")
+        print("")
+        print("        static let identifier = \"\(storyboardName)\"")
+        print("")
+        print("        static var storyboard: \(os.storyboardType) {")
+        print("            return \(os.storyboardType)(name: self.identifier, bundle: nil)\(os.storyboardTypeUnwrap)")
+        print("        }")
         if let initialViewControllerClass = self.initialViewControllerClass {
-            println()
-            println("        static func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(initialViewControllerClass)! {")
-            println("            return self.storyboard.instantiateInitial\(os.storyboardControllerSignatureType)() \(os.storyboardControllerInitialReturnTypeCast(initialViewControllerClass))")
-            println("        }")
+            print("")
+            print("        static func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(initialViewControllerClass)! {")
+            print("            return self.storyboard.instantiateInitial\(os.storyboardControllerSignatureType)() \(os.storyboardControllerInitialReturnTypeCast(initialViewControllerClass))")
+            print("        }")
         }
-        println()
-        println("        static func instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier: String) -> \(os.storyboardControllerReturnType) {")
-        println("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier)\(os.storyboardControllerReturnTypeCast)")
-        println("        }")
+        print("")
+        print("        static func instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier: String) -> \(os.storyboardControllerReturnType) {")
+        print("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier)\(os.storyboardControllerReturnTypeCast)")
+        print("        }")
         for scene in self.scenes {
             if let viewController = scene.viewController, customClass = viewController.customClass, storyboardIdentifier = viewController.storyboardIdentifier {
-                println()
-                println("        static func instantiate\(storyboardIdentifier.trimAllWhitespaces)() -> \(customClass)! {")
-                println("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)")
-                println("        }")
+                print("")
+                print("        static func instantiate\(storyboardIdentifier.trimAllWhitespaces)() -> \(customClass)! {")
+                print("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)")
+                print("        }")
             }
         }
-        println("    }")
+        print("    }")
     }
     
     func processViewControllers() {
         for scene in self.scenes {
             if let viewController = scene.viewController {
                 if let customClass = viewController.customClass {
-                    println()
-                    println("//MARK: - \(customClass)")
-
+                    print("")
+                    print("//MARK: - \(customClass)")
+                    
                     if let segues = scene.segues?.filter({ return $0.identifier != nil })
                         where segues.count > 0 {
-                            println("extension \(os.storyboardSegueType) {")
-                            println("    func selection() -> \(customClass).Segue? {")
-                            println("        if let identifier = self.identifier {")
-                            println("            return \(customClass).Segue(rawValue: identifier)")
-                            println("        }")
-                            println("        return nil")
-                            println("    }")
-                            println("}")
-                            println()
+                            print("extension \(os.storyboardSegueType) {")
+                            print("    func selection() -> \(customClass).Segue? {")
+                            print("        if let identifier = self.identifier {")
+                            print("            return \(customClass).Segue(rawValue: identifier)")
+                            print("        }")
+                            print("        return nil")
+                            print("    }")
+                            print("}")
+                            print("")
                     }
                     
                     if let segues = scene.segues?.filter({ return $0.identifier != nil })
                         where segues.count > 0 {
-                            println("extension \(customClass) { ")
-                            println()
-                            println("    enum Segue: String, Printable, SegueProtocol {")
+                            print("extension \(customClass) { ")
+                            print("")
+                            print("    enum Segue: String, Printable, SegueProtocol {")
                             for segue in segues {
                                 if let identifier = segue.identifier
                                 {
-                                    println("        case \(identifier.trimAllWhitespaces) = \"\(identifier)\"")
+                                    print("        case \(identifier.trimAllWhitespaces) = \"\(identifier)\"")
                                 }
                             }
-                            println()
-                            println("        var kind: SegueKind? {")
-                            println("            switch (self) {")
+                            print("")
+                            print("        var kind: SegueKind? {")
+                            print("            switch (self) {")
                             for segue in segues {
                                 if let identifier = segue.identifier, kind = segue.kind {
-                                    println("            case \(identifier.trimAllWhitespaces):")
-                                    println("                return SegueKind(rawValue: \"\(kind)\")")
+                                    print("            case \(identifier.trimAllWhitespaces):")
+                                    print("                return SegueKind(rawValue: \"\(kind)\")")
                                 }
                             }
-                            println("            default:")
-                            println("                preconditionFailure(\"Invalid value\")")
-                            println("                break")
-                            println("            }")
-                            println("        }")
-                            println()
-                            println("        var destination: \(self.os.storyboardControllerReturnType).Type? {")
-                            println("            switch (self) {")
+                            print("            default:")
+                            print("                preconditionFailure(\"Invalid value\")")
+                            print("                break")
+                            print("            }")
+                            print("        }")
+                            print("")
+                            print("        var destination: \(self.os.storyboardControllerReturnType).Type? {")
+                            print("            switch (self) {")
                             for segue in segues {
                                 if let identifier = segue.identifier, destination = segue.destination,
                                     destinationCustomClass = searchById(destination)?.element?.attributes["customClass"]
                                 {
-                                    println("            case \(identifier.trimAllWhitespaces):")
-                                    println("                return \(destinationCustomClass).self")                                
+                                    print("            case \(identifier.trimAllWhitespaces):")
+                                    print("                return \(destinationCustomClass).self")
                                 }
                             }
-                            println("            default:")
-                            println("                assertionFailure(\"Unknown destination\")")                                
-                            println("                return nil")        
-                            println("            }")
-                            println("        }")
-                            println()
-                            println("        var identifier: String? { return self.description } ")
-                            println("        var description: String { return self.rawValue }")
-                            println("    }")
-                            println()
-                            println("}")
+                            print("            default:")
+                            print("                assertionFailure(\"Unknown destination\")")
+                            print("                return nil")
+                            print("            }")
+                            print("        }")
+                            print("")
+                            print("        var identifier: String? { return self.description } ")
+                            print("        var description: String { return self.rawValue }")
+                            print("    }")
+                            print("")
+                            print("}")
                     }
-
+                    
                     if let reusables = viewController.reusables?.filter({ return $0.reuseIdentifier != nil })
                         where reusables.count > 0 {
                             
-                            println("extension \(customClass) { ")
-                            println()
-                            println("    enum Reusable: String, Printable, ReusableViewProtocol {")
+                            print("extension \(customClass) { ")
+                            print("")
+                            print("    enum Reusable: String, Printable, ReusableViewProtocol {")
                             for reusable in reusables {
                                 if let identifier = reusable.reuseIdentifier
                                 {
-                                    println("        case \(identifier) = \"\(identifier)\"")
+                                    print("        case \(identifier) = \"\(identifier)\"")
                                 }
                             }
-                            println()
-                            println("        var kind: ReusableKind? {")
-                            println("            switch (self) {")
+                            print("")
+                            print("        var kind: ReusableKind? {")
+                            print("            switch (self) {")
                             for reusable in reusables {
                                 if let identifier = reusable.reuseIdentifier, kind = reusable.kind {
-                                    println("            case \(identifier):")
-                                    println("                return ReusableKind(rawValue: \"\(kind)\")")
+                                    print("            case \(identifier):")
+                                    print("                return ReusableKind(rawValue: \"\(kind)\")")
                                 }
                             }
-                            println("            default:")
-                            println("                preconditionFailure(\"Invalid value\")")
-                            println("                break")
-                            println("            }")
-                            println("        }")
-                            println()
-                            println("        var viewType: \(self.os.viewType).Type? {")
-                            println("            switch (self) {")
+                            print("            default:")
+                            print("                preconditionFailure(\"Invalid value\")")
+                            print("                break")
+                            print("            }")
+                            print("        }")
+                            print("")
+                            print("        var viewType: \(self.os.viewType).Type? {")
+                            print("            switch (self) {")
                             for reusable in reusables {
                                 if let identifier = reusable.reuseIdentifier, customClass = reusable.customClass
                                 {
-                                    println("            case \(identifier):")
-                                    println("                return \(customClass).self")
+                                    print("            case \(identifier):")
+                                    print("                return \(customClass).self")
                                 }
                             }
-                            println("            default:")
-                            println("                return nil")
-                            println("            }")
-                            println("        }")
-                            println()
-                            println("        var identifier: String? { return self.description } ")
-                            println("        var description: String { return self.rawValue }")
-                            println("    }")
-                            println()
-                            println("}\n")
+                            print("            default:")
+                            print("                return nil")
+                            print("            }")
+                            print("        }")
+                            print("")
+                            print("        var identifier: String? { return self.description } ")
+                            print("        var description: String { return self.rawValue }")
+                            print("    }")
+                            print("")
+                            print("}\n")
                     }
                 }
             }
@@ -1067,12 +1067,12 @@ class Storyboard: XMLObject {
 }
 
 class StoryboardFile {
-
+    
     let filePath: String
     init(filePath: String){
         self.filePath = filePath
     }
-
+    
     lazy var storyboardName: String = self.filePath.lastPathComponent.stringByDeletingPathExtension
     
     lazy var data: NSData? = NSData(contentsOfFile: self.filePath)
@@ -1098,7 +1098,7 @@ func findStoryboards(rootPath: String, suffix: String) -> [String]? {
     var result = Array<String>()
     let fm = NSFileManager.defaultManager()
     var error:NSError?
-    if let paths = fm.subpathsAtPath(rootPath) as? [String]  {
+    if let paths = fm.subpathsAtPath(rootPath) {
         let storyboardPaths = paths.filter({ return $0.hasSuffix(suffix)})
         // result = storyboardPaths
         for p in storyboardPaths {
@@ -1110,188 +1110,188 @@ func findStoryboards(rootPath: String, suffix: String) -> [String]? {
 
 func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     
-    println("//")
-    println("// Autogenerated by Natalie - Storyboard Generator Script.")
-    println("// http://blog.krzyzanowskim.com")
-    println("//")
-    println()
-    println("import \(os.framework)")
+    print("//")
+    print("// Autogenerated by Natalie - Storyboard Generator Script.")
+    print("// http://blog.krzyzanowskim.com")
+    print("//")
+    print("")
+    print("import \(os.framework)")
     let modules = storyboards.filter{ $0.storyboard != nil }.flatMap{ $0.storyboard!.customModules }
     for module in Set<String>(modules) {
-        println("import \(module)")
+        print("import \(module)")
     }
-    println()
+    print("")
     
-    println("//MARK: - Storyboards")
-    println("struct Storyboards {")
+    print("//MARK: - Storyboards")
+    print("struct Storyboards {")
     for file in storyboards {
         file.storyboard?.processStoryboard(file.storyboardName, os: os)
     }
-    println("}")
-    println()
+    print("}")
+    print("")
     
-    println("//MARK: - ReusableKind")
-    println("enum ReusableKind: String, Printable {")
-    println("    case TableViewCell = \"tableViewCell\"")
-    println("    case CollectionViewCell = \"collectionViewCell\"")
-    println()
-    println("    var description: String { return self.rawValue }")
-    println("}")
-    println()
+    print("//MARK: - ReusableKind")
+    print("enum ReusableKind: String, Printable {")
+    print("    case TableViewCell = \"tableViewCell\"")
+    print("    case CollectionViewCell = \"collectionViewCell\"")
+    print("")
+    print("    var description: String { return self.rawValue }")
+    print("}")
+    print("")
     
-    println("//MARK: - SegueKind")
-    println("enum SegueKind: String, Printable {    ")
-    println("    case Relationship = \"relationship\" ")
-    println("    case Show = \"show\"                 ")
-    println("    case Presentation = \"presentation\" ")
-    println("    case Embed = \"embed\"               ")
-    println("    case Unwind = \"unwind\"             ")
-    println()
-    println("    var description: String { return self.rawValue } ")
-    println("}")
-    println()
+    print("//MARK: - SegueKind")
+    print("enum SegueKind: String, Printable {    ")
+    print("    case Relationship = \"relationship\" ")
+    print("    case Show = \"show\"                 ")
+    print("    case Presentation = \"presentation\" ")
+    print("    case Embed = \"embed\"               ")
+    print("    case Unwind = \"unwind\"             ")
+    print("")
+    print("    var description: String { return self.rawValue } ")
+    print("}")
+    print("")
     
-    println("//MARK: - SegueProtocol")
-    println("public protocol IdentifiableProtocol: Equatable {")
-    println("    var identifier: String? { get }")
-    println("}")
-    println()
-    println("public protocol SegueProtocol: IdentifiableProtocol {")
-    println("}")
-    println()
+    print("//MARK: - SegueProtocol")
+    print("public protocol IdentifiableProtocol: Equatable {")
+    print("    var identifier: String? { get }")
+    print("}")
+    print("")
+    print("public protocol SegueProtocol: IdentifiableProtocol {")
+    print("}")
+    print("")
     
-    println("public func ==<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {")
-    println("   return lhs.identifier == rhs.identifier")
-    println("}")
-    println()
-    println("public func ~=<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {")
-    println("   return lhs.identifier == rhs.identifier")
-    println("}")
-    println()
-    println("public func ==<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {")
-    println("   return lhs.identifier == rhs")
-    println("}")
-    println()
-    println("public func ~=<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {")
-    println("   return lhs.identifier == rhs")
-    println("}")
-    println()
+    print("public func ==<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {")
+    print("   return lhs.identifier == rhs.identifier")
+    print("}")
+    print("")
+    print("public func ~=<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {")
+    print("   return lhs.identifier == rhs.identifier")
+    print("}")
+    print("")
+    print("public func ==<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {")
+    print("   return lhs.identifier == rhs")
+    print("}")
+    print("")
+    print("public func ~=<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {")
+    print("   return lhs.identifier == rhs")
+    print("}")
+    print("")
     
-    println("//MARK: - ReusableViewProtocol")
-    println("public protocol ReusableViewProtocol: IdentifiableProtocol {")
-    println("    var viewType: \(os.viewType).Type? {get}")
-    println("}")
-    println()
+    print("//MARK: - ReusableViewProtocol")
+    print("public protocol ReusableViewProtocol: IdentifiableProtocol {")
+    print("    var viewType: \(os.viewType).Type? {get}")
+    print("}")
+    print("")
     
-    println("public func ==<T: ReusableViewProtocol, U: ReusableViewProtocol>(lhs: T, rhs: U) -> Bool {")
-    println("   return lhs.identifier == rhs.identifier")
-    println("}")
-    println()
+    print("public func ==<T: ReusableViewProtocol, U: ReusableViewProtocol>(lhs: T, rhs: U) -> Bool {")
+    print("   return lhs.identifier == rhs.identifier")
+    print("}")
+    print("")
     
-    println("//MARK: - Protocol Implementation")
-    println("extension \(os.storyboardSegueType): SegueProtocol {")
-    println("}")
-    println()
+    print("//MARK: - Protocol Implementation")
+    print("extension \(os.storyboardSegueType): SegueProtocol {")
+    print("}")
+    print("")
     
     if let reusableViews = os.resuableViews {
         for reusableView in reusableViews {
-            println("extension \(reusableView): ReusableViewProtocol {")
-            println("    public var viewType: UIView.Type? { return self.dynamicType}")
-            println("    public var identifier: String? { return self.reuseIdentifier}")
-            println("}")
-            println()
+            print("extension \(reusableView): ReusableViewProtocol {")
+            print("    public var viewType: UIView.Type? { return self.dynamicType}")
+            print("    public var identifier: String? { return self.reuseIdentifier}")
+            print("}")
+            print("")
         }
     }
     
     for controllerType in os.storyboardControllerTypes {
-        println("//MARK: - \(controllerType) extension")
-        println("extension \(controllerType) {")
-        println("    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {")
-        println("       performSegueWithIdentifier(segue.identifier\(os.storyboardSegueUnwrap), sender: sender)")
-        println("    }")
-        println()
-        println("    func performSegue<T: SegueProtocol>(segue: T) {")
-        println("       performSegue(segue, sender: nil)")
-        println("    }")
-        println("}")
-        println()
+        print("//MARK: - \(controllerType) extension")
+        print("extension \(controllerType) {")
+        print("    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {")
+        print("       performSegueWithIdentifier(segue.identifier\(os.storyboardSegueUnwrap), sender: sender)")
+        print("    }")
+        print("")
+        print("    func performSegue<T: SegueProtocol>(segue: T) {")
+        print("       performSegue(segue, sender: nil)")
+        print("    }")
+        print("}")
+        print("")
     }
-  
-    if os == OS.iOS {
-        println("//MARK: - UICollectionView")
-        println()
-        println("extension UICollectionView {")
-        println()
-        println("    func dequeueReusableCell<T: ReusableViewProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> UICollectionViewCell? {")
-        println("        if let identifier = reusable.identifier {")
-        println("            return dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: forIndexPath) as? UICollectionViewCell")
-        println("        }")
-        println("        return nil")
-        println("    }")
-        println()
-        println("    func registerReusableCell<T: ReusableViewProtocol>(reusable: T) {")
-        println("        if let type = reusable.viewType, identifier = reusable.identifier {")
-        println("            registerClass(type, forCellWithReuseIdentifier: identifier)")
-        println("        }")
-        println("    }")
-        println()
-        println("    func dequeueReusableSupplementaryViewOfKind<T: ReusableViewProtocol>(elementKind: String, withReusable reusable: T, forIndexPath: NSIndexPath!) -> UICollectionReusableView? {")
-        println("        if let identifier = reusable.identifier {")
-        println("            return dequeueReusableSupplementaryViewOfKind(elementKind, withReuseIdentifier: identifier, forIndexPath: forIndexPath) as? UICollectionReusableView")
-        println("        }")
-        println("        return nil")
-        println("    }")
-        println()
-        println("    func registerReusable<T: ReusableViewProtocol>(reusable: T, forSupplementaryViewOfKind elementKind: String) {")
-        println("        if let type = reusable.viewType, identifier = reusable.identifier {")
-        println("            registerClass(type, forSupplementaryViewOfKind: elementKind, withReuseIdentifier: identifier)")
-        println("        }")
-        println("    }")
-        println("}")
     
-        println("//MARK: - UITableView")
-        println()
-        println("extension UITableView {")
-        println()
-        println("    func dequeueReusableCell<T: ReusableViewProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> UITableViewCell? {")
-        println("        if let identifier = reusable.identifier {")
-        println("            return dequeueReusableCellWithIdentifier(identifier, forIndexPath: forIndexPath) as? UITableViewCell")
-        println("        }")
-        println("        return nil")
-        println("    }")
-        println()
-        println("    func registerReusableCell<T: ReusableViewProtocol>(reusable: T) {")
-        println("        if let type = reusable.viewType, identifier = reusable.identifier {")
-        println("            registerClass(type, forCellReuseIdentifier: identifier)")
-        println("        }")
-        println("    }")
-        println()
-        println("    func dequeueReusableHeaderFooter<T: ReusableViewProtocol>(reusable: T) -> UITableViewHeaderFooterView? {")
-        println("        if let identifier = reusable.identifier {")
-        println("            return dequeueReusableHeaderFooterViewWithIdentifier(identifier) as? UITableViewHeaderFooterView")
-        println("        }")
-        println("        return nil")
-        println("    }")
-        println()
-        println("    func registerReusableHeaderFooter<T: ReusableViewProtocol>(reusable: T) {")
-        println("        if let type = reusable.viewType, identifier = reusable.identifier {")
-        println("             registerClass(type, forHeaderFooterViewReuseIdentifier: identifier)")
-        println("        }")
-        println("    }")
-        println("}")
-        println()
+    if os == OS.iOS {
+        print("//MARK: - UICollectionView")
+        print("")
+        print("extension UICollectionView {")
+        print("")
+        print("    func dequeueReusableCell<T: ReusableViewProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> UICollectionViewCell? {")
+        print("        if let identifier = reusable.identifier {")
+        print("            return dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: forIndexPath) as? UICollectionViewCell")
+        print("        }")
+        print("        return nil")
+        print("    }")
+        print("")
+        print("    func registerReusableCell<T: ReusableViewProtocol>(reusable: T) {")
+        print("        if let type = reusable.viewType, identifier = reusable.identifier {")
+        print("            registerClass(type, forCellWithReuseIdentifier: identifier)")
+        print("        }")
+        print("    }")
+        print("")
+        print("    func dequeueReusableSupplementaryViewOfKind<T: ReusableViewProtocol>(elementKind: String, withReusable reusable: T, forIndexPath: NSIndexPath!) -> UICollectionReusableView? {")
+        print("        if let identifier = reusable.identifier {")
+        print("            return dequeueReusableSupplementaryViewOfKind(elementKind, withReuseIdentifier: identifier, forIndexPath: forIndexPath) as? UICollectionReusableView")
+        print("        }")
+        print("        return nil")
+        print("    }")
+        print("")
+        print("    func registerReusable<T: ReusableViewProtocol>(reusable: T, forSupplementaryViewOfKind elementKind: String) {")
+        print("        if let type = reusable.viewType, identifier = reusable.identifier {")
+        print("            registerClass(type, forSupplementaryViewOfKind: elementKind, withReuseIdentifier: identifier)")
+        print("        }")
+        print("    }")
+        print("}")
+        
+        print("//MARK: - UITableView")
+        print("")
+        print("extension UITableView {")
+        print("")
+        print("    func dequeueReusableCell<T: ReusableViewProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> UITableViewCell? {")
+        print("        if let identifier = reusable.identifier {")
+        print("            return dequeueReusableCellWithIdentifier(identifier, forIndexPath: forIndexPath) as? UITableViewCell")
+        print("        }")
+        print("        return nil")
+        print("    }")
+        print("")
+        print("    func registerReusableCell<T: ReusableViewProtocol>(reusable: T) {")
+        print("        if let type = reusable.viewType, identifier = reusable.identifier {")
+        print("            registerClass(type, forCellReuseIdentifier: identifier)")
+        print("        }")
+        print("    }")
+        print("")
+        print("    func dequeueReusableHeaderFooter<T: ReusableViewProtocol>(reusable: T) -> UITableViewHeaderFooterView? {")
+        print("        if let identifier = reusable.identifier {")
+        print("            return dequeueReusableHeaderFooterViewWithIdentifier(identifier) as? UITableViewHeaderFooterView")
+        print("        }")
+        print("        return nil")
+        print("    }")
+        print("")
+        print("    func registerReusableHeaderFooter<T: ReusableViewProtocol>(reusable: T) {")
+        print("        if let type = reusable.viewType, identifier = reusable.identifier {")
+        print("             registerClass(type, forHeaderFooterViewReuseIdentifier: identifier)")
+        print("        }")
+        print("    }")
+        print("}")
+        print("")
     }
-
+    
     for file in storyboards {
         file.storyboard?.processViewControllers()
     }
-
+    
 }
 
 //MARK: MAIN()
 
 if Process.arguments.count == 1 {
-    println("Invalid usage. Missing path to storyboard.")
+    print("Invalid usage. Missing path to storyboard.")
     exit(0)
 }
 
@@ -1300,7 +1300,7 @@ var storyboards:[String] = []
 let storyboardSuffix = ".storyboard"
 if argument.hasSuffix(storyboardSuffix) {
     storyboards = [argument]
-} else if let s = findStoryboards(argument, storyboardSuffix) {
+} else if let s = findStoryboards(argument, suffix: storyboardSuffix) {
     storyboards = s
 }
 let storyboardFiles: [StoryboardFile] = storyboards.map { StoryboardFile(filePath: $0) }
@@ -1310,13 +1310,13 @@ for os in OS.allValues {
     if !storyboardsForOS.isEmpty {
         
         if storyboardsForOS.count != storyboardFiles.count {
-            println("#if os(\(os.rawValue))")
+            print("#if os(\(os.rawValue))")
         }
         
-        processStoryboards(storyboardsForOS, os)
+        processStoryboards(storyboardsForOS, os: os)
         
         if storyboardsForOS.count != storyboardFiles.count {
-            println("#endif")
+            print("#endif")
         }
     }
 }
