@@ -142,7 +142,7 @@ class LazyXMLParser : NSObject, NSXMLParserDelegate {
         parentStack.push(currentNode)
     }
     
-    func parser(parser: NSXMLParser, foundCharacters string: String?) {
+    func parser(parser: NSXMLParser, foundCharacters string: String) {
         if !onMatch() {
             return
         }
@@ -152,7 +152,7 @@ class LazyXMLParser : NSObject, NSXMLParserDelegate {
             current.text = ""
         }
         
-        parentStack.top().text! += string!
+        parentStack.top().text! += string
     }
     
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
@@ -205,13 +205,13 @@ class XMLParser : NSObject, NSXMLParserDelegate {
         parentStack.push(currentNode)
     }
     
-    func parser(parser: NSXMLParser, foundCharacters string: String?) {
+    func parser(parser: NSXMLParser, foundCharacters string: String) {
         let current = parentStack.top()
         if current.text == nil {
             current.text = ""
         }
         
-        parentStack.top().text! += string!
+        parentStack.top().text! += string
     }
     
     func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
