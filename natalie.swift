@@ -970,31 +970,41 @@ class Storyboard: XMLObject {
                             print("")
                             print("        var kind: SegueKind? {")
                             print("            switch (self) {")
+                            var needDefaultSegue = false
                             for segue in segues {
                                 if let identifier = segue.identifier, kind = segue.kind {
                                     print("            case \(identifier.trimAllWhitespaces):")
                                     print("                return SegueKind(rawValue: \"\(kind)\")")
+                                } else {
+                                    needDefaultSegue = true
                                 }
                             }
-                            print("            default:")
-                            print("                preconditionFailure(\"Invalid value\")")
-                            print("                break")
+                            if needDefaultSegue {
+                                print("            default:")
+                                print("                preconditionFailure(\"Invalid value\")")
+                                print("                break")
+                            }
                             print("            }")
                             print("        }")
                             print("")
                             print("        var destination: \(self.os.storyboardControllerReturnType).Type? {")
                             print("            switch (self) {")
+                            var needDefaultDestination = false
                             for segue in segues {
                                 if let identifier = segue.identifier, destination = segue.destination,
                                     destinationCustomClass = searchById(destination)?.element?.attributes["customClass"]
                                 {
                                     print("            case \(identifier.trimAllWhitespaces):")
                                     print("                return \(destinationCustomClass).self")
+                                } else {
+                                    needDefaultDestination = true
                                 }
                             }
-                            print("            default:")
-                            print("                assertionFailure(\"Unknown destination\")")
-                            print("                return nil")
+                            if needDefaultDestination {
+                                print("            default:")
+                                print("                assertionFailure(\"Unknown destination\")")
+                                print("                return nil")
+                            }
                             print("            }")
                             print("        }")
                             print("")
@@ -1020,15 +1030,20 @@ class Storyboard: XMLObject {
                             print("")
                             print("        var kind: ReusableKind? {")
                             print("            switch (self) {")
+                            var needDefault = false
                             for reusable in reusables {
                                 if let identifier = reusable.reuseIdentifier, kind = reusable.kind {
                                     print("            case \(identifier):")
                                     print("                return ReusableKind(rawValue: \"\(kind)\")")
+                                } else {
+                                    needDefault = true
                                 }
                             }
-                            print("            default:")
-                            print("                preconditionFailure(\"Invalid value\")")
-                            print("                break")
+                            if needDefault {
+                                print("            default:")
+                                print("                preconditionFailure(\"Invalid value\")")
+                                print("                break")
+                            }
                             print("            }")
                             print("        }")
                             print("")

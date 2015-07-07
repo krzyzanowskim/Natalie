@@ -207,9 +207,6 @@ extension MainViewController {
                 return SegueKind(rawValue: "push")
             case SceneOneGestureRecognizerSegue:
                 return SegueKind(rawValue: "push")
-            default:
-                preconditionFailure("Invalid value")
-                break
             }
         }
 
@@ -223,9 +220,6 @@ extension MainViewController {
                 return ScreenTwoViewController.self
             case SceneOneGestureRecognizerSegue:
                 return ScreenOneViewController.self
-            default:
-                assertionFailure("Unknown destination")
-                return nil
             }
         }
 
@@ -245,9 +239,6 @@ extension ScreenTwoViewController {
             switch (self) {
             case MyCell:
                 return ReusableKind(rawValue: "tableViewCell")
-            default:
-                preconditionFailure("Invalid value")
-                break
             }
         }
 
