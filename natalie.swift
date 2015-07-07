@@ -656,15 +656,6 @@ enum OS: String, CustomStringConvertible {
         }
     }
     
-    var storyboardSegueUnwrap: String {
-        switch self {
-        case iOS:
-            return ""
-        case OSX:
-            return "!"
-        }
-    }
-    
     var storyboardControllerTypes: [String] {
         switch self {
         case iOS:
@@ -718,13 +709,14 @@ enum OS: String, CustomStringConvertible {
             return ""
         }
     }
-    
+
+    //TODO: check OSX
     var storyboardControllerReturnTypeCast: String {
         switch self {
         case iOS:
-            return " as! \(self.storyboardControllerReturnType)"
+            return ""
         case OSX:
-            return "!"
+            return " as! \(self.storyboardControllerReturnType)"
         }
     }
     
@@ -925,7 +917,7 @@ class Storyboard: XMLObject {
         print("        }")
         if let initialViewControllerClass = self.initialViewControllerClass {
             print("")
-            print("        static func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(initialViewControllerClass)! {")
+            print("        static func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(initialViewControllerClass) {")
             print("            return self.storyboard.instantiateInitial\(os.storyboardControllerSignatureType)() \(os.storyboardControllerInitialReturnTypeCast(initialViewControllerClass))")
             print("        }")
         }
@@ -936,7 +928,7 @@ class Storyboard: XMLObject {
         for scene in self.scenes {
             if let viewController = scene.viewController, customClass = viewController.customClass, storyboardIdentifier = viewController.storyboardIdentifier {
                 print("")
-                print("        static func instantiate\(storyboardIdentifier.trimAllWhitespaces)() -> \(customClass)! {")
+                print("        static func instantiate\(storyboardIdentifier.trimAllWhitespaces)() -> \(customClass) {")
                 print("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)")
                 print("        }")
             }
@@ -968,7 +960,7 @@ class Storyboard: XMLObject {
                         where segues.count > 0 {
                             print("extension \(customClass) { ")
                             print("")
-                            print("    enum Segue: String, Printable, SegueProtocol {")
+                            print("    enum Segue: String, CustomStringConvertible, SegueProtocol {")
                             for segue in segues {
                                 if let identifier = segue.identifier
                                 {
@@ -1018,7 +1010,7 @@ class Storyboard: XMLObject {
                             
                             print("extension \(customClass) { ")
                             print("")
-                            print("    enum Reusable: String, Printable, ReusableViewProtocol {")
+                            print("    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {")
                             for reusable in reusables {
                                 if let identifier = reusable.reuseIdentifier
                                 {
@@ -1097,7 +1089,6 @@ class StoryboardFile {
 func findStoryboards(rootPath: String, suffix: String) -> [String]? {
     var result = Array<String>()
     let fm = NSFileManager.defaultManager()
-    var error:NSError?
     if let paths = fm.subpathsAtPath(rootPath) {
         let storyboardPaths = paths.filter({ return $0.hasSuffix(suffix)})
         // result = storyboardPaths
@@ -1131,7 +1122,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     print("")
     
     print("//MARK: - ReusableKind")
-    print("enum ReusableKind: String, Printable {")
+    print("enum ReusableKind: String, CustomStringConvertible {")
     print("    case TableViewCell = \"tableViewCell\"")
     print("    case CollectionViewCell = \"collectionViewCell\"")
     print("")
@@ -1140,7 +1131,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     print("")
     
     print("//MARK: - SegueKind")
-    print("enum SegueKind: String, Printable {    ")
+    print("enum SegueKind: String, CustomStringConvertible {    ")
     print("    case Relationship = \"relationship\" ")
     print("    case Show = \"show\"                 ")
     print("    case Presentation = \"presentation\" ")
@@ -1207,7 +1198,9 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
         print("//MARK: - \(controllerType) extension")
         print("extension \(controllerType) {")
         print("    func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {")
-        print("       performSegueWithIdentifier(segue.identifier\(os.storyboardSegueUnwrap), sender: sender)")
+        print("       if let identifier = segue.identifier {")
+        print("           performSegueWithIdentifier(identifier, sender: sender)")
+        print("       }")
         print("    }")
         print("")
         print("    func performSegue<T: SegueProtocol>(segue: T) {")
@@ -1224,7 +1217,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
         print("")
         print("    func dequeueReusableCell<T: ReusableViewProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> UICollectionViewCell? {")
         print("        if let identifier = reusable.identifier {")
-        print("            return dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: forIndexPath) as? UICollectionViewCell")
+        print("            return dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: forIndexPath)")
         print("        }")
         print("        return nil")
         print("    }")
@@ -1237,7 +1230,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
         print("")
         print("    func dequeueReusableSupplementaryViewOfKind<T: ReusableViewProtocol>(elementKind: String, withReusable reusable: T, forIndexPath: NSIndexPath!) -> UICollectionReusableView? {")
         print("        if let identifier = reusable.identifier {")
-        print("            return dequeueReusableSupplementaryViewOfKind(elementKind, withReuseIdentifier: identifier, forIndexPath: forIndexPath) as? UICollectionReusableView")
+        print("            return dequeueReusableSupplementaryViewOfKind(elementKind, withReuseIdentifier: identifier, forIndexPath: forIndexPath)")
         print("        }")
         print("        return nil")
         print("    }")
@@ -1255,7 +1248,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
         print("")
         print("    func dequeueReusableCell<T: ReusableViewProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> UITableViewCell? {")
         print("        if let identifier = reusable.identifier {")
-        print("            return dequeueReusableCellWithIdentifier(identifier, forIndexPath: forIndexPath) as? UITableViewCell")
+        print("            return dequeueReusableCellWithIdentifier(identifier, forIndexPath: forIndexPath)")
         print("        }")
         print("        return nil")
         print("    }")
@@ -1268,7 +1261,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
         print("")
         print("    func dequeueReusableHeaderFooter<T: ReusableViewProtocol>(reusable: T) -> UITableViewHeaderFooterView? {")
         print("        if let identifier = reusable.identifier {")
-        print("            return dequeueReusableHeaderFooterViewWithIdentifier(identifier) as? UITableViewHeaderFooterView")
+        print("            return dequeueReusableHeaderFooterViewWithIdentifier(identifier)")
         print("        }")
         print("        return nil")
         print("    }")
