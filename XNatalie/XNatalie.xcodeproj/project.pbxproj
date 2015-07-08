@@ -14,7 +14,6 @@
 		C4A1CE641B04B79200EC9F6E /* IBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A1CE5F1B04B79200EC9F6E /* IBFoundation.framework */; };
 		C4A1CE651B04B79200EC9F6E /* IDEFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A1CE601B04B79200EC9F6E /* IDEFoundation.framework */; };
 		C4A1CE661B04B79200EC9F6E /* IDEKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A1CE611B04B79200EC9F6E /* IDEKit.framework */; };
-		C4A1CE681B04B8E600EC9F6E /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = C4A1CE671B04B8E600EC9F6E /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -124,6 +123,7 @@
 		C4A1CE441B04B6C500EC9F6E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = phimage;
 				TargetAttributes = {
@@ -165,7 +165,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4A1CE681B04B8E600EC9F6E /* README.md in Sources */,
 				C4A1CE531B04B6C500EC9F6E /* XNatalie.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
