@@ -1047,15 +1047,19 @@ class Storyboard: XMLObject {
                             print("")
                             print("        var viewType: \(self.os.viewType).Type? {")
                             print("            switch (self) {")
+                            needDefault = false
                             for reusable in reusables {
-                                if let identifier = reusable.reuseIdentifier, customClass = reusable.customClass
-                                {
+                                if let identifier = reusable.reuseIdentifier, customClass = reusable.customClass {
                                     print("            case \(identifier):")
                                     print("                return \(customClass).self")
+                                } else {
+                                    needDefault = true
                                 }
                             }
-                            print("            default:")
-                            print("                return nil")
+                            if needDefault {
+                                print("            default:")
+                                print("                return nil")
+                            }
                             print("            }")
                             print("        }")
                             print("")
