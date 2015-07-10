@@ -1302,7 +1302,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
 
 if Process.arguments.count == 1 {
     print("Invalid usage. Missing path to storyboard.")
-    exit(0)
+    exit(1)
 }
 
 let argument = Process.arguments[1]
@@ -1331,3 +1331,4 @@ for os in OS.allValues {
     }
 }
 
+exit(0)
