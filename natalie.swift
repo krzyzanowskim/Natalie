@@ -102,7 +102,7 @@ struct Stack<T> {
     }
 }
 
-class LazyXMLParser : NSObject, NSXMLParserDelegate {
+class LazyXMLParser: NSObject, NSXMLParserDelegate {
     override init() {
         super.init()
     }
@@ -178,7 +178,7 @@ class LazyXMLParser : NSObject, NSXMLParserDelegate {
 }
 
 /// The implementation of NSXMLParserDelegate and where the parsing actually happens.
-class XMLParser : NSObject, NSXMLParserDelegate {
+class XMLParser: NSObject, NSXMLParserDelegate {
     override init() {
         super.init()
     }
@@ -270,7 +270,7 @@ public class IndexOps {
 }
 
 /// Returned from SWXMLHash, allows easy element lookup into XML data.
-public enum XMLIndexer : SequenceType {
+public enum XMLIndexer: SequenceType {
     case Element(XMLElement)
     case List([XMLElement])
     case Stream(IndexOps)
@@ -342,7 +342,7 @@ public enum XMLIndexer : SequenceType {
             let match = opStream.findElements()
             return match.withAttr(attr, value)
         case .List(let list):
-            if let elem = list.filter({$0.attributes[attr] == value}).first {
+            if let elem = list.filter({ $0.attributes[attr] == value }).first {
                 return .Element(elem)
             }
             return .Error(NSError(domain: "SWXMLDomain", code: 1000, userInfo: valueUserInfo))
@@ -558,8 +558,7 @@ extension XMLElement: CustomStringConvertible {
 
             if text != nil {
                 return "<\(name)\(attributesString)>\(text!)</\(name)>"
-            }
-            else {
+            } else {
                 return "<\(name)\(attributesString)/>"
             }
         }
@@ -587,7 +586,6 @@ enum OS: String, CustomStringConvertible {
                 self = .MacOSXCocoa
             }
         }
-
     }
 
     enum Framework: String {
@@ -686,7 +684,7 @@ enum OS: String, CustomStringConvertible {
     var resuableViews: [String]? {
         switch self {
         case iOS:
-            return ["UICollectionReusableView","UITableViewCell"]
+            return ["UICollectionReusableView", "UITableViewCell"]
         case OSX:
             return nil
         }
@@ -829,11 +827,11 @@ class Scene: XMLObject {
             return ViewController(xml: vc)
         }
         return nil
-        }()
+    }()
 
     lazy var segues: [Segue]? = {
         return self.searchNamed("segue")?.map { Segue(xml: $0) }
-        }()
+    }()
 
     lazy var customModule: String? = self.viewController?.customModule
     lazy var customModuleProvider: String? = self.viewController?.customModuleProvider
@@ -851,7 +849,7 @@ class ViewController: XMLObject {
             return reusables.map { Reusable(xml: $0) }
         }
         return nil
-        }()
+    }()
 }
 
 class Segue: XMLObject {
@@ -902,7 +900,7 @@ class Storyboard: XMLObject {
             return scenes.map { Scene(xml: $0) }
         }
         return []
-        }()
+    }()
 
     lazy var customModules: [String] = self.scenes.filter{ $0.customModule != nil && $0.customModuleProvider == nil  }.map{ $0.customModule! }
 
@@ -1189,7 +1187,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
 
     print("//MARK: - ReusableViewProtocol")
     print("public protocol ReusableViewProtocol: IdentifiableProtocol {")
-    print("    var viewType: \(os.viewType).Type? {get}")
+    print("    var viewType: \(os.viewType).Type? { get }")
     print("}")
     print("")
 
@@ -1206,8 +1204,8 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     if let reusableViews = os.resuableViews {
         for reusableView in reusableViews {
             print("extension \(reusableView): ReusableViewProtocol {")
-            print("    public var viewType: UIView.Type? { return self.dynamicType}")
-            print("    public var identifier: String? { return self.reuseIdentifier}")
+            print("    public var viewType: UIView.Type? { return self.dynamicType }")
+            print("    public var identifier: String? { return self.reuseIdentifier }")
             print("}")
             print("")
         }
