@@ -1295,17 +1295,17 @@ if Process.arguments.count == 1 {
 }
 
 let argument = Process.arguments[1]
-var storyboards:[String] = []
+var filePaths:[String] = []
 let storyboardSuffix = ".storyboard"
 if argument.hasSuffix(storyboardSuffix) {
-    storyboards = [argument]
+    filePaths = [argument]
 } else if let s = findStoryboards(argument, suffix: storyboardSuffix) {
-    storyboards = s
+    filePaths = s
 }
-let storyboardFiles: [StoryboardFile] = storyboards.map { StoryboardFile(filePath: $0) }
+let storyboardFiles = filePaths.map { StoryboardFile(filePath: $0) }
 
 for os in OS.allValues {
-    var storyboardsForOS = storyboardFiles.filter { $0.storyboard.os == os }
+    let storyboardsForOS = storyboardFiles.filter({ $0.storyboard.os == os })
     if !storyboardsForOS.isEmpty {
 
         if storyboardsForOS.count != storyboardFiles.count {
