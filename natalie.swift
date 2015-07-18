@@ -855,10 +855,14 @@ class ViewController: XMLObject {
 }
 
 class Segue: XMLObject {
-
+    let kind: String
     lazy var identifier: String? = self.xml.element?.attributes["identifier"]
-    lazy var kind: String? = self.xml.element?.attributes["kind"]
     lazy var destination: String? = self.xml.element?.attributes["destination"]
+    
+    override init(xml: XMLIndexer) {
+        self.kind = xml.element!.attributes["kind"]!
+        super.init(xml: xml)
+    }
 }
 
 class Reusable: XMLObject {
@@ -897,10 +901,11 @@ class Storyboard: XMLObject {
     }
 
     lazy var scenes: [Scene] = {
-        if let scenes = self.searchAll(self.xml, attributeKey: "sceneID"){
-            return scenes.map { Scene(xml: $0) }
+        guard let scenes = self.searchAll(self.xml, attributeKey: "sceneID") else {
+            return []
         }
-        return []
+        
+        return scenes.map { Scene(xml: $0) }
     }()
 
     lazy var customModules: [String] = self.scenes.filter{ $0.customModule != nil && $0.customModuleProvider == nil  }.map{ $0.customModule! }
@@ -976,17 +981,17 @@ class Storyboard: XMLObject {
                             print("            switch (self) {")
                             var needDefaultSegue = false
                             for segue in segues {
-                                if let identifier = segue.identifier, kind = segue.kind {
+                                if let identifier = segue.identifier {
                                     print("            case \(identifier.trimAllWhitespacesAndSpecialCharacters):")
-                                    print("                return SegueKind(rawValue: \"\(kind)\")")
+                                    print("                return SegueKind(rawValue: \"\(segue.kind)\")")
                                 } else {
                                     needDefaultSegue = true
                                 }
                             }
                             if needDefaultSegue {
                                 print("            default:")
-                                print("                preconditionFailure(\"Invalid value\")")
-                                print("                break")
+                                print("                assertionFailure(\"Invalid value\")")
+                                print("                return nil")
                             }
                             print("            }")
                             print("        }")
@@ -1147,6 +1152,11 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     print("    case Presentation = \"presentation\" ")
     print("    case Embed = \"embed\"               ")
     print("    case Unwind = \"unwind\"             ")
+    print("    case Push = \"push\"                 ")
+    print("    case Modal = \"modal\"               ")
+    print("    case Popover = \"popover\"           ")
+    print("    case Replace = \"replace\"           ")
+    print("    case Custom = \"custom\"             ")
     print("")
     print("    var description: String { return self.rawValue } ")
     print("}")

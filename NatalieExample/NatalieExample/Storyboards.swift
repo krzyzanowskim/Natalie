@@ -16,10 +16,6 @@ struct Storyboards {
             return UIStoryboard(name: self.identifier, bundle: nil)
         }
 
-        static func instantiateInitialViewController() -> UINavigationController {
-            return self.storyboard.instantiateInitialViewController() as! UINavigationController
-        }
-
         static func instantiateViewControllerWithIdentifier(identifier: String) -> UIViewController {
             return self.storyboard.instantiateViewControllerWithIdentifier(identifier)
         }
@@ -53,6 +49,11 @@ enum SegueKind: String, CustomStringConvertible {
     case Presentation = "presentation" 
     case Embed = "embed"               
     case Unwind = "unwind"             
+    case Push = "push"                 
+    case Modal = "modal"               
+    case Popover = "popover"           
+    case Replace = "replace"           
+    case Custom = "custom"             
 
     var description: String { return self.rawValue } 
 }
@@ -83,7 +84,7 @@ public func ~=<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {
 
 //MARK: - ReusableViewProtocol
 public protocol ReusableViewProtocol: IdentifiableProtocol {
-    var viewType: UIView.Type? {get}
+    var viewType: UIView.Type? { get }
 }
 
 public func ==<T: ReusableViewProtocol, U: ReusableViewProtocol>(lhs: T, rhs: U) -> Bool {
@@ -95,13 +96,13 @@ extension UIStoryboardSegue: SegueProtocol {
 }
 
 extension UICollectionReusableView: ReusableViewProtocol {
-    public var viewType: UIView.Type? { return self.dynamicType}
-    public var identifier: String? { return self.reuseIdentifier}
+    public var viewType: UIView.Type? { return self.dynamicType }
+    public var identifier: String? { return self.reuseIdentifier }
 }
 
 extension UITableViewCell: ReusableViewProtocol {
-    public var viewType: UIView.Type? { return self.dynamicType}
-    public var identifier: String? { return self.reuseIdentifier}
+    public var viewType: UIView.Type? { return self.dynamicType }
+    public var identifier: String? { return self.reuseIdentifier }
 }
 
 //MARK: - UIViewController extension
