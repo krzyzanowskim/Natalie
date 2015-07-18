@@ -764,12 +764,12 @@ enum OS: String, CustomStringConvertible {
 
 class XMLObject {
 
-    var xml: XMLIndexer
-
-    lazy var name: String? = self.xml.element?.name
+    let xml: XMLIndexer
+    let name: String
 
     init(xml: XMLIndexer) {
         self.xml = xml
+        self.name = xml.element!.name
     }
 
     func searchAll(attributeKey: String, attributeValue: String? = nil) -> [XMLIndexer]? {
@@ -870,32 +870,31 @@ class Reusable: XMLObject {
 
 class Storyboard: XMLObject {
 
-    lazy var os:OS = self.initOS() ?? OS.iOS
-    private func initOS() -> OS? {
-        if let targetRuntime = self.xml["document"].element?.attributes["targetRuntime"] {
-            return OS(targetRuntime: targetRuntime)
+    let version: String
+    lazy var os:OS = {
+        guard let targetRuntime = self.xml["document"].element?.attributes["targetRuntime"] else {
+            return OS.iOS
         }
-        return nil
-    }
+        
+        return OS(targetRuntime: targetRuntime)
+    }()
 
     lazy var initialViewControllerClass: String? = self.initInitialViewControllerClass()
     private func initInitialViewControllerClass() -> String? {
         if let initialViewControllerId = xml["document"].element?.attributes["initialViewController"],
-            xmlVC = searchById(initialViewControllerId)
+           let xmlVC = searchById(initialViewControllerId)
         {
             let vc = ViewController(xml: xmlVC)
             if let customClassName = vc.customClass {
                 return customClassName
             }
 
-            if let name = vc.name, controllerType = os.controllerTypeForElementName(name) {
+            if let controllerType = os.controllerTypeForElementName(name) {
                 return controllerType
             }
         }
         return nil
     }
-
-    lazy var version: String? = self.xml["document"].element?.attributes["version"]
 
     lazy var scenes: [Scene] = {
         if let scenes = self.searchAll(self.xml, attributeKey: "sceneID"){
@@ -905,7 +904,12 @@ class Storyboard: XMLObject {
     }()
 
     lazy var customModules: [String] = self.scenes.filter{ $0.customModule != nil && $0.customModuleProvider == nil  }.map{ $0.customModule! }
-
+    
+    override init(xml: XMLIndexer) {
+        self.version = xml["document"].element!.attributes["version"]!
+        super.init(xml: xml)
+    }
+    
     func processStoryboard(storyboardName: String, os: OS) {
         print("")
         print("    struct \(storyboardName) {")
