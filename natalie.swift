@@ -1078,28 +1078,15 @@ class Storyboard: XMLObject {
 }
 
 class StoryboardFile {
-
-    let filePath: String
-    init(filePath: String){
-        self.filePath = filePath
+    let data: NSData
+    let storyboardName: String
+    let storyboard: Storyboard
+    
+    init(filePath: String) {
+        self.data = NSData(contentsOfFile: filePath)!
+        self.storyboardName = filePath.lastPathComponent.stringByDeletingPathExtension
+        self.storyboard = Storyboard(xml:SWXMLHash.parse(self.data))
     }
-
-    lazy var storyboardName: String = self.filePath.lastPathComponent.stringByDeletingPathExtension
-
-    lazy var data: NSData? = NSData(contentsOfFile: self.filePath)
-    lazy var xml: XMLIndexer? = {
-        if let d = self.data {
-            return SWXMLHash.parse(d)
-        }
-        return nil
-        }()
-
-    lazy var storyboard: Storyboard? = {
-        if let xml = self.xml {
-            return Storyboard(xml:xml)
-        }
-        return nil
-        }()
 }
 
 
@@ -1126,7 +1113,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     print("//")
     print("")
     print("import \(os.framework)")
-    let modules = storyboards.filter{ $0.storyboard != nil }.flatMap{ $0.storyboard!.customModules }
+    let modules = storyboards.flatMap{ $0.storyboard.customModules }
     for module in Set<String>(modules) {
         print("import \(module)")
     }
@@ -1135,7 +1122,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     print("//MARK: - Storyboards")
     print("struct Storyboards {")
     for file in storyboards {
-        file.storyboard?.processStoryboard(file.storyboardName, os: os)
+        file.storyboard.processStoryboard(file.storyboardName, os: os)
     }
     print("}")
     print("")
@@ -1295,7 +1282,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     }
 
     for file in storyboards {
-        file.storyboard?.processViewControllers()
+        file.storyboard.processViewControllers()
     }
 
 }
@@ -1318,7 +1305,7 @@ if argument.hasSuffix(storyboardSuffix) {
 let storyboardFiles: [StoryboardFile] = storyboards.map { StoryboardFile(filePath: $0) }
 
 for os in OS.allValues {
-    var storyboardsForOS = storyboardFiles.filter { $0.storyboard?.os == os }
+    var storyboardsForOS = storyboardFiles.filter { $0.storyboard.os == os }
     if !storyboardsForOS.isEmpty {
 
         if storyboardsForOS.count != storyboardFiles.count {
