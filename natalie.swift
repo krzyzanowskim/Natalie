@@ -952,7 +952,7 @@ class Storyboard: XMLObject {
                     print("")
                     print("//MARK: - \(customClass)")
 
-                    if let segues = scene.segues?.filter({ return $0.identifier != nil })
+                    if let segues = scene.segues?.filter({ return $0.identifier?.characters.count > 0 })
                         where segues.count > 0 {
                             print("extension \(os.storyboardSegueType) {")
                             print("    func selection() -> \(customClass).Segue? {")
@@ -965,7 +965,7 @@ class Storyboard: XMLObject {
                             print("")
                     }
 
-                    if let segues = scene.segues?.filter({ return $0.identifier != nil })
+                    if let segues = scene.segues?.filter({ return $0.identifier?.characters.count > 0 })
                         where segues.count > 0 {
                             print("extension \(customClass) { ")
                             print("")
