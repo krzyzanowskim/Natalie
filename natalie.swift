@@ -655,15 +655,6 @@ enum OS: String, CustomStringConvertible {
         }
     }
 
-    var storyboardTypeUnwrap: String {
-        switch self {
-        case iOS:
-            return ""
-        case OSX:
-            return "!"
-        }
-    }
-
     var storyboardControllerTypes: [String] {
         switch self {
         case iOS:
@@ -679,6 +670,15 @@ enum OS: String, CustomStringConvertible {
             return "ViewController"
         case OSX:
             return "Controller" // NSViewController or NSWindowController
+        }
+    }
+
+    var storyboardInstantiationInfo: [(String /* Signature type */, String /* Return type */)] {
+        switch self {
+        case iOS:
+            return [("ViewController", "UIViewController")]
+        case OSX:
+            return [("WindowController", "NSWindowController"), ("ViewController", "NSViewController")]
         }
     }
 
@@ -709,38 +709,12 @@ enum OS: String, CustomStringConvertible {
         }
     }
 
-    var storyboardControllerInitialReturnTypeCast: String {
-        switch self {
-        case iOS:
-            return "as? \(self.storyboardControllerReturnType)"
-        case OSX:
-            return ""
-        }
-    }
-
-    //TODO: check OSX
-    var storyboardControllerReturnTypeCast: String {
-        switch self {
-        case iOS:
-            return ""
-        case OSX:
-            return " as! \(self.storyboardControllerReturnType)"
-        }
-    }
-
-    func storyboardControllerInitialReturnTypeCast(initialClass: String) -> String {
-        switch self {
-        case iOS:
-            return "as! \(initialClass)"
-        case OSX:
-            return ""
-        }
-    }
-
     func controllerTypeForElementName(name: String) -> String? {
         switch self {
         case iOS:
             switch name {
+            case "viewController":
+                return "UIViewController"
             case "navigationController":
                 return "UINavigationController"
             case "tableViewController":
@@ -757,6 +731,10 @@ enum OS: String, CustomStringConvertible {
             }
         case OSX:
             switch name {
+            case "viewController":
+                return "NSViewController"
+            case "windowController":
+                return "NSWindowController"
             case "pagecontroller":
                 return "NSPageController"
             case "tabViewController":
@@ -931,7 +909,7 @@ class Storyboard: XMLObject {
         self.version = xml["document"].element!.attributes["version"]!
         super.init(xml: xml)
     }
-    
+
     func processStoryboard(storyboardName: String, os: OS) {
         print("")
         print("    struct \(storyboardName) {")
@@ -939,23 +917,28 @@ class Storyboard: XMLObject {
         print("        static let identifier = \"\(storyboardName)\"")
         print("")
         print("        static var storyboard: \(os.storyboardType) {")
-        print("            return \(os.storyboardType)(name: self.identifier, bundle: nil)\(os.storyboardTypeUnwrap)")
+        print("            return \(os.storyboardType)(name: self.identifier, bundle: nil)")
         print("        }")
         if let initialViewControllerClass = self.initialViewControllerClass {
+            let cast = (initialViewControllerClass == os.storyboardControllerReturnType ? "" : " as! \(initialViewControllerClass)")
             print("")
             print("        static func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(initialViewControllerClass) {")
-            print("            return self.storyboard.instantiateInitial\(os.storyboardControllerSignatureType)() \(os.storyboardControllerInitialReturnTypeCast(initialViewControllerClass))")
+            print("            return self.storyboard.instantiateInitial\(os.storyboardControllerSignatureType)()\(cast)")
             print("        }")
         }
-        print("")
-        print("        static func instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier: String) -> \(os.storyboardControllerReturnType) {")
-        print("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier)\(os.storyboardControllerReturnTypeCast)")
-        print("        }")
+        for (signatureType, returnType) in os.storyboardInstantiationInfo {
+            let cast = (returnType == os.storyboardControllerReturnType ? "" : " as! \(returnType)")
+            print("")
+            print("        static func instantiate\(signatureType)WithIdentifier(identifier: String) -> \(returnType) {")
+            print("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier)\(cast)")
+            print("        }")
+        }
         for scene in self.scenes {
-            if let viewController = scene.viewController, customClass = viewController.customClass, storyboardIdentifier = viewController.storyboardIdentifier {
+            if let viewController = scene.viewController, storyboardIdentifier = viewController.storyboardIdentifier {
+                let controllerClass = (viewController.customClass ?? os.controllerTypeForElementName(viewController.name)!)
                 print("")
-                print("        static func instantiate\(SwiftRepresentationForString(storyboardIdentifier, capitalizeFirstLetter: true))() -> \(customClass) {")
-                print("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)")
+                print("        static func instantiate\(SwiftRepresentationForString(storyboardIdentifier, capitalizeFirstLetter: true))() -> \(controllerClass) {")
+                print("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(controllerClass)")
                 print("        }")
             }
         }
