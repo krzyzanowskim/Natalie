@@ -147,14 +147,22 @@ Natalie can be integrated with Xcode in such a way that the `Storyboards.swift` 
 
 This is my setup created with **New Run Script Phase** on **Build Phase** Xcode target setting. It is important to move this phase above Compilation phase because this file is expected to be up to date for the rest of the application.
 
-```
-echo "Natalie generator"
+```sh
+echo "Natalie Generator: Determining if generated Swift file is up-to-date."
 
 NATALIE_PATH="/usr/local/bin/natalie.swift"
 
 if [ -f $NATALIE_PATH ]
 then
-    $NATALIE_PATH "$PROJECT_DIR/$PROJECT_NAME" > "$PROJECT_DIR/$PROJECT_NAME/Storyboards.swift"
+	BASE_PATH="$PROJECT_DIR/$PROJECT_NAME"
+	OUTPUT_PATH="$BASE_PATH/Storyboards.swift"
+	if [ ! -e "$OUTPUT_PATH" ] || [ -n "$(find "$BASE_PATH" -type f -name "*.storyboard" -newer "$OUTPUT_PATH" -print -quit)" ]; then
+		echo "Natalie Generator: Generated Swift is out-of-date; re-generating..."
+	    "$NATALIE_PATH" "$PROJECT_DIR/$PROJECT_NAME" > "$PROJECT_DIR/$PROJECT_NAME/Storyboards.swift"
+		echo "Natalie Generator: Done."
+	else
+		echo "Natalie Generator: Generated Swift is up-to-date; skipping re-generation."
+	fi
 fi
 ```
 
