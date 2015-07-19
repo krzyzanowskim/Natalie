@@ -47,7 +47,10 @@
 				75FBDF931ADE59A30056F7DA /* NatalieExample */,
 				75FBDF921ADE59A30056F7DA /* Products */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		75FBDF921ADE59A30056F7DA /* Products */ = {
 			isa = PBXGroup;

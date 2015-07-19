@@ -34,7 +34,10 @@
 				75C988631B35F2CE000A3931 /* Main */,
 				75C988621B35F2CE000A3931 /* Products */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		75C988621B35F2CE000A3931 /* Products */ = {
 			isa = PBXGroup;
