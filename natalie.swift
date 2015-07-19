@@ -1001,10 +1001,11 @@ class Storyboard: XMLObject {
                             var needDefaultDestination = false
                             for segue in segues {
                                 if let identifier = segue.identifier, destination = segue.destination,
-                                    destinationCustomClass = searchById(destination)?.element?.attributes["customClass"]
+                                    destinationElement = searchById(destination)?.element,
+                                    destinationClass = (destinationElement.attributes["customClass"] ?? os.controllerTypeForElementName(destinationElement.name))
                                 {
                                     print("            case \(SwiftRepresentationForString(identifier)):")
-                                    print("                return \(destinationCustomClass).self")
+                                    print("                return \(destinationClass).self")
                                 } else {
                                     needDefaultDestination = true
                                 }
