@@ -16,6 +16,10 @@ struct Storyboards {
             return UIStoryboard(name: self.identifier, bundle: nil)
         }
 
+        static func instantiateInitialViewController() -> UINavigationController {
+            return self.storyboard.instantiateInitialViewController() as! UINavigationController
+        }
+
         static func instantiateViewControllerWithIdentifier(identifier: String) -> UIViewController {
             return self.storyboard.instantiateViewControllerWithIdentifier(identifier)
         }

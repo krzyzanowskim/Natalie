@@ -748,6 +748,7 @@ enum OS: String, CustomStringConvertible {
             case "pageViewController":
                 return "UIPageViewController"
             default:
+                assertionFailure("Unknown controller element: \(name)")
                 return nil
             }
         case OSX:
@@ -759,6 +760,7 @@ enum OS: String, CustomStringConvertible {
             case "splitViewController":
                 return "NSSplitViewController"
             default:
+                assertionFailure("Unknown controller element: \(name)")
                 return nil
             }
         }
@@ -895,22 +897,21 @@ class Storyboard: XMLObject {
         return OS(targetRuntime: targetRuntime)
     }()
 
-    lazy var initialViewControllerClass: String? = self.initInitialViewControllerClass()
-    private func initInitialViewControllerClass() -> String? {
-        if let initialViewControllerId = xml["document"].element?.attributes["initialViewController"],
-           let xmlVC = searchById(initialViewControllerId)
+    lazy var initialViewControllerClass: String? = {
+        if let initialViewControllerId = self.xml["document"].element?.attributes["initialViewController"],
+           let xmlVC = self.searchById(initialViewControllerId)
         {
             let vc = ViewController(xml: xmlVC)
             if let customClassName = vc.customClass {
                 return customClassName
             }
 
-            if let controllerType = os.controllerTypeForElementName(name) {
+            if let controllerType = self.os.controllerTypeForElementName(vc.name) {
                 return controllerType
             }
         }
         return nil
-    }
+    }()
 
     lazy var scenes: [Scene] = {
         guard let scenes = self.searchAll(self.xml, attributeKey: "sceneID") else {
