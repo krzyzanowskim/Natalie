@@ -28,8 +28,8 @@ struct Storyboards {
             return self.storyboard.instantiateViewControllerWithIdentifier("MainViewController") as! MainViewController
         }
 
-        static func instantiateScreenTwoViewController() -> ScreenTwoViewController {
-            return self.storyboard.instantiateViewControllerWithIdentifier("ScreenTwoViewController") as! ScreenTwoViewController
+        static func instantiateSecondViewController() -> ScreenTwoViewController {
+            return self.storyboard.instantiateViewControllerWithIdentifier("secondViewController") as! ScreenTwoViewController
         }
 
         static func instantiateScreenOneViewController() -> ScreenOneViewController {

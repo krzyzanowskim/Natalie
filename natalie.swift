@@ -49,8 +49,12 @@ private extension String {
   }
 }
 
-private func SwiftRepresentationForString(string: String) -> String {
-    return string.trimAllWhitespacesAndSpecialCharacters()
+private func SwiftRepresentationForString(string: String, capitalizeFirstLetter: Bool = false) -> String {
+    var str =  string.trimAllWhitespacesAndSpecialCharacters()
+    if capitalizeFirstLetter {
+       str = String(prefix(str.uppercaseString.unicodeScalars,1) + suffix(str.unicodeScalars, str.unicodeScalars.count - 1))
+    }
+    return str
 }
 
 //MARK: Parser
@@ -950,7 +954,7 @@ class Storyboard: XMLObject {
         for scene in self.scenes {
             if let viewController = scene.viewController, customClass = viewController.customClass, storyboardIdentifier = viewController.storyboardIdentifier {
                 print("")
-                print("        static func instantiate\(SwiftRepresentationForString(storyboardIdentifier))() -> \(customClass) {")
+                print("        static func instantiate\(SwiftRepresentationForString(storyboardIdentifier, capitalizeFirstLetter: true))() -> \(customClass) {")
                 print("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\") as! \(customClass)")
                 print("        }")
             }
