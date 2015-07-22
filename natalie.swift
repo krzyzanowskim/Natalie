@@ -849,7 +849,8 @@ class Segue: XMLObject {
     
     override init(xml: XMLIndexer) {
         self.kind = xml.element!.attributes["kind"]!
-        self.identifier = xml.element?.attributes["identifier"] ?? nil
+        if let id = xml.element?.attributes["identifier"] where id.characters.count > 0 {self.identifier = id}
+        else                                                                            {self.identifier = nil}
         super.init(xml: xml)
     }
     
@@ -952,7 +953,7 @@ class Storyboard: XMLObject {
                     print("")
                     print("//MARK: - \(customClass)")
 
-                    if let segues = scene.segues?.filter({ return $0.identifier?.characters.count > 0 })
+                    if let segues = scene.segues?.filter({ return $0.identifier != nil })
                         where segues.count > 0 {
                             print("extension \(os.storyboardSegueType) {")
                             print("    func selection() -> \(customClass).Segue? {")
@@ -965,7 +966,7 @@ class Storyboard: XMLObject {
                             print("")
                     }
 
-                    if let segues = scene.segues?.filter({ return $0.identifier?.characters.count > 0 })
+                    if let segues = scene.segues?.filter({ return $0.identifier != nil })
                         where segues.count > 0 {
                             print("extension \(customClass) { ")
                             print("")
