@@ -725,6 +725,8 @@ enum OS: String, CustomStringConvertible {
                 return "UISplitViewController"
             case "pageViewController":
                 return "UIPageViewController"
+            case "collectionViewController":
+                return "UICollectionViewController"
             case "exit":
                 return nil
             default:
