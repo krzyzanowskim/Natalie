@@ -179,6 +179,10 @@ If the parameter is a Storyboard file, then this file will be used. If a path to
 $ natalie.swift NatalieExample/NatalieExample/Base.lproj/Main.storyboard > NatalieExample/NatalieExample/Storyboards.swift
 ```
 
+##Contribution
+
+Please submit Pull Request against current development branch (today it is Swift2 branch)
+
 ## Author and contact
 Marcin Krzyżanowski 
 
