@@ -52,7 +52,7 @@ private extension String {
 private func SwiftRepresentationForString(string: String, capitalizeFirstLetter: Bool = false) -> String {
     var str =  string.trimAllWhitespacesAndSpecialCharacters()
     if capitalizeFirstLetter {
-       str = String(prefix(str.uppercaseString.unicodeScalars,1) + suffix(str.unicodeScalars, str.unicodeScalars.count - 1))
+       str = String(str.uppercaseString.unicodeScalars.prefix(1) + str.unicodeScalars.suffix(str.unicodeScalars.count - 1))
     }
     return str
 }
@@ -1100,7 +1100,7 @@ class StoryboardFile {
     
     init(filePath: String) {
         self.data = NSData(contentsOfFile: filePath)!
-        self.storyboardName = filePath.lastPathComponent.stringByDeletingPathExtension
+        self.storyboardName = ((filePath as NSString).lastPathComponent as NSString).stringByDeletingPathExtension
         self.storyboard = Storyboard(xml:SWXMLHash.parse(self.data))
     }
 }
@@ -1115,7 +1115,7 @@ func findStoryboards(rootPath: String, suffix: String) -> [String]? {
         let storyboardPaths = paths.filter({ return $0.hasSuffix(suffix)})
         // result = storyboardPaths
         for p in storyboardPaths {
-            result.append(rootPath.stringByAppendingPathComponent(p))
+            result.append((rootPath as NSString).stringByAppendingPathComponent(p))
         }
     }
     return result.count > 0 ? result : nil
