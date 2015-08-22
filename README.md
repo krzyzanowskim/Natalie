@@ -152,17 +152,21 @@ echo "Natalie Generator: Determining if generated Swift file is up-to-date."
 
 NATALIE_PATH="/usr/local/bin/natalie.swift"
 
-if [ -f $NATALIE_PATH ]
-then
-	BASE_PATH="$PROJECT_DIR/$PROJECT_NAME"
-	OUTPUT_PATH="$BASE_PATH/Storyboards.swift"
-	if [ ! -e "$OUTPUT_PATH" ] || [ -n "$(find "$BASE_PATH" -type f -name "*.storyboard" -newer "$OUTPUT_PATH" -print -quit)" ]; then
-		echo "Natalie Generator: Generated Swift is out-of-date; re-generating..."
-	    "$NATALIE_PATH" "$PROJECT_DIR/$PROJECT_NAME" > "$PROJECT_DIR/$PROJECT_NAME/Storyboards.swift"
-		echo "Natalie Generator: Done."
-	else
-		echo "Natalie Generator: Generated Swift is up-to-date; skipping re-generation."
-	fi
+if [ -f $NATALIE_PATH ]; then
+    BASE_PATH="$PROJECT_DIR/$PROJECT_NAME"
+    OUTPUT_PATH="$BASE_PATH/Storyboards.swift"
+    
+    if [ ! -e "$OUTPUT_PATH" ] || [ -n "$(find "$BASE_PATH" -type f -name "*.storyboard" -newer "$OUTPUT_PATH" -print -quit)" ]; then
+        echo "Natalie Generator: Generated Swift is out-of-date; re-generating..."
+
+        /usr/bin/chflags nouchg "$OUTPUT_PATH"
+        "$NATALIE_PATH" "$BASE_PATH" > "$OUTPUT_PATH"
+        /usr/bin/chflags uchg "$OUTPUT_PATH"
+
+        echo "Natalie Generator: Done."
+    else
+        echo "Natalie Generator: Generated Swift is up-to-date; skipping re-generation."
+    fi
 fi
 ```
 

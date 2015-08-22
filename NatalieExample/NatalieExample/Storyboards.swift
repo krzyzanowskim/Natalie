@@ -71,19 +71,27 @@ public protocol SegueProtocol: IdentifiableProtocol {
 }
 
 public func ==<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {
-   return lhs.identifier == rhs.identifier
+    return lhs.identifier == rhs.identifier
 }
 
 public func ~=<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {
-   return lhs.identifier == rhs.identifier
+    return lhs.identifier == rhs.identifier
 }
 
 public func ==<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {
-   return lhs.identifier == rhs
+    return lhs.identifier == rhs
 }
 
 public func ~=<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {
-   return lhs.identifier == rhs
+    return lhs.identifier == rhs
+}
+
+public func ==<T: SegueProtocol>(lhs: String, rhs: T) -> Bool {
+    return lhs == rhs.identifier
+}
+
+public func ~=<T: SegueProtocol>(lhs: String, rhs: T) -> Bool {
+    return lhs == rhs.identifier
 }
 
 //MARK: - ReusableViewProtocol
@@ -92,7 +100,7 @@ public protocol ReusableViewProtocol: IdentifiableProtocol {
 }
 
 public func ==<T: ReusableViewProtocol, U: ReusableViewProtocol>(lhs: T, rhs: U) -> Bool {
-   return lhs.identifier == rhs.identifier
+    return lhs.identifier == rhs.identifier
 }
 
 //MARK: - Protocol Implementation
@@ -112,13 +120,13 @@ extension UITableViewCell: ReusableViewProtocol {
 //MARK: - UIViewController extension
 extension UIViewController {
     func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {
-       if let identifier = segue.identifier {
-           performSegueWithIdentifier(identifier, sender: sender)
-       }
+        if let identifier = segue.identifier {
+            performSegueWithIdentifier(identifier, sender: sender)
+        }
     }
 
     func performSegue<T: SegueProtocol>(segue: T) {
-       performSegue(segue, sender: nil)
+        performSegue(segue, sender: nil)
     }
 }
 
