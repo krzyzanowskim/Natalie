@@ -45,7 +45,7 @@ private extension String {
   func trimAllWhitespacesAndSpecialCharacters() -> String {
     let invalidCharacters = NSCharacterSet.alphanumericCharacterSet().invertedSet
     let x = self.componentsSeparatedByCharactersInSet(invalidCharacters)
-    return "".join(x)
+    return x.joinWithSeparator("")
   }
 }
 
@@ -478,10 +478,10 @@ extension XMLIndexer: CustomStringConvertible {
         get {
             switch self {
             case .List(let list):
-                return "\n".join(list.map { $0.description })
+                return list.map { $0.description }.joinWithSeparator("\n")
             case .Element(let elem):
                 if elem.name == rootElementName {
-                    return "\n".join(elem.children.map { $0.description })
+                    return elem.children.map { $0.description }.joinWithSeparator("\n")
                 }
 
                 return elem.description
@@ -551,7 +551,7 @@ extension XMLElement: CustomStringConvertible {
                 }
             }
 
-            var attributesString = " ".join(attributesStringList)
+            var attributesString = attributesStringList.joinWithSeparator(" ")
             if (!attributesString.isEmpty) {
                 attributesString = " " + attributesString
             }
@@ -563,7 +563,7 @@ extension XMLElement: CustomStringConvertible {
                     xmlReturn.append(child.description)
                 }
                 xmlReturn.append("</\(name)>")
-                return "\n".join(xmlReturn)
+                return xmlReturn.joinWithSeparator("\n")
             }
 
             if text != nil {
