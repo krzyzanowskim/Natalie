@@ -104,7 +104,7 @@ class XNatalie: NSObject {
             let begin = (urlString as NSString).rangeOfString("file://")
             if (begin.location != NSNotFound) {
                 let fullPath = (urlString as NSString).substringFromIndex(begin.location + begin.length)
-                if fullPath.pathExtension == StoryboardExt {
+                if (fullPath as NSString).pathExtension == StoryboardExt {
                     self.storyboardFileName = fullPath
                 }
                 else {
@@ -132,7 +132,7 @@ class XNatalie: NSObject {
                 let storyboardPath = self.workingPath ?? fileName
                 let data = taskForStoryboardAtPath(storyboardPath)
                 
-                let storyboardFile = self.workingPath ?? fileName.stringByDeletingLastPathComponent
+                let storyboardFile = self.workingPath ?? (fileName as NSString).stringByDeletingLastPathComponent
                 writeSwiftFile(data, path: storyboardFile)
             }
         }
@@ -165,7 +165,7 @@ class XNatalie: NSObject {
     }
     
     func writeSwiftFile(data: NSData, path: String) -> String? {
-        let outputFolder = path.stringByAppendingPathComponent(self.swiftFile)
+        let outputFolder = (path as NSString).stringByAppendingPathComponent(self.swiftFile)
         
         if NSFileManager.defaultManager().fileExistsAtPath(outputFolder) {
             do {
@@ -185,7 +185,7 @@ class XNatalie: NSObject {
     
     var workingPath: String? {
         if let file = self.workspaceFile {
-            return file.stringByDeletingPathExtension
+            return (file as NSString).stringByDeletingPathExtension
         }
         return nil
     }
