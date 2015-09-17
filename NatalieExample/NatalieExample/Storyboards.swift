@@ -16,30 +16,30 @@ struct Storyboards {
             return UIStoryboard(name: self.identifier, bundle: nil)
         }
 
-        static func instantiateInitialViewController() -> UINavigationController! {
+        static func instantiateInitialViewController() -> UINavigationController {
             return self.storyboard.instantiateInitialViewController() as! UINavigationController
         }
 
         static func instantiateViewControllerWithIdentifier(identifier: String) -> UIViewController {
-            return self.storyboard.instantiateViewControllerWithIdentifier(identifier) as! UIViewController
+            return self.storyboard.instantiateViewControllerWithIdentifier(identifier)
         }
 
-        static func instantiateMainViewController() -> MainViewController! {
+        static func instantiateMainViewController() -> MainViewController {
             return self.storyboard.instantiateViewControllerWithIdentifier("MainViewController") as! MainViewController
         }
 
-        static func instantiateScreenTwoViewController() -> ScreenTwoViewController! {
-            return self.storyboard.instantiateViewControllerWithIdentifier("ScreenTwoViewController") as! ScreenTwoViewController
+        static func instantiateSecondViewController() -> ScreenTwoViewController {
+            return self.storyboard.instantiateViewControllerWithIdentifier("secondViewController") as! ScreenTwoViewController
         }
 
-        static func instantiateScreenOneViewController() -> ScreenOneViewController! {
+        static func instantiateScreenOneViewController() -> ScreenOneViewController {
             return self.storyboard.instantiateViewControllerWithIdentifier("Screen One ViewController") as! ScreenOneViewController
         }
     }
 }
 
 //MARK: - ReusableKind
-enum ReusableKind: String, Printable {
+enum ReusableKind: String, CustomStringConvertible {
     case TableViewCell = "tableViewCell"
     case CollectionViewCell = "collectionViewCell"
 
@@ -47,12 +47,17 @@ enum ReusableKind: String, Printable {
 }
 
 //MARK: - SegueKind
-enum SegueKind: String, Printable {    
+enum SegueKind: String, CustomStringConvertible {    
     case Relationship = "relationship" 
     case Show = "show"                 
     case Presentation = "presentation" 
     case Embed = "embed"               
     case Unwind = "unwind"             
+    case Push = "push"                 
+    case Modal = "modal"               
+    case Popover = "popover"           
+    case Replace = "replace"           
+    case Custom = "custom"             
 
     var description: String { return self.rawValue } 
 }
@@ -66,28 +71,36 @@ public protocol SegueProtocol: IdentifiableProtocol {
 }
 
 public func ==<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {
-   return lhs.identifier == rhs.identifier
+    return lhs.identifier == rhs.identifier
 }
 
 public func ~=<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {
-   return lhs.identifier == rhs.identifier
+    return lhs.identifier == rhs.identifier
 }
 
 public func ==<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {
-   return lhs.identifier == rhs
+    return lhs.identifier == rhs
 }
 
 public func ~=<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {
-   return lhs.identifier == rhs
+    return lhs.identifier == rhs
+}
+
+public func ==<T: SegueProtocol>(lhs: String, rhs: T) -> Bool {
+    return lhs == rhs.identifier
+}
+
+public func ~=<T: SegueProtocol>(lhs: String, rhs: T) -> Bool {
+    return lhs == rhs.identifier
 }
 
 //MARK: - ReusableViewProtocol
 public protocol ReusableViewProtocol: IdentifiableProtocol {
-    var viewType: UIView.Type? {get}
+    var viewType: UIView.Type? { get }
 }
 
 public func ==<T: ReusableViewProtocol, U: ReusableViewProtocol>(lhs: T, rhs: U) -> Bool {
-   return lhs.identifier == rhs.identifier
+    return lhs.identifier == rhs.identifier
 }
 
 //MARK: - Protocol Implementation
@@ -95,23 +108,25 @@ extension UIStoryboardSegue: SegueProtocol {
 }
 
 extension UICollectionReusableView: ReusableViewProtocol {
-    public var viewType: UIView.Type? { return self.dynamicType}
-    public var identifier: String? { return self.reuseIdentifier}
+    public var viewType: UIView.Type? { return self.dynamicType }
+    public var identifier: String? { return self.reuseIdentifier }
 }
 
 extension UITableViewCell: ReusableViewProtocol {
-    public var viewType: UIView.Type? { return self.dynamicType}
-    public var identifier: String? { return self.reuseIdentifier}
+    public var viewType: UIView.Type? { return self.dynamicType }
+    public var identifier: String? { return self.reuseIdentifier }
 }
 
 //MARK: - UIViewController extension
 extension UIViewController {
     func performSegue<T: SegueProtocol>(segue: T, sender: AnyObject?) {
-       performSegueWithIdentifier(segue.identifier, sender: sender)
+        if let identifier = segue.identifier {
+            performSegueWithIdentifier(identifier, sender: sender)
+        }
     }
 
     func performSegue<T: SegueProtocol>(segue: T) {
-       performSegue(segue, sender: nil)
+        performSegue(segue, sender: nil)
     }
 }
 
@@ -121,7 +136,7 @@ extension UICollectionView {
 
     func dequeueReusableCell<T: ReusableViewProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> UICollectionViewCell? {
         if let identifier = reusable.identifier {
-            return dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: forIndexPath) as? UICollectionViewCell
+            return dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: forIndexPath)
         }
         return nil
     }
@@ -134,7 +149,7 @@ extension UICollectionView {
 
     func dequeueReusableSupplementaryViewOfKind<T: ReusableViewProtocol>(elementKind: String, withReusable reusable: T, forIndexPath: NSIndexPath!) -> UICollectionReusableView? {
         if let identifier = reusable.identifier {
-            return dequeueReusableSupplementaryViewOfKind(elementKind, withReuseIdentifier: identifier, forIndexPath: forIndexPath) as? UICollectionReusableView
+            return dequeueReusableSupplementaryViewOfKind(elementKind, withReuseIdentifier: identifier, forIndexPath: forIndexPath)
         }
         return nil
     }
@@ -151,7 +166,7 @@ extension UITableView {
 
     func dequeueReusableCell<T: ReusableViewProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> UITableViewCell? {
         if let identifier = reusable.identifier {
-            return dequeueReusableCellWithIdentifier(identifier, forIndexPath: forIndexPath) as? UITableViewCell
+            return dequeueReusableCellWithIdentifier(identifier, forIndexPath: forIndexPath)
         }
         return nil
     }
@@ -164,7 +179,7 @@ extension UITableView {
 
     func dequeueReusableHeaderFooter<T: ReusableViewProtocol>(reusable: T) -> UITableViewHeaderFooterView? {
         if let identifier = reusable.identifier {
-            return dequeueReusableHeaderFooterViewWithIdentifier(identifier) as? UITableViewHeaderFooterView
+            return dequeueReusableHeaderFooterViewWithIdentifier(identifier)
         }
         return nil
     }
@@ -189,7 +204,7 @@ extension UIStoryboardSegue {
 
 extension MainViewController { 
 
-    enum Segue: String, Printable, SegueProtocol {
+    enum Segue: String, CustomStringConvertible, SegueProtocol {
         case ScreenOneSegueButton = "Screen One Segue Button"
         case ScreenOneSegue = "ScreenOneSegue"
         case ScreenTwoSegue = "ScreenTwoSegue"
@@ -205,9 +220,6 @@ extension MainViewController {
                 return SegueKind(rawValue: "push")
             case SceneOneGestureRecognizerSegue:
                 return SegueKind(rawValue: "push")
-            default:
-                preconditionFailure("Invalid value")
-                break
             }
         }
 
@@ -221,9 +233,6 @@ extension MainViewController {
                 return ScreenTwoViewController.self
             case SceneOneGestureRecognizerSegue:
                 return ScreenOneViewController.self
-            default:
-                assertionFailure("Unknown destination")
-                return nil
             }
         }
 
@@ -236,16 +245,13 @@ extension MainViewController {
 //MARK: - ScreenTwoViewController
 extension ScreenTwoViewController { 
 
-    enum Reusable: String, Printable, ReusableViewProtocol {
+    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {
         case MyCell = "MyCell"
 
         var kind: ReusableKind? {
             switch (self) {
             case MyCell:
                 return ReusableKind(rawValue: "tableViewCell")
-            default:
-                preconditionFailure("Invalid value")
-                break
             }
         }
 

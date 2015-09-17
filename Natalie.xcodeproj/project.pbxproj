@@ -34,7 +34,10 @@
 				75C988631B35F2CE000A3931 /* Main */,
 				75C988621B35F2CE000A3931 /* Products */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		75C988621B35F2CE000A3931 /* Products */ = {
 			isa = PBXGroup;
@@ -78,7 +81,8 @@
 		75C988591B35F2CE000A3931 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Marcin Krzyżanowski";
 				TargetAttributes = {
 					75C988601B35F2CE000A3931 = {
@@ -135,6 +139,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;

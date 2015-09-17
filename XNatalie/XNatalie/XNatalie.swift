@@ -114,7 +114,7 @@ class XNatalie: NSObject {
             }
             else {
                 self.storyboardFileName = nil
-                println("Unable to find file:// in \(urlString)")
+                print("Unable to find file:// in \(urlString)")
             }
         }
     }
@@ -125,8 +125,9 @@ class XNatalie: NSObject {
         }
         
         if let fileName = self.storyboardFileName {
-            if let notificationObject: AnyObject = notification.object
-                where notificationObject.isKindOfClass(NSClassFromString("IBStoryboardDocument")) // as? IBStoryboardDocument
+            if let notificationObject: AnyObject = notification.object,
+               let IBStoryboardDocumentClass = NSClassFromString("IBStoryboardDocument")
+               where notificationObject.isKindOfClass(IBStoryboardDocumentClass) // as? IBStoryboardDocument
             {
                 let storyboardPath = self.workingPath ?? fileName
                 let data = taskForStoryboardAtPath(storyboardPath)
@@ -156,7 +157,7 @@ class XNatalie: NSObject {
 
         let errorData = errorpipe.fileHandleForReading.readDataToEndOfFile()
         if errorData.length > 0 {
-            println(NSString(data: errorData, encoding: NSUTF8StringEncoding))
+            print(NSString(data: errorData, encoding: NSUTF8StringEncoding))
         }
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
@@ -167,12 +168,15 @@ class XNatalie: NSObject {
         let outputFolder = path.stringByAppendingPathComponent(self.swiftFile)
         
         if NSFileManager.defaultManager().fileExistsAtPath(outputFolder) {
-            NSFileManager.defaultManager().removeItemAtPath(outputFolder, error: nil)
+            do {
+                try NSFileManager.defaultManager().removeItemAtPath(outputFolder)
+            } catch _ {
+            }
         }
         NSFileManager.defaultManager().createFileAtPath(outputFolder, contents: nil, attributes: nil)
         
         if let forWriting = NSFileHandle(forWritingAtPath: outputFolder) {
-            println("writing to \(outputFolder)")
+            print("writing to \(outputFolder)")
             forWriting.writeData(data)
             return outputFolder
         }
@@ -188,7 +192,7 @@ class XNatalie: NSObject {
     
     // MARK: menu
     func createMenuItems() {
-        if let topItem = NSApp.mainMenu??.itemWithTitle("Product") {
+        if let topItem = NSApp.mainMenu?.itemWithTitle("Product") {
             let pluginMenuItem = NSMenuItem()
             pluginMenuItem.title = "Natalie"
             
@@ -232,20 +236,16 @@ class XNatalie: NSObject {
             }
         
             
-            alert.beginSheetModalForWindow(NSApp.keyWindow!!, completionHandler: { (response) -> Void in
-                
-            })
-            
-            let timer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: Selector("closeAlert:"), userInfo: alert, repeats: false)
+            alert.beginSheetModalForWindow(NSApp.keyWindow!, completionHandler: nil)
         }
         else {
-            println("not able to find project path")
+            print("not able to find project path")
         }
     }
     
     func closeAlert(timer: NSTimer) {
-        if let alert = timer.userInfo as? NSAlert, window = alert.window as? NSWindow {
-            window.orderOut(nil)
+        if let alert = timer.userInfo as? NSAlert {
+            alert.window.orderOut(nil)
         }
     }
     
@@ -264,7 +264,7 @@ class XNatalie: NSObject {
         input.stringValue = self.launchPath
         alert.accessoryView = input
         
-        alert.beginSheetModalForWindow(NSApp.keyWindow!!) { (response) -> Void in
+        alert.beginSheetModalForWindow(NSApp.keyWindow!) { (response) -> Void in
             if (response == NSAlertFirstButtonReturn) {
                 self.launchPath = input.stringValue
             }
@@ -290,25 +290,27 @@ class XNatalie: NSObject {
             return workspace.representingFilePath?.pathString
         }
         return nil
-        }()
+    }()
     
     lazy var workspaceName: String? = {
         if let workspace = self.workspace {
             return workspace.name
         }
         return nil
-        }()
+    }()
     
     lazy var workspace: IDEWorkspace? = {
         if let workspaceWindowControllers = IDEWorkspaceWindowController.workspaceWindowControllers() as? Array<AnyObject> {
             for controller in workspaceWindowControllers {
-                if controller.valueForKey("window")! as? NSObject == NSApp.keyWindow! {
-                    if let workSpace = controller.valueForKey("_workspace") as? IDEWorkspace {
-                        return workSpace
-                    }
+                if let window = controller.valueForKey("window") as? NSObject,
+                   let ws = controller.valueForKey("_workspace") as? IDEWorkspace,
+                   let keyWindow = NSApp.keyWindow
+                   where window == keyWindow
+                {
+                    return ws
                 }
             }
         }
         return nil
-        }()
+    }()
 }
