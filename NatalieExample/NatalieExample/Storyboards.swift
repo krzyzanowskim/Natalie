@@ -202,6 +202,11 @@ extension UIStoryboardSegue {
     }
 }
 
+extension MainViewController: IdentifiableProtocol { 
+    var identifier: String? { return "MainViewController" }
+    static var identifier: String? { return "MainViewController" }
+}
+
 extension MainViewController { 
 
     enum Segue: String, CustomStringConvertible, SegueProtocol {
@@ -243,6 +248,11 @@ extension MainViewController {
 }
 
 //MARK: - ScreenTwoViewController
+extension ScreenTwoViewController: IdentifiableProtocol { 
+    var identifier: String? { return "secondViewController" }
+    static var identifier: String? { return "secondViewController" }
+}
+
 extension ScreenTwoViewController { 
 
     enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {
@@ -270,3 +280,8 @@ extension ScreenTwoViewController {
 
 
 //MARK: - ScreenOneViewController
+extension ScreenOneViewController: IdentifiableProtocol { 
+    var identifier: String? { return "Screen One ViewController" }
+    static var identifier: String? { return "Screen One ViewController" }
+}
+

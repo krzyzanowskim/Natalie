@@ -972,6 +972,14 @@ class Storyboard: XMLObject {
                             print("")
                     }
 
+                    if let storyboardIdentifier = viewController.storyboardIdentifier {
+                        print("extension \(customClass): IdentifiableProtocol { ")
+                        print("    var identifier: String? { return \"\(storyboardIdentifier)\" }")
+                        print("    static var identifier: String? { return \"\(storyboardIdentifier)\" }")
+                        print("}")
+                        print("")
+                    }
+
                     if let segues = scene.segues?.filter({ return $0.identifier != nil })
                         where segues.count > 0 {
                             print("extension \(customClass) { ")
