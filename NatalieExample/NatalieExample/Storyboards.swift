@@ -6,9 +6,25 @@
 import UIKit
 
 //MARK: - Storyboards
+
+extension UIStoryboard {
+    func instantiateViewController<T: UIViewController where T: IdentifiableProtocol>(type: T.Type) -> T? {
+        let instance = type.init()
+        if let identifier = instance.identifier {
+            return self.instantiateViewControllerWithIdentifier(identifier) as? T
+        }
+        return nil
+    }
+}
+
+protocol Storyboard {
+    static var storyboard: UIStoryboard { get }
+    static var identifier: String { get }
+}
+
 struct Storyboards {
 
-    struct Main {
+    struct Main: Storyboard {
 
         static let identifier = "Main"
 
@@ -22,6 +38,10 @@ struct Storyboards {
 
         static func instantiateViewControllerWithIdentifier(identifier: String) -> UIViewController {
             return self.storyboard.instantiateViewControllerWithIdentifier(identifier)
+        }
+
+        static func instantiateViewController<T: UIViewController where T: IdentifiableProtocol>(type: T.Type) -> T? {
+            return self.storyboard.instantiateViewController(type)
         }
 
         static func instantiateMainViewController() -> MainViewController {

@@ -939,6 +939,11 @@ class Storyboard: XMLObject {
             print("        static func instantiate\(signatureType)WithIdentifier(identifier: String) -> \(returnType) {")
             print("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier)\(cast)")
             print("        }")
+
+            print("")
+            print("        static func instantiateViewController<T: UIViewController where T: IdentifiableProtocol>(type: T.Type) -> T? {")
+            print("            return self.storyboard.instantiateViewController(type)")
+            print("        }")
         }
         for scene in self.scenes {
             if let viewController = scene.viewController, storyboardIdentifier = viewController.storyboardIdentifier {
@@ -1146,8 +1151,20 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     print("//MARK: - Storyboards")
 
     print("")
+    print("extension UIStoryboard {")
+    print("    func instantiateViewController<T: UIViewController where T: IdentifiableProtocol>(type: T.Type) -> T? {")
+    print("        let instance = type.init()")
+    print("        if let identifier = instance.identifier {")
+    print("            return self.instantiateViewControllerWithIdentifier(identifier) as? T")
+    print("        }")
+    print("        return nil")
+    print("    }")
+    print("}")
+
+
+    print("")
     print("protocol Storyboard {")
-    print("    static var storyboard: UIStoryboard { get }")
+    print("    static var storyboard: \(os.storyboardType) { get }")
     print("    static var identifier: String { get }")
     print("}")
     print("")
