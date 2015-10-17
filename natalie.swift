@@ -919,7 +919,7 @@ class Storyboard: XMLObject {
 
     func processStoryboard(storyboardName: String, os: OS) {
         print("")
-        print("    struct \(storyboardName) {")
+        print("    struct \(storyboardName): Storyboard {")
         print("")
         print("        static let identifier = \"\(storyboardName)\"")
         print("")
@@ -1144,6 +1144,14 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     print("")
 
     print("//MARK: - Storyboards")
+
+    print("")
+    print("protocol Storyboard {")
+    print("    static var storyboard: UIStoryboard { get }")
+    print("    static var identifier: String { get }")
+    print("}")
+    print("")
+
     print("struct Storyboards {")
     for file in storyboards {
         file.storyboard.processStoryboard(file.storyboardName, os: os)
