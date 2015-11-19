@@ -727,7 +727,7 @@ enum OS: String, CustomStringConvertible {
                 return "UIPageViewController"
             case "collectionViewController":
                 return "UICollectionViewController"
-            case "exit":
+            case "exit", "viewControllerPlaceholder":
                 return nil
             default:
                 assertionFailure("Unknown controller element: \(name)")
@@ -745,7 +745,7 @@ enum OS: String, CustomStringConvertible {
                 return "NSTabViewController"
             case "splitViewController":
                 return "NSSplitViewController"
-            case "exit":
+            case "exit", "viewControllerPlaceholder":
                 return nil
             default:
                 assertionFailure("Unknown controller element: \(name)")
