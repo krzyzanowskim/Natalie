@@ -664,6 +664,15 @@ enum OS: String, CustomStringConvertible {
         }
     }
 
+    var storyboardControllerReturnType: String {
+        switch self {
+        case iOS:
+            return "UIViewController"
+        case OSX:
+            return "AnyObject" // NSViewController or NSWindowController
+        }
+    }
+
     var storyboardControllerSignatureType: String {
         switch self {
         case iOS:
@@ -697,15 +706,6 @@ enum OS: String, CustomStringConvertible {
             return ["UICollectionReusableView", "UITableViewCell"]
         case OSX:
             return nil
-        }
-    }
-
-    var storyboardControllerReturnType: String {
-        switch self {
-        case iOS:
-            return "UIViewController"
-        case OSX:
-            return "AnyObject" // NSViewController or NSWindowController
         }
     }
 
@@ -941,7 +941,7 @@ class Storyboard: XMLObject {
             print("        }")
 
             print("")
-            print("        static func instantiateViewController<T: UIViewController where T: IdentifiableProtocol>(type: T.Type) -> T? {")
+            print("        static func instantiateViewController<T: \(os.storyboardControllerTypes[0]) where T: IdentifiableProtocol>(type: T.Type) -> T? {")
             print("            return self.storyboard.instantiateViewController(type)")
             print("        }")
         }
@@ -1151,8 +1151,8 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     print("//MARK: - Storyboards")
 
     print("")
-    print("extension UIStoryboard {")
-    print("    func instantiateViewController<T: UIViewController where T: IdentifiableProtocol>(type: T.Type) -> T? {")
+    print("extension \(os.storyboardType) {")
+    print("    func instantiateViewController<T: \(os.storyboardControllerTypes[0]) where T: IdentifiableProtocol>(type: T.Type) -> T? {")
     print("        let instance = type.init()")
     print("        if let identifier = instance.identifier {")
     print("            return self.instantiateViewControllerWithIdentifier(identifier) as? T")
