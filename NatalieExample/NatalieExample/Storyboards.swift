@@ -10,7 +10,7 @@ import UIKit
 extension UIStoryboard {
     func instantiateViewController<T: UIViewController where T: IdentifiableProtocol>(type: T.Type) -> T? {
         let instance = type.init()
-        if let identifier = instance.identifier {
+        if let identifier = instance.storyboardIdentifier {
             return self.instantiateViewControllerWithIdentifier(identifier) as? T
         }
         return nil
@@ -84,10 +84,11 @@ enum SegueKind: String, CustomStringConvertible {
 
 //MARK: - SegueProtocol
 public protocol IdentifiableProtocol: Equatable {
-    var identifier: String? { get }
+    var storyboardIdentifier: String? { get }
 }
 
-public protocol SegueProtocol: IdentifiableProtocol {
+public protocol SegueProtocol {
+    var identifier: String? { get }
 }
 
 public func ==<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {
@@ -120,7 +121,7 @@ public protocol ReusableViewProtocol: IdentifiableProtocol {
 }
 
 public func ==<T: ReusableViewProtocol, U: ReusableViewProtocol>(lhs: T, rhs: U) -> Bool {
-    return lhs.identifier == rhs.identifier
+    return lhs.storyboardIdentifier == rhs.storyboardIdentifier
 }
 
 //MARK: - Protocol Implementation
@@ -129,12 +130,12 @@ extension UIStoryboardSegue: SegueProtocol {
 
 extension UICollectionReusableView: ReusableViewProtocol {
     public var viewType: UIView.Type? { return self.dynamicType }
-    public var identifier: String? { return self.reuseIdentifier }
+    public var storyboardIdentifier: String? { return self.reuseIdentifier }
 }
 
 extension UITableViewCell: ReusableViewProtocol {
     public var viewType: UIView.Type? { return self.dynamicType }
-    public var identifier: String? { return self.reuseIdentifier }
+    public var storyboardIdentifier: String? { return self.reuseIdentifier }
 }
 
 //MARK: - UIViewController extension
@@ -155,27 +156,27 @@ extension UIViewController {
 extension UICollectionView {
 
     func dequeueReusableCell<T: ReusableViewProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> UICollectionViewCell? {
-        if let identifier = reusable.identifier {
+        if let identifier = reusable.storyboardIdentifier {
             return dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: forIndexPath)
         }
         return nil
     }
 
     func registerReusableCell<T: ReusableViewProtocol>(reusable: T) {
-        if let type = reusable.viewType, identifier = reusable.identifier {
+        if let type = reusable.viewType, identifier = reusable.storyboardIdentifier {
             registerClass(type, forCellWithReuseIdentifier: identifier)
         }
     }
 
     func dequeueReusableSupplementaryViewOfKind<T: ReusableViewProtocol>(elementKind: String, withReusable reusable: T, forIndexPath: NSIndexPath!) -> UICollectionReusableView? {
-        if let identifier = reusable.identifier {
+        if let identifier = reusable.storyboardIdentifier {
             return dequeueReusableSupplementaryViewOfKind(elementKind, withReuseIdentifier: identifier, forIndexPath: forIndexPath)
         }
         return nil
     }
 
     func registerReusable<T: ReusableViewProtocol>(reusable: T, forSupplementaryViewOfKind elementKind: String) {
-        if let type = reusable.viewType, identifier = reusable.identifier {
+        if let type = reusable.viewType, identifier = reusable.storyboardIdentifier {
             registerClass(type, forSupplementaryViewOfKind: elementKind, withReuseIdentifier: identifier)
         }
     }
@@ -185,27 +186,27 @@ extension UICollectionView {
 extension UITableView {
 
     func dequeueReusableCell<T: ReusableViewProtocol>(reusable: T, forIndexPath: NSIndexPath!) -> UITableViewCell? {
-        if let identifier = reusable.identifier {
+        if let identifier = reusable.storyboardIdentifier {
             return dequeueReusableCellWithIdentifier(identifier, forIndexPath: forIndexPath)
         }
         return nil
     }
 
     func registerReusableCell<T: ReusableViewProtocol>(reusable: T) {
-        if let type = reusable.viewType, identifier = reusable.identifier {
+        if let type = reusable.viewType, identifier = reusable.storyboardIdentifier {
             registerClass(type, forCellReuseIdentifier: identifier)
         }
     }
 
     func dequeueReusableHeaderFooter<T: ReusableViewProtocol>(reusable: T) -> UITableViewHeaderFooterView? {
-        if let identifier = reusable.identifier {
+        if let identifier = reusable.storyboardIdentifier {
             return dequeueReusableHeaderFooterViewWithIdentifier(identifier)
         }
         return nil
     }
 
     func registerReusableHeaderFooter<T: ReusableViewProtocol>(reusable: T) {
-        if let type = reusable.viewType, identifier = reusable.identifier {
+        if let type = reusable.viewType, identifier = reusable.storyboardIdentifier {
              registerClass(type, forHeaderFooterViewReuseIdentifier: identifier)
         }
     }
@@ -223,8 +224,8 @@ extension UIStoryboardSegue {
 }
 
 extension MainViewController: IdentifiableProtocol { 
-    var identifier: String? { return "MainViewController" }
-    static var identifier: String? { return "MainViewController" }
+    var storyboardIdentifier: String? { return "MainViewController" }
+    static var storyboardIdentifier: String? { return "MainViewController" }
 }
 
 extension MainViewController { 
@@ -269,8 +270,8 @@ extension MainViewController {
 
 //MARK: - ScreenTwoViewController
 extension ScreenTwoViewController: IdentifiableProtocol { 
-    var identifier: String? { return "secondViewController" }
-    static var identifier: String? { return "secondViewController" }
+    var storyboardIdentifier: String? { return "secondViewController" }
+    static var storyboardIdentifier: String? { return "secondViewController" }
 }
 
 extension ScreenTwoViewController { 
@@ -292,7 +293,7 @@ extension ScreenTwoViewController {
             }
         }
 
-        var identifier: String? { return self.description } 
+        var storyboardIdentifier: String? { return self.description } 
         var description: String { return self.rawValue }
     }
 
@@ -301,7 +302,7 @@ extension ScreenTwoViewController {
 
 //MARK: - ScreenOneViewController
 extension ScreenOneViewController: IdentifiableProtocol { 
-    var identifier: String? { return "Screen One ViewController" }
-    static var identifier: String? { return "Screen One ViewController" }
+    var storyboardIdentifier: String? { return "Screen One ViewController" }
+    static var storyboardIdentifier: String? { return "Screen One ViewController" }
 }
 
