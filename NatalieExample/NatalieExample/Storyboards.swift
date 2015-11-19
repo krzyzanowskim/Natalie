@@ -82,10 +82,13 @@ enum SegueKind: String, CustomStringConvertible {
     var description: String { return self.rawValue } 
 }
 
-//MARK: - SegueProtocol
+//MARK: - IdentifiableProtocol
+
 public protocol IdentifiableProtocol: Equatable {
     var storyboardIdentifier: String? { get }
 }
+
+//MARK: - SegueProtocol
 
 public protocol SegueProtocol {
     var identifier: String? { get }
