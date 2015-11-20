@@ -1155,7 +1155,7 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
     print("    func instantiateViewController<T: \(os.storyboardControllerTypes[0]) where T: IdentifiableProtocol>(type: T.Type) -> T? {")
     print("        let instance = type.init()")
     print("        if let identifier = instance.storyboardIdentifier {")
-    print("            return self.instantiateViewControllerWithIdentifier(identifier) as? T")
+    print("            return self.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier) as? T")
     print("        }")
     print("        return nil")
     print("    }")
