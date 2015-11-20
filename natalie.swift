@@ -1152,11 +1152,11 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
 
     print("")
     print("extension \(os.storyboardType) {")
-    for storyboardControllerType in os.storyboardControllerTypes {
-        print("    func instantiateViewController<T: \(storyboardControllerType) where T: IdentifiableProtocol>(type: T.Type) -> T? {")
+    for (signatureType, returnType) in os.storyboardInstantiationInfo {
+        print("    func instantiateViewController<T: \(returnType) where T: IdentifiableProtocol>(type: T.Type) -> T? {")
         print("        let instance = type.init()")
         print("        if let identifier = instance.storyboardIdentifier {")
-        print("            return self.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(identifier) as? T")
+        print("            return self.instantiate\(signatureType)WithIdentifier(identifier) as? T")
         print("        }")
         print("        return nil")
         print("    }")
