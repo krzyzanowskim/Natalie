@@ -979,7 +979,7 @@ class Storyboard: XMLObject {
 
                     if let storyboardIdentifier = viewController.storyboardIdentifier {
                         print("extension \(customClass): IdentifiableProtocol { ")
-                        print("    var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }")
+                        print("    public var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }")
                         print("    static var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }")
                         print("}")
                         print("")
