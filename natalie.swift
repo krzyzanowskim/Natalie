@@ -49,10 +49,13 @@ private extension String {
   }
 }
 
-private func SwiftRepresentationForString(string: String, capitalizeFirstLetter: Bool = false) -> String {
+private func SwiftRepresentationForString(string: String, capitalizeFirstLetter: Bool = false, doNotShadow: String? = nil) -> String {
     var str =  string.trimAllWhitespacesAndSpecialCharacters()
     if capitalizeFirstLetter {
        str = String(str.uppercaseString.unicodeScalars.prefix(1) + str.unicodeScalars.suffix(str.unicodeScalars.count - 1))
+    }
+    if str == doNotShadow {
+        str = str + "_"
     }
     return str
 }
@@ -1057,7 +1060,7 @@ class Storyboard: XMLObject {
                             print("    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {")
                             for reusable in reusables {
                                 if let identifier = reusable.reuseIdentifier {
-                                    print("        case \(identifier) = \"\(identifier)\"")
+                                    print("        case \(SwiftRepresentationForString(identifier, doNotShadow: reusable.customClass)) = \"\(identifier)\"")
                                 }
                             }
                             print("")
@@ -1066,7 +1069,7 @@ class Storyboard: XMLObject {
                             var needDefault = false
                             for reusable in reusables {
                                 if let identifier = reusable.reuseIdentifier {
-                                    print("            case \(identifier):")
+                                    print("            case \(SwiftRepresentationForString(identifier, doNotShadow: reusable.customClass)):")
                                     print("                return ReusableKind(rawValue: \"\(reusable.kind)\")")
                                 } else {
                                     needDefault = true
@@ -1085,7 +1088,7 @@ class Storyboard: XMLObject {
                             needDefault = false
                             for reusable in reusables {
                                 if let identifier = reusable.reuseIdentifier, customClass = reusable.customClass {
-                                    print("            case \(identifier):")
+                                    print("            case \(SwiftRepresentationForString(identifier, doNotShadow: reusable.customClass)):")
                                     print("                return \(customClass).self")
                                 } else {
                                     needDefault = true
