@@ -1,0 +1,6 @@
+0.3
+- Add storyboard identifier to view controllers
+- Fix OSX support
+- Rename identifier -> storyboardIdentifier. 
+- Fixes reusable identifiers
+- NSStoryboard uses instantiateControllerWithIdentifier
