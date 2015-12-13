@@ -1,4 +1,4 @@
-0.3
+0.4
 - Add storyboard identifier to view controllers
 - Fix OSX support
 - Rename identifier -> storyboardIdentifier. 
