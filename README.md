@@ -141,6 +141,12 @@ $ git clone https://github.com/krzyzanowskim/Natalie.git
 $ sudo cp natalie.swift /usr/local/bin/natalie.swift
 ```
 
+or
+
+
+You can also put natalie.swift file at the root of your project folder and keep it under version control like this everyone even your CI will be able to generate the files.
+
+
 ###Xcode Integration
 
 Natalie can be integrated with Xcode in such a way that the `Storyboards.swift` file will be updated with every build of the project, so you don't have to do it manually every time.
@@ -151,9 +157,12 @@ This is my setup created with **New Run Script Phase** on **Build Phase** Xcode 
 echo "Natalie Generator: Determining if generated Swift file is up-to-date."
 
 NATALIE_PATH="/usr/local/bin/natalie.swift"
+#If you put natalie.swift on the project folder
+# NATALIE_PATH="$PROJECT_DIR/natalie.swift"
 
 if [ -f $NATALIE_PATH ]; then
     BASE_PATH="$PROJECT_DIR/$PROJECT_NAME"
+    //
     OUTPUT_PATH="$BASE_PATH/Storyboards.swift"
     
     if [ ! -e "$OUTPUT_PATH" ] || [ -n "$(find "$BASE_PATH" -type f -name "*.storyboard" -newer "$OUTPUT_PATH" -print -quit)" ]; then
