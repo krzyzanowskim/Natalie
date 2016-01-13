@@ -1168,9 +1168,9 @@ func processStoryboards(storyboards: [StoryboardFile], os: OS) {
         print("        }")
         print("        return nil")
         print("    }")
-        print("}")
         print("")
     }
+    print("}")
 
     print("")
     print("protocol Storyboard {")
