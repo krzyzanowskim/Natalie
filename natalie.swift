@@ -690,7 +690,7 @@ enum OS: String, CustomStringConvertible {
         case iOS:
             return [("ViewController", "UIViewController")]
         case OSX:
-            return [("WindowController", "NSWindowController"), ("ViewController", "NSViewController")]
+            return [("Controller", "NSWindowController"), ("Controller", "NSViewController")]
         }
     }
 
