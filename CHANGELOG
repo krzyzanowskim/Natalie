@@ -1,3 +1,8 @@
+0.4.1
+- Fix parenthesis into Storyboard extension
+- Fix a warning about upcoming Swift 3.0
+- Fix OSX storyboardInstantiationInfo
+
 0.4
 - Add storyboard identifier to view controllers
 - Fix OSX support
