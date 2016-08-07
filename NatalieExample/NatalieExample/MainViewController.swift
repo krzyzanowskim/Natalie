@@ -31,11 +31,11 @@ class MainViewController: UIViewController {
     //MARK: Actions
     
     @IBAction func screen1ButtonPressed(_ button:UIButton) {
-        self.performSegue(MainViewController.Segue.ScreenOneSegue)
+        self.perform(segue: MainViewController.Segue.ScreenOneSegue)
     }
 
     @IBAction func screen22ButtonPressed(_ button:UIButton) {
-        self.performSegue(withIdentifier: MainViewController.Segue.ScreenTwoSegue, sender: nil)
+        self.performSegue(withIdentifier: MainViewController.Segue.ScreenTwoSegue.rawValue, sender: nil)
     }
 
 }
