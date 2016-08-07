@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		755B83531D576CBF0020148B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755B83521D576CBF0020148B /* main.swift */; };
+		7571B22D1D576E310052ECD6 /* SWXMLHash+TypeConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571B22B1D576E310052ECD6 /* SWXMLHash+TypeConversion.swift */; };
+		7571B22E1D576E310052ECD6 /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571B22C1D576E310052ECD6 /* SWXMLHash.swift */; };
+		7571B2301D576ED00052ECD6 /* natalie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571B22F1D576ED00052ECD6 /* natalie.swift */; };
+		7571B2321D5771540052ECD6 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571B2311D5771540052ECD6 /* Helpers.swift */; };
+		7571B2341D57717F0052ECD6 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7571B2331D57717F0052ECD6 /* String+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +30,11 @@
 /* Begin PBXFileReference section */
 		755B834F1D576CBF0020148B /* natalie */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = natalie; sourceTree = BUILT_PRODUCTS_DIR; };
 		755B83521D576CBF0020148B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		7571B22B1D576E310052ECD6 /* SWXMLHash+TypeConversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SWXMLHash+TypeConversion.swift"; sourceTree = "<group>"; };
+		7571B22C1D576E310052ECD6 /* SWXMLHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWXMLHash.swift; sourceTree = "<group>"; };
+		7571B22F1D576ED00052ECD6 /* natalie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = natalie.swift; sourceTree = "<group>"; };
+		7571B2311D5771540052ECD6 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		7571B2331D57717F0052ECD6 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,9 +67,22 @@
 		755B83511D576CBF0020148B /* Natalie */ = {
 			isa = PBXGroup;
 			children = (
+				7571B22A1D576E310052ECD6 /* SWXMLHash */,
 				755B83521D576CBF0020148B /* main.swift */,
+				7571B22F1D576ED00052ECD6 /* natalie.swift */,
+				7571B2311D5771540052ECD6 /* Helpers.swift */,
+				7571B2331D57717F0052ECD6 /* String+Extension.swift */,
 			);
 			path = Natalie;
+			sourceTree = "<group>";
+		};
+		7571B22A1D576E310052ECD6 /* SWXMLHash */ = {
+			isa = PBXGroup;
+			children = (
+				7571B22B1D576E310052ECD6 /* SWXMLHash+TypeConversion.swift */,
+				7571B22C1D576E310052ECD6 /* SWXMLHash.swift */,
+			);
+			path = SWXMLHash;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -122,6 +145,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				755B83531D576CBF0020148B /* main.swift in Sources */,
+				7571B22E1D576E310052ECD6 /* SWXMLHash.swift in Sources */,
+				7571B2301D576ED00052ECD6 /* natalie.swift in Sources */,
+				7571B2321D5771540052ECD6 /* Helpers.swift in Sources */,
+				7571B2341D57717F0052ECD6 /* String+Extension.swift in Sources */,
+				7571B22D1D576E310052ECD6 /* SWXMLHash+TypeConversion.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
