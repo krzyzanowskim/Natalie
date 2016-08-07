@@ -23,7 +23,7 @@ extension ScreenTwoViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(reusable: Reusable.MyCell, for: indexPath)!
+        let cell = tableView.dequeue(reusable: Reusable.MyCell, for: indexPath)!
         cell.textLabel?.text = "\((indexPath as NSIndexPath).row)"
         return cell
     }

@@ -51,38 +51,38 @@ class Storyboard: XMLObject {
     func processStoryboard(storyboardName: String, os: OS) -> String {
         var output = String()
 
-        output += "\n\n"
+        output += "\n"
         output += "    struct \(storyboardName): Storyboard {\n"
-        output += "\n\n"
+        output += "\n"
         output += "        static let identifier = \"\(storyboardName)\"\n"
-        output += "\n\n"
+        output += "\n"
         output += "        static var storyboard: \(os.storyboardType) {\n"
         output += "            return \(os.storyboardType)(name: self.identifier, bundle: nil)\n"
         output += "        }\n"
         if let initialViewControllerClass = self.initialViewControllerClass {
             let cast = (initialViewControllerClass == os.storyboardControllerReturnType ? (os == OS.iOS ? "!" : "") : " as! \(initialViewControllerClass)")
-            output += "\n\n"
+            output += "\n"
             output += "        static func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(initialViewControllerClass) {\n"
             output += "            return self.storyboard.instantiateInitial\(os.storyboardControllerSignatureType)()\(cast)\n"
             output += "        }\n"
         }
         for (signatureType, returnType) in os.storyboardInstantiationInfo {
             let cast = (returnType == os.storyboardControllerReturnType ? "" : " as! \(returnType)")
-            output += "\n\n"
+            output += "\n"
             output += "        static func instantiate\(signatureType)(withIdentifier: String) -> \(returnType) {\n"
             output += "            return self.storyboard.instantiate\(signatureType)(withIdentifier: identifier)\(cast)\n"
             output += "        }\n"
 
-            output += "\n\n"
-            output += "        static func instantiateViewController<T: \(returnType) where T: IdentifiableProtocol>(type: T.Type) -> T? {\n"
-            output += "            return self.storyboard.instantiateViewController(type: type)\n"
+            output += "\n"
+            output += "        static func instantiateViewController<T: \(returnType) where T: IdentifiableProtocol>(ofType type: T.Type) -> T? {\n"
+            output += "            return self.storyboard.instantiateViewController(ofType: type)\n"
             output += "        }\n"
         }
         for scene in self.scenes {
             if let viewController = scene.viewController, let storyboardIdentifier = viewController.storyboardIdentifier {
                 let controllerClass = (viewController.customClass ?? os.controllerTypeForElementName(name: viewController.name)!)
                 let cast = (controllerClass == os.storyboardControllerReturnType ? "" : " as! \(controllerClass)")
-                output += "\n\n"
+                output += "\n"
                 output += "        static func instantiate\(SwiftRepresentationForString(string: storyboardIdentifier, capitalizeFirstLetter: true))() -> \(controllerClass) {\n"
                 output += "            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)(withIdentifier: \"\(storyboardIdentifier)\")\(cast)\n"
                 output += "        }\n"
@@ -99,7 +99,7 @@ class Storyboard: XMLObject {
         for scene in self.scenes {
             if let viewController = scene.viewController {
                 if let customClass = viewController.customClass {
-                    output += "\n\n"
+                    output += "\n"
                     output += "//MARK: - \(customClass)\n"
 
                     if let segues = scene.segues?.filter({ return $0.identifier != nil }), segues.count > 0 {
@@ -111,7 +111,7 @@ class Storyboard: XMLObject {
                         output += "        return nil\n"
                         output += "    }\n"
                         output += "}\n"
-                        output += "\n\n"
+                        output += "\n"
                     }
 
                     if let storyboardIdentifier = viewController.storyboardIdentifier {
@@ -123,12 +123,12 @@ class Storyboard: XMLObject {
                         }
                         output += "    static var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }\n"
                         output += "}\n"
-                        output += "\n\n"
+                        output += "\n"
                     }
 
                     if let segues = scene.segues?.filter({ return $0.identifier != nil }), segues.count > 0 {
                         output += "extension \(customClass) { \n"
-                        output += "\n\n"
+                        output += "\n"
                         output += "    enum Segue: String, CustomStringConvertible, SegueProtocol {\n"
                         for segue in segues {
                             if let identifier = segue.identifier
@@ -136,7 +136,7 @@ class Storyboard: XMLObject {
                                 output += "        case \(SwiftRepresentationForString(string: identifier)) = \"\(identifier)\"\n"
                             }
                         }
-                        output += "\n\n"
+                        output += "\n"
                         output += "        var kind: SegueKind? {\n"
                         output += "            switch (self) {\n"
                         var needDefaultSegue = false
@@ -155,7 +155,7 @@ class Storyboard: XMLObject {
                         }
                         output += "            }\n"
                         output += "        }\n"
-                        output += "\n\n"
+                        output += "\n"
                         output += "        var destination: \(self.os.storyboardControllerReturnType).Type? {\n"
                         output += "            switch (self) {\n"
                         var needDefaultDestination = false
@@ -177,25 +177,25 @@ class Storyboard: XMLObject {
                         }
                         output += "            }\n"
                         output += "        }\n"
-                        output += "\n\n"
+                        output += "\n"
                         output += "        var identifier: String? { return self.description } \n"
                         output += "        var description: String { return self.rawValue }\n"
                         output += "    }\n"
-                        output += "\n\n"
+                        output += "\n"
                         output += "}\n"
                     }
 
                     if let reusables = viewController.reusables?.filter({ return $0.reuseIdentifier != nil }), reusables.count > 0 {
 
                         output += "extension \(customClass) { \n"
-                        output += "\n\n"
+                        output += "\n"
                         output += "    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {\n"
                         for reusable in reusables {
                             if let identifier = reusable.reuseIdentifier {
                                 output += "        case \(SwiftRepresentationForString(string: identifier, doNotShadow: reusable.customClass)) = \"\(identifier)\"\n"
                             }
                         }
-                        output += "\n\n"
+                        output += "\n"
                         output += "        var kind: ReusableKind? {\n"
                         output += "            switch (self) {\n"
                         var needDefault = false
@@ -214,7 +214,7 @@ class Storyboard: XMLObject {
                         }
                         output += "            }\n"
                         output += "        }\n"
-                        output += "\n\n"
+                        output += "\n"
                         output += "        var viewType: \(self.os.viewType).Type? {\n"
                         output += "            switch (self) {\n"
                         needDefault = false
@@ -232,11 +232,11 @@ class Storyboard: XMLObject {
                         }
                         output += "            }\n"
                         output += "        }\n"
-                        output += "\n\n"
+                        output += "\n"
                         output += "        var storyboardIdentifier: String? { return self.description } \n"
                         output += "        var description: String { return self.rawValue }\n"
                         output += "    }\n"
-                        output += "\n\n"
+                        output += "\n"
                         output += "}\n\n"
                     }
                 }
