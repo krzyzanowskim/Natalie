@@ -38,6 +38,8 @@ for os in OS.allValues {
         if storyboardsForOS.count != storyboardFiles.count {
             output += "#endif\n"
         }
+
+        print(output)
     }
 }
 
