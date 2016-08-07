@@ -32,7 +32,7 @@ for os in OS.allValues {
             print("#if os(\(os.rawValue))")
         }
 
-        processStoryboards(storyboards: storyboardsForOS, os: os)
+        Parser.processStoryboards(storyboards: storyboardsForOS, os: os)
 
         if storyboardsForOS.count != storyboardFiles.count {
             print("#endif")
