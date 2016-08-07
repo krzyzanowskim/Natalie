@@ -2,14 +2,14 @@
 Natalie - Storyboard Code Generator (for Swift)
 
 ## Synopsis
-Script generate Swift code based on storyboard files to make work with Storyboards and segues easier. Generated file **reduce usage of Strings** as identifiers for Segues or Storyboards.
+Natalie generates Swift code based on storyboard files to make work with Storyboards and segues easier. Generated file **reduce usage of Strings** as identifiers for Segues or Storyboards.
 
-This is a proof of concept to address the String issue for strongly typed Swift language. Natalie is a Swift script (written in Swift) that produces a single `.swift` file with a bunch of extensions to project classes along the generated Storyboard enum.
+Proof of concept implementation to address the String issue for strongly typed Swift language. Natalie is a Swift command-line application (written in Swift) that produces a single `.swift` file with a bunch of extensions to project classes along the generated Storyboard enum.
 
-Since Natalie is a Swift script, that means it is written in Swift and requires Swift to run. The project uses [SWXMLHash](https://github.com/drmohundro/SWXMLHash) as a dependency to parse XML and due to framework limitations all code is in a single file.
+Natalie is written in Swift and requires Swift to run. The project uses [SWXMLHash](https://github.com/drmohundro/SWXMLHash) as a dependency to parse XML and due to framework limitations.
 
 ###Enumerate Storyboards
-Generated enum Storyboards with convenient interface (drop-in replacement for UIStoryboard).
+Generated enum Storyboards with a convenient interface (drop-in replacement for UIStoryboard).
 
 ```swift
 struct Storyboards {
@@ -32,8 +32,8 @@ example usage for prepareForSegue()
 
 ```swift
 override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-  if segue == MainViewController.Segue.ScreenOneSegue {	
-	let viewController = segue.destinationViewController as? MyViewController
+  if segue == MainViewController.Segue.ScreenOneSegue {    
+    let viewController = segue.destinationViewController as? MyViewController
     viewController?.view.backgroundColor = UIColor.yellowColor()
   }
 }
@@ -48,7 +48,7 @@ Perform segue
 self.performSegue(MainViewController.Segue.ScreenOneSegue, sender:nil)
 ```
 
-Each custom view controller is extended with this code and provide list of available segues and additional informations from Storyboard.
+Each custom view controller is extended with this code and provide a list of available segues and additional information from Storyboard.
 
 `Segue` enumeration contains list of available segues
 
@@ -89,7 +89,7 @@ extension MainViewController {
 
 Collections and tables views use `reuseidentifier` on cell to recycle a view.
 
-If you define it, their custom view controllers will be extended with an `Reusable` enumeration, which contains list of available reusable identifiers
+If you define it, their custom view controllers will be extended with a `Reusable` enumeration, which contains list of available reusable identifiers
 
 example to dequeue a view with `Reusable` enumeration with `UITableView`:
 ```swift
@@ -112,7 +112,7 @@ You can pass the view instead - the view must define the `reuseidentifier`
     tableView.registerReusableCell(tableViewCell)
 ```
 
-If your custom reusable view, you can also execute code according to reusable values
+If your reusable custom view, you can also execute code according to reusable values
 ```swift
 class MyCustomTableViewCell: UITableViewCell {
     override func prepareForReuse() {
@@ -128,37 +128,42 @@ class MyCustomTableViewCell: UITableViewCell {
 
 ##Installation
 
-There is no need to do any installation, however if you want easy Xcode integration you may want to install the script to be easily accessible for any application from `/usr/local/bin`
+####Swift Package Manager
+
+```
+$ git clone https://github.com/krzyzanowskim/Natalie.git
+$ cd Natalie
+$ swift build -c release
+$ cp .build/release/natalie ./natalie
+```
+
+if you want easy Xcode integration you may want to install the binary to be easily accessible for any application from `/usr/local/bin`
+
+```
+$ cp .build/release/natalie /usr/local/bin
+```
+
+####Homebrew
 
 ```
 $ brew install natalie
 ```
 
-or
-
-```
-$ git clone https://github.com/krzyzanowskim/Natalie.git
-$ sudo cp natalie.swift /usr/local/bin/natalie.swift
-```
-
-or
-
-
-You can also put natalie.swift file at the root of your project folder and keep it under version control like this everyone even your CI will be able to generate the files.
+You can also put `natalie` executable file at the root of your project folder and keep it under version control. This way everyone even your CI will be able to generate the files.
 
 
 ###Xcode Integration
 
-Natalie can be integrated with Xcode in such a way that the `Storyboards.swift` file will be updated with every build of the project, so you don't have to do it manually every time.
+Natalie can be integrated with Xcode in such a way that the `Storyboards.swift` the file will be updated with every build of the project, so you don't have to do it manually every time.
 
 This is my setup created with **New Run Script Phase** on **Build Phase** Xcode target setting. It is important to move this phase above Compilation phase because this file is expected to be up to date for the rest of the application.
 
 ```sh
 echo "Natalie Generator: Determining if generated Swift file is up-to-date."
 
-NATALIE_PATH="/usr/local/bin/natalie.swift"
-#If you put natalie.swift on the project folder
-# NATALIE_PATH="$PROJECT_DIR/natalie.swift"
+NATALIE_PATH="/usr/local/bin/natalie"
+#If you put natalie on the project folder
+# NATALIE_PATH="$PROJECT_DIR/natalie"
 
 if [ -f $NATALIE_PATH ]; then
     BASE_PATH="$PROJECT_DIR/$PROJECT_NAME"
@@ -197,7 +202,7 @@ The script expects one of two types of parameters:
 If the parameter is a Storyboard file, then this file will be used. If a path to a folder is provided Natalie will generate code for every storyboard found inside.
 
 ```
-$ natalie.swift NatalieExample/NatalieExample/Base.lproj/Main.storyboard > NatalieExample/NatalieExample/Storyboards.swift
+$ natalie NatalieExample/NatalieExample/Base.lproj/Main.storyboard > NatalieExample/NatalieExample/Storyboards.swift
 ```
 
 ##Contribution
