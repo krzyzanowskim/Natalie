@@ -30,13 +30,13 @@ for os in OS.allValues {
         var output = String()
 
         if storyboardsForOS.count != storyboardFiles.count {
-            output += "#if os(\(os.rawValue))"
+            output += "#if os(\(os.rawValue))\n"
         }
 
         output += Parser(storyboards: storyboardsForOS).process(os: os)
 
         if storyboardsForOS.count != storyboardFiles.count {
-            output += "#endif"
+            output += "#endif\n"
         }
     }
 }

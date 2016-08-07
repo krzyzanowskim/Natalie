@@ -9,6 +9,7 @@
 import Foundation
 
 class StoryboardFile {
+
     let data: Data
     let storyboardName: String
     let storyboard: Storyboard
