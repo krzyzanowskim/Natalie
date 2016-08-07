@@ -51,7 +51,7 @@
 		755B83461D576CBF0020148B = {
 			isa = PBXGroup;
 			children = (
-				755B83511D576CBF0020148B /* Natalie */,
+				755B83511D576CBF0020148B /* Sources */,
 				755B83501D576CBF0020148B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -64,7 +64,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		755B83511D576CBF0020148B /* Natalie */ = {
+		755B83511D576CBF0020148B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				7571B22A1D576E310052ECD6 /* SWXMLHash */,
@@ -73,7 +73,7 @@
 				7571B2311D5771540052ECD6 /* Helpers.swift */,
 				7571B2331D57717F0052ECD6 /* String+Extension.swift */,
 			);
-			path = Natalie;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		7571B22A1D576E310052ECD6 /* SWXMLHash */ = {
@@ -101,7 +101,7 @@
 			dependencies = (
 			);
 			name = natalie;
-			productName = Natalie;
+			productName = natalie;
 			productReference = 755B834F1D576CBF0020148B /* natalie */;
 			productType = "com.apple.product-type.tool";
 		};
@@ -122,7 +122,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 755B834A1D576CBF0020148B /* Build configuration list for PBXProject "Natalie" */;
+			buildConfigurationList = 755B834A1D576CBF0020148B /* Build configuration list for PBXProject "natalie" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -265,7 +265,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		755B834A1D576CBF0020148B /* Build configuration list for PBXProject "Natalie" */ = {
+		755B834A1D576CBF0020148B /* Build configuration list for PBXProject "natalie" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				755B83541D576CBF0020148B /* Debug */,
