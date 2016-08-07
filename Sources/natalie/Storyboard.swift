@@ -48,194 +48,201 @@ class Storyboard: XMLObject {
         super.init(xml: xml)
     }
 
-    func processStoryboard(storyboardName: String, os: OS) {
-        print("")
-        print("    struct \(storyboardName): Storyboard {")
-        print("")
-        print("        static let identifier = \"\(storyboardName)\"")
-        print("")
-        print("        static var storyboard: \(os.storyboardType) {")
-        print("            return \(os.storyboardType)(name: self.identifier, bundle: nil)")
-        print("        }")
+    func processStoryboard(storyboardName: String, os: OS) -> String {
+        var output = String()
+
+        output += ""
+        output += "    struct \(storyboardName): Storyboard {"
+        output += ""
+        output += "        static let identifier = \"\(storyboardName)\""
+        output += ""
+        output += "        static var storyboard: \(os.storyboardType) {"
+        output += "            return \(os.storyboardType)(name: self.identifier, bundle: nil)"
+        output += "        }"
         if let initialViewControllerClass = self.initialViewControllerClass {
             let cast = (initialViewControllerClass == os.storyboardControllerReturnType ? (os == OS.iOS ? "!" : "") : " as! \(initialViewControllerClass)")
-            print("")
-            print("        static func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(initialViewControllerClass) {")
-            print("            return self.storyboard.instantiateInitial\(os.storyboardControllerSignatureType)()\(cast)")
-            print("        }")
+            output += ""
+            output += "        static func instantiateInitial\(os.storyboardControllerSignatureType)() -> \(initialViewControllerClass) {"
+            output += "            return self.storyboard.instantiateInitial\(os.storyboardControllerSignatureType)()\(cast)"
+            output += "        }"
         }
         for (signatureType, returnType) in os.storyboardInstantiationInfo {
             let cast = (returnType == os.storyboardControllerReturnType ? "" : " as! \(returnType)")
-            print("")
-            print("        static func instantiate\(signatureType)WithIdentifier(identifier: String) -> \(returnType) {")
-            print("            return self.storyboard.instantiate\(signatureType)WithIdentifier(identifier)\(cast)")
-            print("        }")
+            output += ""
+            output += "        static func instantiate\(signatureType)WithIdentifier(identifier: String) -> \(returnType) {"
+            output += "            return self.storyboard.instantiate\(signatureType)WithIdentifier(identifier)\(cast)"
+            output += "        }"
 
-            print("")
-            print("        static func instantiateViewController<T: \(returnType) where T: IdentifiableProtocol>(type: T.Type) -> T? {")
-            print("            return self.storyboard.instantiateViewController(type)")
-            print("        }")
+            output += ""
+            output += "        static func instantiateViewController<T: \(returnType) where T: IdentifiableProtocol>(type: T.Type) -> T? {"
+            output += "            return self.storyboard.instantiateViewController(type)"
+            output += "        }"
         }
         for scene in self.scenes {
             if let viewController = scene.viewController, let storyboardIdentifier = viewController.storyboardIdentifier {
                 let controllerClass = (viewController.customClass ?? os.controllerTypeForElementName(name: viewController.name)!)
                 let cast = (controllerClass == os.storyboardControllerReturnType ? "" : " as! \(controllerClass)")
-                print("")
-                print("        static func instantiate\(SwiftRepresentationForString(string: storyboardIdentifier, capitalizeFirstLetter: true))() -> \(controllerClass) {")
-                print("            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\")\(cast)")
-                print("        }")
+                output += ""
+                output += "        static func instantiate\(SwiftRepresentationForString(string: storyboardIdentifier, capitalizeFirstLetter: true))() -> \(controllerClass) {"
+                output += "            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)WithIdentifier(\"\(storyboardIdentifier)\")\(cast)"
+                output += "        }"
             }
         }
-        print("    }")
+        output += "    }"
+
+        return output
     }
 
-    func processViewControllers() {
+    func processViewControllers() -> String {
+        var output = String()
+
         for scene in self.scenes {
             if let viewController = scene.viewController {
                 if let customClass = viewController.customClass {
-                    print("")
-                    print("//MARK: - \(customClass)")
+                    output += ""
+                    output += "//MARK: - \(customClass)"
 
                     if let segues = scene.segues?.filter({ return $0.identifier != nil }), segues.count > 0 {
-                        print("extension \(os.storyboardSegueType) {")
-                        print("    func selection() -> \(customClass).Segue? {")
-                        print("        if let identifier = self.identifier {")
-                        print("            return \(customClass).Segue(rawValue: identifier)")
-                        print("        }")
-                        print("        return nil")
-                        print("    }")
-                        print("}")
-                        print("")
+                        output += "extension \(os.storyboardSegueType) {"
+                        output += "    func selection() -> \(customClass).Segue? {"
+                        output += "        if let identifier = self.identifier {"
+                        output += "            return \(customClass).Segue(rawValue: identifier)"
+                        output += "        }"
+                        output += "        return nil"
+                        output += "    }"
+                        output += "}"
+                        output += ""
                     }
 
                     if let storyboardIdentifier = viewController.storyboardIdentifier {
-                        print("extension \(customClass): IdentifiableProtocol { ")
+                        output += "extension \(customClass): IdentifiableProtocol { "
                         if viewController.customModule != nil {
-                            print("    var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }")
+                            output += "    var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }"
                         } else {
-                            print("    public var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }")
+                            output += "    public var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }"
                         }
-                        print("    static var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }")
-                        print("}")
-                        print("")
+                        output += "    static var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }"
+                        output += "}"
+                        output += ""
                     }
 
                     if let segues = scene.segues?.filter({ return $0.identifier != nil }), segues.count > 0 {
-                        print("extension \(customClass) { ")
-                        print("")
-                        print("    enum Segue: String, CustomStringConvertible, SegueProtocol {")
+                        output += "extension \(customClass) { "
+                        output += ""
+                        output += "    enum Segue: String, CustomStringConvertible, SegueProtocol {"
                         for segue in segues {
                             if let identifier = segue.identifier
                             {
-                                print("        case \(SwiftRepresentationForString(string: identifier)) = \"\(identifier)\"")
+                                output += "        case \(SwiftRepresentationForString(string: identifier)) = \"\(identifier)\""
                             }
                         }
-                        print("")
-                        print("        var kind: SegueKind? {")
-                        print("            switch (self) {")
+                        output += ""
+                        output += "        var kind: SegueKind? {"
+                        output += "            switch (self) {"
                         var needDefaultSegue = false
                         for segue in segues {
                             if let identifier = segue.identifier {
-                                print("            case \(SwiftRepresentationForString(string: identifier)):")
-                                print("                return SegueKind(rawValue: \"\(segue.kind)\")")
+                                output += "            case \(SwiftRepresentationForString(string: identifier)):"
+                                output += "                return SegueKind(rawValue: \"\(segue.kind)\")"
                             } else {
                                 needDefaultSegue = true
                             }
                         }
                         if needDefaultSegue {
-                            print("            default:")
-                            print("                assertionFailure(\"Invalid value\")")
-                            print("                return nil")
+                            output += "            default:"
+                            output += "                assertionFailure(\"Invalid value\")"
+                            output += "                return nil"
                         }
-                        print("            }")
-                        print("        }")
-                        print("")
-                        print("        var destination: \(self.os.storyboardControllerReturnType).Type? {")
-                        print("            switch (self) {")
+                        output += "            }"
+                        output += "        }"
+                        output += ""
+                        output += "        var destination: \(self.os.storyboardControllerReturnType).Type? {"
+                        output += "            switch (self) {"
                         var needDefaultDestination = false
                         for segue in segues {
                             if let identifier = segue.identifier, let destination = segue.destination,
                                 let destinationElement = searchById(id: destination)?.element,
                                 let destinationClass = (destinationElement.attributes["customClass"] ?? os.controllerTypeForElementName(name: destinationElement.name))
                             {
-                                print("            case \(SwiftRepresentationForString(string: identifier)):")
-                                print("                return \(destinationClass).self")
+                                output += "            case \(SwiftRepresentationForString(string: identifier)):"
+                                output += "                return \(destinationClass).self"
                             } else {
                                 needDefaultDestination = true
                             }
                         }
                         if needDefaultDestination {
-                            print("            default:")
-                            print("                assertionFailure(\"Unknown destination\")")
-                            print("                return nil")
+                            output += "            default:"
+                            output += "                assertionFailure(\"Unknown destination\")"
+                            output += "                return nil"
                         }
-                        print("            }")
-                        print("        }")
-                        print("")
-                        print("        var identifier: String? { return self.description } ")
-                        print("        var description: String { return self.rawValue }")
-                        print("    }")
-                        print("")
-                        print("}")
+                        output += "            }"
+                        output += "        }"
+                        output += ""
+                        output += "        var identifier: String? { return self.description } "
+                        output += "        var description: String { return self.rawValue }"
+                        output += "    }"
+                        output += ""
+                        output += "}"
                     }
 
                     if let reusables = viewController.reusables?.filter({ return $0.reuseIdentifier != nil }), reusables.count > 0 {
 
-                        print("extension \(customClass) { ")
-                        print("")
-                        print("    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {")
+                        output += "extension \(customClass) { "
+                        output += ""
+                        output += "    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {"
                         for reusable in reusables {
                             if let identifier = reusable.reuseIdentifier {
-                                print("        case \(SwiftRepresentationForString(string: identifier, doNotShadow: reusable.customClass)) = \"\(identifier)\"")
+                                output += "        case \(SwiftRepresentationForString(string: identifier, doNotShadow: reusable.customClass)) = \"\(identifier)\""
                             }
                         }
-                        print("")
-                        print("        var kind: ReusableKind? {")
-                        print("            switch (self) {")
+                        output += ""
+                        output += "        var kind: ReusableKind? {"
+                        output += "            switch (self) {"
                         var needDefault = false
                         for reusable in reusables {
                             if let identifier = reusable.reuseIdentifier {
-                                print("            case \(SwiftRepresentationForString(string: identifier, doNotShadow: reusable.customClass)):")
-                                print("                return ReusableKind(rawValue: \"\(reusable.kind)\")")
+                                output += "            case \(SwiftRepresentationForString(string: identifier, doNotShadow: reusable.customClass)):"
+                                output += "                return ReusableKind(rawValue: \"\(reusable.kind)\")"
                             } else {
                                 needDefault = true
                             }
                         }
                         if needDefault {
-                            print("            default:")
-                            print("                preconditionFailure(\"Invalid value\")")
-                            print("                break")
+                            output += "            default:"
+                            output += "                preconditionFailure(\"Invalid value\")"
+                            output += "                break"
                         }
-                        print("            }")
-                        print("        }")
-                        print("")
-                        print("        var viewType: \(self.os.viewType).Type? {")
-                        print("            switch (self) {")
+                        output += "            }"
+                        output += "        }"
+                        output += ""
+                        output += "        var viewType: \(self.os.viewType).Type? {"
+                        output += "            switch (self) {"
                         needDefault = false
                         for reusable in reusables {
                             if let identifier = reusable.reuseIdentifier, let customClass = reusable.customClass {
-                                print("            case \(SwiftRepresentationForString(string: identifier, doNotShadow: reusable.customClass)):")
-                                print("                return \(customClass).self")
+                                output += "            case \(SwiftRepresentationForString(string: identifier, doNotShadow: reusable.customClass)):"
+                                output += "                return \(customClass).self"
                             } else {
                                 needDefault = true
                             }
                         }
                         if needDefault {
-                            print("            default:")
-                            print("                return nil")
+                            output += "            default:"
+                            output += "                return nil"
                         }
-                        print("            }")
-                        print("        }")
-                        print("")
-                        print("        var storyboardIdentifier: String? { return self.description } ")
-                        print("        var description: String { return self.rawValue }")
-                        print("    }")
-                        print("")
-                        print("}\n")
+                        output += "            }"
+                        output += "        }"
+                        output += ""
+                        output += "        var storyboardIdentifier: String? { return self.description } "
+                        output += "        var description: String { return self.rawValue }"
+                        output += "    }"
+                        output += ""
+                        output += "}\n"
                     }
                 }
             }
         }
+        return output
     }
 }
 

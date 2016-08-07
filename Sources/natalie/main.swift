@@ -27,15 +27,16 @@ let storyboardFiles = filePaths.flatMap { try? StoryboardFile(filePath: $0) }
 for os in OS.allValues {
     let storyboardsForOS = storyboardFiles.filter({ $0.storyboard.os == os })
     if !storyboardsForOS.isEmpty {
+        var output = String()
 
         if storyboardsForOS.count != storyboardFiles.count {
-            print("#if os(\(os.rawValue))")
+            output += "#if os(\(os.rawValue))"
         }
 
-        Parser.processStoryboards(storyboards: storyboardsForOS, os: os)
+        output += Parser(storyboards: storyboardsForOS).process(os: os)
 
         if storyboardsForOS.count != storyboardFiles.count {
-            print("#endif")
+            output += "#endif"
         }
     }
 }
