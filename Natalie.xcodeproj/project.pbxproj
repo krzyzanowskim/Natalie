@@ -14,6 +14,7 @@
 		750149431D5782CA00B22C87 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750149421D5782CA00B22C87 /* Scene.swift */; };
 		750149451D5782F100B22C87 /* OS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750149441D5782F100B22C87 /* OS.swift */; };
 		750149471D57830A00B22C87 /* StoryboardFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750149461D57830A00B22C87 /* StoryboardFile.swift */; };
+		750EA4CA1D57C65E00782671 /* ParserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EA4C91D57C65E00782671 /* ParserTest.swift */; };
 		75E28AAC1D577D0500A80623 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28AA41D577D0500A80623 /* Helpers.swift */; };
 		75E28AAD1D577D0500A80623 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28AA51D577D0500A80623 /* main.swift */; };
 		75E28AAE1D577D0500A80623 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28AA61D577D0500A80623 /* Parser.swift */; };
@@ -27,8 +28,8 @@
 		755B834D1D576CBF0020148B /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			dstPath = "";
+			dstSubfolderSpec = 7;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
@@ -43,6 +44,9 @@
 		750149421D5782CA00B22C87 /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		750149441D5782F100B22C87 /* OS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OS.swift; sourceTree = "<group>"; };
 		750149461D57830A00B22C87 /* StoryboardFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardFile.swift; sourceTree = "<group>"; };
+		750EA4C71D57C65E00782671 /* natalie-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "natalie-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		750EA4C91D57C65E00782671 /* ParserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTest.swift; sourceTree = "<group>"; };
+		750EA4CB1D57C65E00782671 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		755B834F1D576CBF0020148B /* natalie */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = natalie; sourceTree = BUILT_PRODUCTS_DIR; };
 		75E28AA41D577D0500A80623 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		75E28AA51D577D0500A80623 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = main.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -55,6 +59,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		750EA4C41D57C65E00782671 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		755B834C1D576CBF0020148B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -65,10 +76,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		750EA4C81D57C65E00782671 /* natalie-tests */ = {
+			isa = PBXGroup;
+			children = (
+				750EA4C91D57C65E00782671 /* ParserTest.swift */,
+				750EA4CB1D57C65E00782671 /* Info.plist */,
+			);
+			path = "natalie-tests";
+			sourceTree = "<group>";
+		};
 		755B83461D576CBF0020148B = {
 			isa = PBXGroup;
 			children = (
 				75E28AA21D577D0500A80623 /* Sources */,
+				750EA4C81D57C65E00782671 /* natalie-tests */,
 				755B83501D576CBF0020148B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -77,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				755B834F1D576CBF0020148B /* natalie */,
+				750EA4C71D57C65E00782671 /* natalie-tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -122,6 +144,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		750EA4C61D57C65E00782671 /* natalie-tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 750EA4CC1D57C65E00782671 /* Build configuration list for PBXNativeTarget "natalie-tests" */;
+			buildPhases = (
+				750EA4C31D57C65E00782671 /* Sources */,
+				750EA4C41D57C65E00782671 /* Frameworks */,
+				750EA4C51D57C65E00782671 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "natalie-tests";
+			productName = "natalie-tests";
+			productReference = 750EA4C71D57C65E00782671 /* natalie-tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		755B834E1D576CBF0020148B /* natalie */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 755B83561D576CBF0020148B /* Build configuration list for PBXNativeTarget "natalie" */;
@@ -149,6 +188,11 @@
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Marcin Krzyzanowski";
 				TargetAttributes = {
+					750EA4C61D57C65E00782671 = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 67RAULRX93;
+						ProvisioningStyle = Automatic;
+					};
 					755B834E1D576CBF0020148B = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = 67RAULRX93;
@@ -169,11 +213,30 @@
 			projectRoot = "";
 			targets = (
 				755B834E1D576CBF0020148B /* natalie */,
+				750EA4C61D57C65E00782671 /* natalie-tests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		750EA4C51D57C65E00782671 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		750EA4C31D57C65E00782671 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				750EA4CA1D57C65E00782671 /* ParserTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		755B834B1D576CBF0020148B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -198,6 +261,36 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		750EA4CD1D57C65E00782671 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 67RAULRX93;
+				INFOPLIST_FILE = "natalie-tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.krzyzanowskim.natalie-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		750EA4CE1D57C65E00782671 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 67RAULRX93;
+				INFOPLIST_FILE = "natalie-tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.krzyzanowskim.natalie-tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 		755B83541D576CBF0020148B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -307,6 +400,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		750EA4CC1D57C65E00782671 /* Build configuration list for PBXNativeTarget "natalie-tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				750EA4CD1D57C65E00782671 /* Debug */,
+				750EA4CE1D57C65E00782671 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		755B834A1D576CBF0020148B /* Build configuration list for PBXProject "Natalie" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
