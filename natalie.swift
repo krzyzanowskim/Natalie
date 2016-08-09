@@ -950,7 +950,10 @@ class Storyboard: XMLObject {
         }
         for scene in self.scenes {
             if let viewController = scene.viewController, storyboardIdentifier = viewController.storyboardIdentifier {
-                let controllerClass = (viewController.customClass ?? os.controllerTypeForElementName(viewController.name)!)
+                guard let controllerClass = viewController.customClass ?? os.controllerTypeForElementName(viewController.name) else {
+                    continue
+                }
+
                 let cast = (controllerClass == os.storyboardControllerReturnType ? "" : " as! \(controllerClass)")
                 print("")
                 print("        static func instantiate\(SwiftRepresentationForString(storyboardIdentifier, capitalizeFirstLetter: true))() -> \(controllerClass) {")
