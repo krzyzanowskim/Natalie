@@ -1,9 +1,11 @@
 # Natalie
 Natalie - Storyboard Code Generator (for Swift)
 
-## Swift 3
+## Swift
 
-You can find preliminary Swift 3 support from branch [swift3](https://github.com/krzyzanowskim/Natalie/tree/swift3).
+Current codebase is Swift 3 compatible.
+
+Swift 2.x code may be found from [swift2](https://github.com/krzyzanowskim/Natalie/tree/swift2) branch
 
 ## Synopsis
 Natalie generates Swift code based on storyboard files to make work with Storyboards and segues easier. Generated file **reduce usage of Strings** as identifiers for Segues or Storyboards.
