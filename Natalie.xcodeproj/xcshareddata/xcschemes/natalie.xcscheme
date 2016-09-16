@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "75C988601B35F2CE000A3931"
-               BuildableName = "Natalie"
-               BlueprintName = "Natalie"
+               BlueprintIdentifier = "755B834E1D576CBF0020148B"
+               BuildableName = "natalie"
+               BlueprintName = "natalie"
                ReferencedContainer = "container:Natalie.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "75C988601B35F2CE000A3931"
-            BuildableName = "Natalie"
-            BlueprintName = "Natalie"
+            BlueprintIdentifier = "755B834E1D576CBF0020148B"
+            BuildableName = "natalie"
+            BlueprintName = "natalie"
             ReferencedContainer = "container:Natalie.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -55,9 +55,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "75C988601B35F2CE000A3931"
-            BuildableName = "Natalie"
-            BlueprintName = "Natalie"
+            BlueprintIdentifier = "755B834E1D576CBF0020148B"
+            BuildableName = "natalie"
+            BlueprintName = "natalie"
             ReferencedContainer = "container:Natalie.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -74,9 +74,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "75C988601B35F2CE000A3931"
-            BuildableName = "Natalie"
-            BlueprintName = "Natalie"
+            BlueprintIdentifier = "755B834E1D576CBF0020148B"
+            BuildableName = "natalie"
+            BlueprintName = "natalie"
             ReferencedContainer = "container:Natalie.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
