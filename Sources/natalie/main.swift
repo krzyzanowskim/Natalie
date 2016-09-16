@@ -8,17 +8,12 @@
 
 import Foundation
 
-let process = Process()
-guard let arguments = process.arguments else {
-    exit(1)
-}
-
-if arguments.count == 1 {
+if CommandLine.arguments.count == 1 {
     print("Invalid usage. Missing path to storyboard.")
     exit(1)
 }
 
-let argument = arguments[1]
+let argument = CommandLine.arguments[1]
 var filePaths:[String] = []
 let storyboardSuffix = ".storyboard"
 if argument.hasSuffix(storyboardSuffix) {
