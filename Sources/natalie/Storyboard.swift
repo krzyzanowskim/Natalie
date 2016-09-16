@@ -74,7 +74,7 @@ class Storyboard: XMLObject {
             output += "        }\n"
 
             output += "\n"
-            output += "        static func instantiateViewController<T: \(returnType) where T: IdentifiableProtocol>(ofType type: T.Type) -> T? {\n"
+            output += "        static func instantiateViewController<T: \(returnType)>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {\n"
             output += "            return self.storyboard.instantiateViewController(ofType: type)\n"
             output += "        }\n"
         }

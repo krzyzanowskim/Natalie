@@ -43,7 +43,7 @@ struct Parser {
         output += "\n"
         output += "extension \(os.storyboardType) {\n"
         for (signatureType, returnType) in os.storyboardInstantiationInfo {
-            output += "    func instantiateViewController<T: \(returnType) where T: IdentifiableProtocol>(ofType type: T.Type) -> T? {\n"
+            output += "    func instantiateViewController<T: \(returnType)>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {\n"
             output += "        let instance = type.init()\n"
             output += "        if let identifier = instance.storyboardIdentifier {\n"
             output += "            return self.instantiate\(signatureType)(withIdentifier: identifier) as? T\n"
@@ -150,7 +150,7 @@ struct Parser {
         if let reusableViews = os.resuableViews {
             for reusableView in reusableViews {
                 output += "extension \(reusableView): ReusableViewProtocol {\n"
-                output += "    public var viewType: UIView.Type? { return self.dynamicType }\n"
+                output += "    public var viewType: UIView.Type? { return type(of: self) }\n"
                 output += "    public var storyboardIdentifier: String? { return self.reuseIdentifier }\n"
                 output += "}\n"
                 output += "\n"
