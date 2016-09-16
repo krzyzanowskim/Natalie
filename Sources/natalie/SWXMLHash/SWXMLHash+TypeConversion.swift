@@ -198,7 +198,7 @@ public extension XMLIndexer {
     - returns: the deserialized `[T]` value
     - throws: an XMLDeserializationError is there is a problem with deserialization
     */
-    func value<T where T: XMLIndexerDeserializable>() throws -> [T] {
+    func value<T>() throws -> [T] where T: XMLIndexerDeserializable {
         switch self {
         case .List(let elements):
             return try elements.map { try T.deserialize( XMLIndexer($0) ) }
