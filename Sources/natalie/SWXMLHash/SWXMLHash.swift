@@ -676,17 +676,14 @@ public class XMLElement: XMLContent {
         - withAttributes: The attributes dictionary for the element being added
     - returns: The XMLElement that has now been added
     */
-    func addElement(_ name: String, withAttributes attributes: NSDictionary) -> XMLElement {
+    func addElement(_ name: String, withAttributes attributes: [String: String]) -> XMLElement {
         let element = XMLElement(name: name, index: count)
         count += 1
 
         children.append(element)
 
-        for (keyAny, valueAny) in attributes {
-            if let key = keyAny as? String,
-                let value = valueAny as? String {
-                element.attributes[key] = value
-            }
+        for (key, value) in attributes {
+            element.attributes[key] = value
         }
 
         return element
