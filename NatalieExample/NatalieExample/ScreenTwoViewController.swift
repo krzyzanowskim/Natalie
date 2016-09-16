@@ -18,13 +18,13 @@ class ScreenTwoViewController: UIViewController {
 
 extension ScreenTwoViewController: UITableViewDataSource {
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(Reusable.MyCell, forIndexPath: indexPath)!
-        cell.textLabel?.text = "\(indexPath.row)"
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeue(reusable: Reusable.MyCell, for: indexPath)!
+        cell.textLabel?.text = "\((indexPath as NSIndexPath).row)"
         return cell
     }
 }

@@ -16,26 +16,26 @@ class MainViewController: UIViewController {
     
     //MARK: Navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue == MainViewController.Segue.ScreenOneSegue, let oneViewController = segue.destinationViewController as? ScreenOneViewController {
-            oneViewController.view.backgroundColor = UIColor.yellowColor()
-        } else if segue == MainViewController.Segue.ScreenOneSegueButton, let oneViewController = segue.destinationViewController as? ScreenOneViewController {
-            oneViewController.view.backgroundColor = UIColor.brownColor()
-        } else if segue == MainViewController.Segue.ScreenTwoSegue, let twoViewController = segue.destinationViewController as? ScreenTwoViewController {
-            twoViewController.view.backgroundColor = UIColor.magentaColor()
-        } else if segue == MainViewController.Segue.SceneOneGestureRecognizerSegue, let oneViewController = segue.destinationViewController as? ScreenOneViewController {
-            oneViewController.view.backgroundColor = UIColor.greenColor()
+    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue == MainViewController.Segue.ScreenOneSegue, let oneViewController = segue.destination as? ScreenOneViewController {
+            oneViewController.view.backgroundColor = UIColor.yellow
+        } else if segue == MainViewController.Segue.ScreenOneSegueButton, let oneViewController = segue.destination as? ScreenOneViewController {
+            oneViewController.view.backgroundColor = UIColor.brown
+        } else if segue == MainViewController.Segue.ScreenTwoSegue, let twoViewController = segue.destination as? ScreenTwoViewController {
+            twoViewController.view.backgroundColor = UIColor.magenta
+        } else if segue == MainViewController.Segue.SceneOneGestureRecognizerSegue, let oneViewController = segue.destination as? ScreenOneViewController {
+            oneViewController.view.backgroundColor = UIColor.green
         }
     }
 
     //MARK: Actions
     
-    @IBAction func screen1ButtonPressed(button:UIButton) {
-        self.performSegue(MainViewController.Segue.ScreenOneSegue)
+    @IBAction func screen1ButtonPressed(_ button:UIButton) {
+        self.perform(segue: MainViewController.Segue.ScreenOneSegue)
     }
 
-    @IBAction func screen22ButtonPressed(button:UIButton) {
-        self.performSegue(MainViewController.Segue.ScreenTwoSegue, sender: nil)
+    @IBAction func screen22ButtonPressed(_ button:UIButton) {
+        self.performSegue(withIdentifier: MainViewController.Segue.ScreenTwoSegue.rawValue, sender: nil)
     }
 
 }
