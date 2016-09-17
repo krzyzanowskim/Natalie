@@ -15,8 +15,8 @@ class MainViewController: UIViewController {
     }
     
     //MARK: Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue == MainViewController.Segue.ScreenOneSegue, let oneViewController = segue.destination as? ScreenOneViewController {
             oneViewController.view.backgroundColor = UIColor.yellow
         } else if segue == MainViewController.Segue.ScreenOneSegueButton, let oneViewController = segue.destination as? ScreenOneViewController {
@@ -27,6 +27,18 @@ class MainViewController: UIViewController {
             oneViewController.view.backgroundColor = UIColor.green
         }
     }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if segue == MainViewController.Segue.ScreenOneSegue, let oneViewController = segue.destination as? ScreenOneViewController {
+//            oneViewController.view.backgroundColor = UIColor.yellow
+//        } else if segue == MainViewController.Segue.ScreenOneSegueButton, let oneViewController = segue.destination as? ScreenOneViewController {
+//            oneViewController.view.backgroundColor = UIColor.brown
+//        } else if segue == MainViewController.Segue.ScreenTwoSegue, let twoViewController = segue.destination as? ScreenTwoViewController {
+//            twoViewController.view.backgroundColor = UIColor.magenta
+//        } else if segue == MainViewController.Segue.SceneOneGestureRecognizerSegue, let oneViewController = segue.destination as? ScreenOneViewController {
+//            oneViewController.view.backgroundColor = UIColor.green
+//        }
+//    }
 
     //MARK: Actions
     

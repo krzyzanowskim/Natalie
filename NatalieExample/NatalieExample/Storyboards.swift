@@ -7,7 +7,7 @@ import UIKit
 //MARK: - Storyboards
 
 extension UIStoryboard {
-    func instantiateViewController<T: UIViewController where T: IdentifiableProtocol>(ofType type: T.Type) -> T? {
+    func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
         let instance = type.init()
         if let identifier = instance.storyboardIdentifier {
             return self.instantiateViewController(withIdentifier: identifier) as? T
@@ -40,7 +40,7 @@ struct Storyboards {
             return self.storyboard.instantiateViewController(withIdentifier: identifier)
         }
 
-        static func instantiateViewController<T: UIViewController where T: IdentifiableProtocol>(ofType type: T.Type) -> T? {
+        static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
             return self.storyboard.instantiateViewController(ofType: type)
         }
 
@@ -132,12 +132,12 @@ extension UIStoryboardSegue: SegueProtocol {
 }
 
 extension UICollectionReusableView: ReusableViewProtocol {
-    public var viewType: UIView.Type? { return self.dynamicType }
+    public var viewType: UIView.Type? { return type(of: self) }
     public var storyboardIdentifier: String? { return self.reuseIdentifier }
 }
 
 extension UITableViewCell: ReusableViewProtocol {
-    public var viewType: UIView.Type? { return self.dynamicType }
+    public var viewType: UIView.Type? { return type(of: self) }
     public var storyboardIdentifier: String? { return self.reuseIdentifier }
 }
 
