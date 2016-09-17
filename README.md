@@ -139,7 +139,7 @@ class MyCustomTableViewCell: UITableViewCell {
 ```
 $ git clone https://github.com/krzyzanowskim/Natalie.git
 $ cd Natalie
-$ swift build -c release
+$ swift build -c release -Xswiftc -static-stdlib
 $ cp .build/release/natalie ./natalie
 ```
 
