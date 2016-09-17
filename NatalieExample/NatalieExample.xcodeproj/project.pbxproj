@@ -166,7 +166,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "echo \"Natalie Generator: Determining if generated Swift file is up-to-date.\"\n\nNATALIE_PATH=\"$SRCROOT/../.build/debug/natalie\"\n\nif [ -f $NATALIE_PATH ]; then\n    BASE_PATH=\"$PROJECT_DIR/$PROJECT_NAME\"\n    OUTPUT_PATH=\"$BASE_PATH/Storyboards.swift\"\n    \n#    if [ ! -e \"$OUTPUT_PATH\" ] || [ -n \"$(find \"$BASE_PATH\" -type f -name \"*.storyboard\" -newer \"$OUTPUT_PATH\" -print -quit)\" ]; then\n        echo \"Natalie Generator: Generated Swift is out-of-date; re-generating...\"\n\n#        /usr/bin/chflags nouchg \"$OUTPUT_PATH\"\n        \"$NATALIE_PATH\" \"$BASE_PATH\" > \"$OUTPUT_PATH\"\n#        /usr/bin/chflags uchg \"$OUTPUT_PATH\"\n\n        echo \"Natalie Generator: Done.\"\n#    else\n#        echo \"Natalie Generator: Generated Swift is up-to-date; skipping re-generation.\"\n#    fi\nfi\n\n";
+			shellScript = "echo \"Natalie Generator: Determining if generated Swift file is up-to-date.\"\n\nNATALIE_PATH=\"$SRCROOT/../.build/release/natalie\"\n\nif [ -f $NATALIE_PATH ]; then\n    BASE_PATH=\"$PROJECT_DIR/$PROJECT_NAME\"\n    OUTPUT_PATH=\"$BASE_PATH/Storyboards.swift\"\n    \n#    if [ ! -e \"$OUTPUT_PATH\" ] || [ -n \"$(find \"$BASE_PATH\" -type f -name \"*.storyboard\" -newer \"$OUTPUT_PATH\" -print -quit)\" ]; then\n        echo \"Natalie Generator: Generated Swift is out-of-date; re-generating...\"\n\n#        /usr/bin/chflags nouchg \"$OUTPUT_PATH\"\n        \"$NATALIE_PATH\" \"$BASE_PATH\" > \"$OUTPUT_PATH\"\n#        /usr/bin/chflags uchg \"$OUTPUT_PATH\"\n\n        echo \"Natalie Generator: Done.\"\n#    else\n#        echo \"Natalie Generator: Generated Swift is up-to-date; skipping re-generation.\"\n#    fi\nfi\n\n";
 			showEnvVarsInLog = 0;
 		};
 		75FB6F751D57D87B000EE99E /* Natalie build */ = {
@@ -181,7 +181,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "swift build -C \"$SRCROOT/..\"";
+			shellScript = "swift build -c release -C \"$SRCROOT/..\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
