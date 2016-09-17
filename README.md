@@ -164,16 +164,20 @@ Natalie can be integrated with Xcode in such a way that the `Storyboards.swift` 
 
 This is my setup created with **New Run Script Phase** on **Build Phase** Xcode target setting. It is important to move this phase above Compilation phase because this file is expected to be up to date for the rest of the application.
 
+- Select the project in the Project Navigator on the left of your Xcode window
+- Select your App Target in the list
+- Go in the "Build Phases" tab
+- Click on the "+" button on the upper left corner and choose "New Run Script Phase" and copy/paste script:
+
 ```sh
 echo "Natalie Generator: Determining if generated Swift file is up-to-date."
 
-NATALIE_PATH="/usr/local/bin/natalie"
-#If you put natalie on the project folder
+# Adjust path to "natalie" binary
 # NATALIE_PATH="$PROJECT_DIR/natalie"
+NATALIE_PATH="/usr/local/bin/natalie"
 
 if [ -f $NATALIE_PATH ]; then
     BASE_PATH="$PROJECT_DIR/$PROJECT_NAME"
-    //
     OUTPUT_PATH="$BASE_PATH/Storyboards.swift"
     
     if [ ! -e "$OUTPUT_PATH" ] || [ -n "$(find "$BASE_PATH" -type f -name "*.storyboard" -newer "$OUTPUT_PATH" -print -quit)" ]; then
@@ -190,7 +194,7 @@ if [ -f $NATALIE_PATH ]; then
 fi
 ```
 
-Don't forget to add `Storyboards.swift` to the project.
+- add `Storyboards.swift` to the project.
 
 ##Usage:
 
@@ -200,7 +204,7 @@ $ git clone https://github.com/krzyzanowskim/Natalie.git
 $ cd Natalie
 ```
 
-The script expects one of two types of parameters:
+The command expects one of two types of parameters:
 
 * path to a single .storyboard file 
 * path to a folder
@@ -213,7 +217,7 @@ $ natalie NatalieExample/NatalieExample/Base.lproj/Main.storyboard > NatalieExam
 
 ##Contribution
 
-Please submit Pull Request against current development branch (today it is Swift2 branch)
+Please submit Pull Request against current development branch.
 
 ## Author and contact
 Marcin Krzyżanowski 
