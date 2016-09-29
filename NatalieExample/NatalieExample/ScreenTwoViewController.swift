@@ -6,16 +6,23 @@
 //  Copyright (c) 2015 Marcin Krzyżanowski. All rights reserved.
 //
 
-import UIKit
+#if os(OSX)
+    import AppKit
+    typealias NTLTableView = NSTableView
+#else
+    import UIKit
+    typealias NTLTableView = UITableView
+#endif
 
-class ScreenTwoViewController: UIViewController {
-    @IBOutlet var tableView: UITableView!
+class ScreenTwoViewController: NTLViewController {
+    @IBOutlet var tableView: NTLTableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 }
 
+#if os(iOS)
 extension ScreenTwoViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -28,3 +35,4 @@ extension ScreenTwoViewController: UITableViewDataSource {
         return cell
     }
 }
+#endif
