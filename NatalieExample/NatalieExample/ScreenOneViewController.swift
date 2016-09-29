@@ -6,9 +6,13 @@
 //  Copyright (c) 2015 Marcin Krzyżanowski. All rights reserved.
 //
 
-import UIKit
+#if os(OSX)
+    import AppKit
+#else
+    import UIKit
+#endif
 
-class ScreenOneViewController: UIViewController {
+class ScreenOneViewController: NTLViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,11 +20,12 @@ class ScreenOneViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    #if !os(OSX)
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    #endif
 
     /*
     // MARK: - Navigation
