@@ -118,7 +118,11 @@ class Storyboard: XMLObject {
                     }
 
                     if let storyboardIdentifier = viewController.storyboardIdentifier {
-                        output += "extension \(customClass): IdentifiableProtocol { \n"
+                        output += "protocol  \(customClass)IdentifiableProtocol: IdentifiableProtocol { }\n"
+                        output += "\n"
+                        output += "extension  \(customClass): \(customClass)IdentifiableProtocol { }\n"
+                        output += "\n"
+                        output += "extension IdentifiableProtocol where Self: \(customClass) {\n"
                         if viewController.customModule != nil {
                             output += "    var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }\n"
                         } else {
