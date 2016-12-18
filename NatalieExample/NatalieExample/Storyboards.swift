@@ -55,6 +55,10 @@ struct Storyboards {
         static func instantiateScreenOneViewController() -> ScreenOneViewController {
             return self.storyboard.instantiateViewController(withIdentifier: "Screen One ViewController") as! ScreenOneViewController
         }
+
+        static func instantiateSecondSubViewController() -> ScreenSubTwoViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "secondSubViewController") as! ScreenSubTwoViewController
+        }
     }
 }
 
@@ -226,7 +230,11 @@ extension UIStoryboardSegue {
     }
 }
 
-extension MainViewController: IdentifiableProtocol { 
+protocol  MainViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension  MainViewController: MainViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: MainViewController {
     var storyboardIdentifier: String? { return "MainViewController" }
     static var storyboardIdentifier: String? { return "MainViewController" }
 }
@@ -272,7 +280,11 @@ extension MainViewController {
 }
 
 //MARK: - ScreenTwoViewController
-extension ScreenTwoViewController: IdentifiableProtocol { 
+protocol  ScreenTwoViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension  ScreenTwoViewController: ScreenTwoViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: ScreenTwoViewController {
     var storyboardIdentifier: String? { return "secondViewController" }
     static var storyboardIdentifier: String? { return "secondViewController" }
 }
@@ -304,9 +316,49 @@ extension ScreenTwoViewController {
 
 
 //MARK: - ScreenOneViewController
-extension ScreenOneViewController: IdentifiableProtocol { 
+protocol  ScreenOneViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension  ScreenOneViewController: ScreenOneViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: ScreenOneViewController {
     var storyboardIdentifier: String? { return "Screen One ViewController" }
     static var storyboardIdentifier: String? { return "Screen One ViewController" }
+}
+
+
+//MARK: - ScreenSubTwoViewController
+protocol  ScreenSubTwoViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension  ScreenSubTwoViewController: ScreenSubTwoViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: ScreenSubTwoViewController {
+    var storyboardIdentifier: String? { return "secondSubViewController" }
+    static var storyboardIdentifier: String? { return "secondSubViewController" }
+}
+
+extension ScreenSubTwoViewController { 
+
+    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {
+        case MyCellTwo = "MyCellTwo"
+
+        var kind: ReusableKind? {
+            switch (self) {
+            case .MyCellTwo:
+                return ReusableKind(rawValue: "tableViewCell")
+            }
+        }
+
+        var viewType: UIView.Type? {
+            switch (self) {
+            default:
+                return nil
+            }
+        }
+
+        var storyboardIdentifier: String? { return self.description } 
+        var description: String { return self.rawValue }
+    }
+
 }
 
 
