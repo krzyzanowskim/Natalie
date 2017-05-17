@@ -160,7 +160,7 @@ struct Parser {
         for controllerType in os.storyboardControllerTypes {
             output += "//MARK: - \(controllerType) extension\n"
             output += "extension \(controllerType) {\n"
-            output += "    func perform<T: SegueProtocol>(segue: T, sender: AnyObject?) {\n"
+            output += "    func perform<T: SegueProtocol>(segue: T, sender: Any?) {\n"
             output += "        if let identifier = segue.identifier {\n"
             output += "            performSegue(withIdentifier: identifier, sender: sender)\n"
             output += "        }\n"
