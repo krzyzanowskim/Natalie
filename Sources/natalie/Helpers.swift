@@ -21,7 +21,7 @@ func findStoryboards(rootPath: String, suffix: String) -> [String]? {
     return result.count > 0 ? result : nil
 }
 
-func SwiftRepresentationForString(string: String, capitalizeFirstLetter: Bool = false, doNotShadow: String? = nil) -> String {
+func swiftRepresentation(for string: String, capitalizeFirstLetter: Bool = false, doNotShadow: String? = nil) -> String {
     var str =  string.trimAllWhitespacesAndSpecialCharacters()
     if capitalizeFirstLetter {
         str = String(str.uppercased().unicodeScalars.prefix(1) + str.unicodeScalars.suffix(str.unicodeScalars.count - 1))

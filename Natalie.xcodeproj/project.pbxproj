@@ -116,15 +116,11 @@
 			children = (
 				75E28AA81D577D0500A80623 /* SWXMLHash */,
 				75E28AA51D577D0500A80623 /* main.swift */,
+				750149441D5782F100B22C87 /* OS.swift */,
+				750149461D57830A00B22C87 /* StoryboardFile.swift */,
 				75E28AA61D577D0500A80623 /* Parser.swift */,
 				75E28AB21D577EEA00A80623 /* XMLObject.swift */,
-				7501493A1D57825F00B22C87 /* ViewController.swift */,
-				7501493C1D57827800B22C87 /* Segue.swift */,
-				7501493E1D57828D00B22C87 /* Reusable.swift */,
-				750149401D5782AC00B22C87 /* Storyboard.swift */,
-				750149421D5782CA00B22C87 /* Scene.swift */,
-				750149461D57830A00B22C87 /* StoryboardFile.swift */,
-				750149441D5782F100B22C87 /* OS.swift */,
+				C428BDFE1ECD79D800F037BA /* XMLObject */,
 				75E28AA41D577D0500A80623 /* Helpers.swift */,
 				75E28AA71D577D0500A80623 /* String+Extension.swift */,
 			);
@@ -139,6 +135,18 @@
 				75E28AAB1D577D0500A80623 /* SWXMLHash.swift */,
 			);
 			path = SWXMLHash;
+			sourceTree = "<group>";
+		};
+		C428BDFE1ECD79D800F037BA /* XMLObject */ = {
+			isa = PBXGroup;
+			children = (
+				750149401D5782AC00B22C87 /* Storyboard.swift */,
+				750149421D5782CA00B22C87 /* Scene.swift */,
+				7501493A1D57825F00B22C87 /* ViewController.swift */,
+				7501493C1D57827800B22C87 /* Segue.swift */,
+				7501493E1D57828D00B22C87 /* Reusable.swift */,
+			);
+			name = XMLObject;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,7 +193,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Marcin Krzyzanowski";
 				TargetAttributes = {
 					750EA4C61D57C65E00782671 = {
@@ -309,6 +317,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -357,6 +366,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -376,6 +386,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
