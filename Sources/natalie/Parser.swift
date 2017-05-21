@@ -34,7 +34,7 @@ struct Parser {
 
         output += header.description
         output += "import \(os.framework)\n"
-        for module in storyboards.lazy.flatMap({ $0.storyboard.customModules }) {
+        for module in Set(storyboards.lazy.flatMap { $0.storyboard.customModules }) {
             output += "import \(module)\n"
         }
         output += "\n"
