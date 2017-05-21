@@ -47,6 +47,10 @@ class Storyboard: XMLObject {
         self.version = xml["document"].element!.attributes["version"]!
         super.init(xml: xml)
     }
+    
+}
+
+extension Storyboard {
 
     func processStoryboard(storyboardName: String, os: OS) -> String {
         var output = String()
@@ -86,7 +90,7 @@ class Storyboard: XMLObject {
 
                 let cast = (controllerClass == os.storyboardControllerReturnType ? "" : " as! \(controllerClass)")
                 output += "\n"
-                output += "        static func instantiate\(swiftRepresentation(for: storyboardIdentifier, capitalizeFirstLetter: true))() -> \(controllerClass) {\n"
+                output += "        static func instantiate\(swiftRepresentation(for: storyboardIdentifier, firstLetter: .capitalize))() -> \(controllerClass) {\n"
                 output += "            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)(withIdentifier: \"\(storyboardIdentifier)\")\(cast)\n"
                 output += "        }\n"
             }
@@ -140,7 +144,7 @@ class Storyboard: XMLObject {
                         for segue in segues {
                             if let identifier = segue.identifier
                             {
-                                output += "        case \(swiftRepresentation(for: identifier)) = \"\(identifier)\"\n"
+                                output += "        case \(swiftRepresentation(for: identifier, firstLetter: .lowercase)) = \"\(identifier)\"\n"
                             }
                         }
                         output += "\n"
@@ -149,7 +153,7 @@ class Storyboard: XMLObject {
                         var needDefaultSegue = false
                         for segue in segues {
                             if let identifier = segue.identifier {
-                                output += "            case .\(swiftRepresentation(for: identifier)):\n"
+                                output += "            case .\(swiftRepresentation(for: identifier, firstLetter: .lowercase)):\n"
                                 output += "                return SegueKind(rawValue: \"\(segue.kind)\")\n"
                             } else {
                                 needDefaultSegue = true
@@ -171,7 +175,7 @@ class Storyboard: XMLObject {
                                 let destinationElement = searchById(id: destination)?.element,
                                 let destinationClass = (destinationElement.attributes["customClass"] ?? os.controllerType(for: destinationElement.name))
                             {
-                                output += "            case .\(swiftRepresentation(for:identifier)):\n"
+                                output += "            case .\(swiftRepresentation(for:identifier, firstLetter: .lowercase)):\n"
                                 output += "                return \(destinationClass).self\n"
                             } else {
                                 needDefaultDestination = true

@@ -64,24 +64,24 @@ struct Storyboards {
 
 //MARK: - ReusableKind
 enum ReusableKind: String, CustomStringConvertible {
-    case TableViewCell = "tableViewCell"
-    case CollectionViewCell = "collectionViewCell"
+    case tableViewCell = "tableViewCell"
+    case collectionViewCell = "collectionViewCell"
 
     var description: String { return self.rawValue }
 }
 
 //MARK: - SegueKind
 enum SegueKind: String, CustomStringConvertible {    
-    case Relationship = "relationship" 
-    case Show = "show"                 
-    case Presentation = "presentation" 
-    case Embed = "embed"               
-    case Unwind = "unwind"             
-    case Push = "push"                 
-    case Modal = "modal"               
-    case Popover = "popover"           
-    case Replace = "replace"           
-    case Custom = "custom"             
+    case relationship = "relationship" 
+    case show = "show"                 
+    case presentation = "presentation" 
+    case embed = "embed"               
+    case unwind = "unwind"             
+    case push = "push"                 
+    case modal = "modal"               
+    case popover = "popover"           
+    case replace = "replace"           
+    case custom = "custom"             
 
     var description: String { return self.rawValue } 
 }
@@ -147,7 +147,7 @@ extension UITableViewCell: ReusableViewProtocol {
 
 //MARK: - UIViewController extension
 extension UIViewController {
-    func perform<T: SegueProtocol>(segue: T, sender: AnyObject?) {
+    func perform<T: SegueProtocol>(segue: T, sender: Any?) {
         if let identifier = segue.identifier {
             performSegue(withIdentifier: identifier, sender: sender)
         }
@@ -242,33 +242,33 @@ extension IdentifiableProtocol where Self: MainViewController {
 extension MainViewController { 
 
     enum Segue: String, CustomStringConvertible, SegueProtocol {
-        case ScreenOneSegueButton = "Screen One Segue Button"
-        case ScreenOneSegue = "ScreenOneSegue"
-        case ScreenTwoSegue = "ScreenTwoSegue"
-        case SceneOneGestureRecognizerSegue = "SceneOneGestureRecognizerSegue"
+        case screenOneSegueButton = "Screen One Segue Button"
+        case screenOneSegue = "ScreenOneSegue"
+        case screenTwoSegue = "ScreenTwoSegue"
+        case sceneOneGestureRecognizerSegue = "SceneOneGestureRecognizerSegue"
 
         var kind: SegueKind? {
             switch (self) {
-            case .ScreenOneSegueButton:
+            case .screenOneSegueButton:
                 return SegueKind(rawValue: "push")
-            case .ScreenOneSegue:
+            case .screenOneSegue:
                 return SegueKind(rawValue: "push")
-            case .ScreenTwoSegue:
+            case .screenTwoSegue:
                 return SegueKind(rawValue: "push")
-            case .SceneOneGestureRecognizerSegue:
+            case .sceneOneGestureRecognizerSegue:
                 return SegueKind(rawValue: "push")
             }
         }
 
         var destination: UIViewController.Type? {
             switch (self) {
-            case .ScreenOneSegueButton:
+            case .screenOneSegueButton:
                 return ScreenOneViewController.self
-            case .ScreenOneSegue:
+            case .screenOneSegue:
                 return ScreenOneViewController.self
-            case .ScreenTwoSegue:
+            case .screenTwoSegue:
                 return ScreenTwoViewController.self
-            case .SceneOneGestureRecognizerSegue:
+            case .sceneOneGestureRecognizerSegue:
                 return ScreenOneViewController.self
             }
         }

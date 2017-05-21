@@ -176,7 +176,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 75FBDFB01ADE59A30056F7DA /* Build configuration list for PBXNativeTarget "NatalieExample" */;
 			buildPhases = (
-				75FB6F751D57D87B000EE99E /* Natalie build */,
 				757ED5C21ADE785B00ACE9CF /* Natalie generator */,
 				75FBDF8D1ADE59A30056F7DA /* Sources */,
 				75FBDF8E1ADE59A30056F7DA /* Frameworks */,
@@ -195,6 +194,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C428BDF61ECD71DD00F037BA /* Build configuration list for PBXNativeTarget "NatalieTVOSExample" */;
 			buildPhases = (
+				C493E66A1ED246EB00A171BE /* Natalie generator */,
 				C428BDE41ECD71DD00F037BA /* Sources */,
 				C428BDE51ECD71DD00F037BA /* Frameworks */,
 				C428BDE61ECD71DD00F037BA /* Resources */,
@@ -318,19 +318,19 @@
 			shellScript = "echo \"Natalie Generator: Determining if generated Swift file is up-to-date.\"\n\nNATALIE_PATH=\"$SRCROOT/../.build/release/natalie\"\n\nif [ -f $NATALIE_PATH ]; then\n    BASE_PATH=\"$PROJECT_DIR/$PROJECT_NAME\"\n    OUTPUT_PATH=\"$BASE_PATH/Storyboards.swift\"\n    \n#    if [ ! -e \"$OUTPUT_PATH\" ] || [ -n \"$(find \"$BASE_PATH\" -type f -name \"*.storyboard\" -newer \"$OUTPUT_PATH\" -print -quit)\" ]; then\n        echo \"Natalie Generator: Generated Swift is out-of-date; re-generating...\"\n\n#        /usr/bin/chflags nouchg \"$OUTPUT_PATH\"\n        \"$NATALIE_PATH\" \"$BASE_PATH\" > \"$OUTPUT_PATH\"\n#        /usr/bin/chflags uchg \"$OUTPUT_PATH\"\n\n        echo \"Natalie Generator: Done.\"\n#    else\n#        echo \"Natalie Generator: Generated Swift is up-to-date; skipping re-generation.\"\n#    fi\nfi\n\n";
 			showEnvVarsInLog = 0;
 		};
-		75FB6F751D57D87B000EE99E /* Natalie build */ = {
+		C493E66A1ED246EB00A171BE /* Natalie generator */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Natalie build";
+			name = "Natalie generator";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "swift build -c release -C \"$SRCROOT/..\"";
+			shellScript = "echo \"Natalie Generator: Determining if generated Swift file is up-to-date.\"\n\nNATALIE_PATH=\"$SRCROOT/../.build/release/natalie\"\n\nif [ -f $NATALIE_PATH ]; then\nBASE_PATH=\"$PROJECT_DIR/$TARGET_NAME\"\nOUTPUT_PATH=\"$BASE_PATH/Storyboards.swift\"\n\n#    if [ ! -e \"$OUTPUT_PATH\" ] || [ -n \"$(find \"$BASE_PATH\" -type f -name \"*.storyboard\" -newer \"$OUTPUT_PATH\" -print -quit)\" ]; then\necho \"Natalie Generator: Generated Swift is out-of-date; re-generating...\"\necho $OUTPUT_PATH\n\n#        /usr/bin/chflags nouchg \"$OUTPUT_PATH\"\n\"$NATALIE_PATH\" \"$BASE_PATH\" > \"$OUTPUT_PATH\"\n#        /usr/bin/chflags uchg \"$OUTPUT_PATH\"\n\necho \"Natalie Generator: Done.\"\n#    else\n#        echo \"Natalie Generator: Generated Swift is up-to-date; skipping re-generation.\"\n#    fi\nfi\n\n";
 		};
 		C4D441C31D9D052B005198F4 /* Natalie build */ = {
 			isa = PBXShellScriptBuildPhase;

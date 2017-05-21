@@ -21,11 +21,26 @@ func findStoryboards(rootPath: String, suffix: String) -> [String]? {
     return result.count > 0 ? result : nil
 }
 
-func swiftRepresentation(for string: String, capitalizeFirstLetter: Bool = false, doNotShadow: String? = nil) -> String {
-    var str =  string.trimAllWhitespacesAndSpecialCharacters()
-    if capitalizeFirstLetter {
-        str = String(str.uppercased().unicodeScalars.prefix(1) + str.unicodeScalars.suffix(str.unicodeScalars.count - 1))
+enum FirstLetterFormat {
+    case none
+    case capitalize
+    case lowercase
+    
+    func format(_ str: String) -> String {
+        switch self {
+        case .none:
+            return str
+        case .capitalize:
+            return String(str.uppercased().unicodeScalars.prefix(1) + str.unicodeScalars.suffix(str.unicodeScalars.count - 1))
+        case .lowercase:
+            return String(str.lowercased().unicodeScalars.prefix(1) + str.unicodeScalars.suffix(str.unicodeScalars.count - 1))
+        }
     }
+}
+
+func swiftRepresentation(for string: String, firstLetter: FirstLetterFormat = .none, doNotShadow: String? = nil) -> String {
+    var str = string.trimAllWhitespacesAndSpecialCharacters()
+    str = firstLetter.format(str)
     if str == doNotShadow {
         str = str + "_"
     }

@@ -14,7 +14,7 @@ extension UIStoryboard {
         }
         return nil
     }
-    
+
 }
 
 protocol Storyboard {
@@ -23,23 +23,23 @@ protocol Storyboard {
 }
 
 struct Storyboards {
-    
+
     struct Main: Storyboard {
-        
+
         static let identifier = "Main"
-        
+
         static var storyboard: UIStoryboard {
             return UIStoryboard(name: self.identifier, bundle: nil)
         }
-        
+
         static func instantiateInitialViewController() -> UINavigationController {
             return self.storyboard.instantiateInitialViewController() as! UINavigationController
         }
-        
+
         static func instantiateViewController(withIdentifier: String) -> UIViewController {
             return self.storyboard.instantiateViewController(withIdentifier: identifier)
         }
-        
+
         static func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
             return self.storyboard.instantiateViewController(ofType: type)
         }
@@ -48,26 +48,26 @@ struct Storyboards {
 
 //MARK: - ReusableKind
 enum ReusableKind: String, CustomStringConvertible {
-    case TableViewCell = "tableViewCell"
-    case CollectionViewCell = "collectionViewCell"
-    
+    case tableViewCell = "tableViewCell"
+    case collectionViewCell = "collectionViewCell"
+
     var description: String { return self.rawValue }
 }
 
 //MARK: - SegueKind
-enum SegueKind: String, CustomStringConvertible {
-    case Relationship = "relationship"
-    case Show = "show"
-    case Presentation = "presentation"
-    case Embed = "embed"
-    case Unwind = "unwind"
-    case Push = "push"
-    case Modal = "modal"
-    case Popover = "popover"
-    case Replace = "replace"
-    case Custom = "custom"
-    
-    var description: String { return self.rawValue }
+enum SegueKind: String, CustomStringConvertible {    
+    case relationship = "relationship" 
+    case show = "show"                 
+    case presentation = "presentation" 
+    case embed = "embed"               
+    case unwind = "unwind"             
+    case push = "push"                 
+    case modal = "modal"               
+    case popover = "popover"           
+    case replace = "replace"           
+    case custom = "custom"             
+
+    var description: String { return self.rawValue } 
 }
 
 //MARK: - IdentifiableProtocol
@@ -136,7 +136,7 @@ extension UIViewController {
             performSegue(withIdentifier: identifier, sender: sender)
         }
     }
-    
+
     func perform<T: SegueProtocol>(segue: T) {
         perform(segue: segue, sender: nil)
     }
@@ -153,46 +153,47 @@ extension UIStoryboardSegue {
     }
 }
 
-extension MainViewController {
-    
+extension MainViewController { 
+
     enum Segue: String, CustomStringConvertible, SegueProtocol {
-        case ScreenOneSegueButton = "Screen One Segue Button"
-        case SceneOneGestureRecognizerSegue = "SceneOneGestureRecognizerSegue"
-        case ScreenTwoSegue = "ScreenTwoSegue"
-        case ScreenOneSegue = "ScreenOneSegue"
-        
+        case screenOneSegueButton = "Screen One Segue Button"
+        case sceneOneGestureRecognizerSegue = "SceneOneGestureRecognizerSegue"
+        case screenTwoSegue = "ScreenTwoSegue"
+        case screenOneSegue = "ScreenOneSegue"
+
         var kind: SegueKind? {
             switch (self) {
-            case .ScreenOneSegueButton:
+            case .screenOneSegueButton:
                 return SegueKind(rawValue: "show")
-            case .SceneOneGestureRecognizerSegue:
+            case .sceneOneGestureRecognizerSegue:
                 return SegueKind(rawValue: "show")
-            case .ScreenTwoSegue:
+            case .screenTwoSegue:
                 return SegueKind(rawValue: "show")
-            case .ScreenOneSegue:
+            case .screenOneSegue:
                 return SegueKind(rawValue: "show")
             }
         }
-        
+
         var destination: UIViewController.Type? {
             switch (self) {
-            case .ScreenOneSegueButton:
+            case .screenOneSegueButton:
                 return ScreenOneViewController.self
-            case .SceneOneGestureRecognizerSegue:
+            case .sceneOneGestureRecognizerSegue:
                 return ScreenOneViewController.self
-            case .ScreenTwoSegue:
+            case .screenTwoSegue:
                 return ScreenTwoViewController.self
-            case .ScreenOneSegue:
+            case .screenOneSegue:
                 return ScreenOneViewController.self
             }
         }
-        
-        var identifier: String? { return self.description }
+
+        var identifier: String? { return self.description } 
         var description: String { return self.rawValue }
     }
-    
+
 }
 
 //MARK: - ScreenTwoViewController
 
 //MARK: - ScreenOneViewController
+

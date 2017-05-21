@@ -12,6 +12,8 @@ class ViewController: XMLObject {
     lazy var customModuleProvider: String? = self.xml.element?.attributes["customModuleProvider"]
     lazy var storyboardIdentifier: String? = self.xml.element?.attributes["storyboardIdentifier"]
     lazy var customModule: String? = self.xml.element?.attributes["customModule"]
+    lazy var id: String? = self.xml.element?.attributes["id"]
+    lazy var userLabel: String? = self.xml.element?.attributes["userLabel"]
 
     lazy var reusables: [Reusable]? = {
         if let reusables = self.searchAll(root: self.xml, attributeKey: "reuseIdentifier"){
