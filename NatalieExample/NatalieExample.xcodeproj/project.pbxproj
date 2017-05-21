@@ -17,6 +17,14 @@
 		75FBDFB71ADE5F950056F7DA /* ScreenOneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBDFB61ADE5F950056F7DA /* ScreenOneViewController.swift */; };
 		75FBDFB91ADE5FA50056F7DA /* ScreenTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBDFB81ADE5FA50056F7DA /* ScreenTwoViewController.swift */; };
 		75FBDFBB1ADE65DA0056F7DA /* Storyboards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBDFBA1ADE65DA0056F7DA /* Storyboards.swift */; };
+		C428BDF01ECD71DD00F037BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C428BDEE1ECD71DD00F037BA /* Main.storyboard */; };
+		C428BDF21ECD71DD00F037BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C428BDF11ECD71DD00F037BA /* Assets.xcassets */; };
+		C428BDF71ECD71F100F037BA /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBDF981ADE59A30056F7DA /* MainViewController.swift */; };
+		C428BDF81ECD71F400F037BA /* ScreenOneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBDFB61ADE5F950056F7DA /* ScreenOneViewController.swift */; };
+		C428BDF91ECD71F700F037BA /* ScreenTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBDFB81ADE5FA50056F7DA /* ScreenTwoViewController.swift */; };
+		C428BDFA1ECD71F700F037BA /* ScreenSubTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752F16EE1E070A9800E685FB /* ScreenSubTwoViewController.swift */; };
+		C428BDFB1ECD721200F037BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBDF961ADE59A30056F7DA /* AppDelegate.swift */; };
+		C428BDFD1ECD758F00F037BA /* Storyboards.swift in Sources */ = {isa = PBXBuildFile; fileRef = C428BDFC1ECD758F00F037BA /* Storyboards.swift */; };
 		C4D441B01D9CFAAC005198F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4D441AF1D9CFAAC005198F4 /* Assets.xcassets */; };
 		C4D441B31D9CFAAC005198F4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4D441B11D9CFAAC005198F4 /* Main.storyboard */; };
 		C4D441B81D9CFB3D005198F4 /* ScreenOneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBDFB61ADE5F950056F7DA /* ScreenOneViewController.swift */; };
@@ -38,6 +46,11 @@
 		75FBDFB61ADE5F950056F7DA /* ScreenOneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenOneViewController.swift; sourceTree = "<group>"; };
 		75FBDFB81ADE5FA50056F7DA /* ScreenTwoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenTwoViewController.swift; sourceTree = "<group>"; };
 		75FBDFBA1ADE65DA0056F7DA /* Storyboards.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storyboards.swift; sourceTree = "<group>"; };
+		C428BDE81ECD71DD00F037BA /* NatalieTVOSExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NatalieTVOSExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C428BDEF1ECD71DD00F037BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C428BDF11ECD71DD00F037BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C428BDF31ECD71DD00F037BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C428BDFC1ECD758F00F037BA /* Storyboards.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storyboards.swift; sourceTree = "<group>"; };
 		C4D441A91D9CFAAC005198F4 /* NatalieOSXExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NatalieOSXExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4D441AF1D9CFAAC005198F4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C4D441B21D9CFAAC005198F4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -47,6 +60,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		75FBDF8E1ADE59A30056F7DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C428BDE51ECD71DD00F037BA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -68,6 +88,7 @@
 			children = (
 				75FBDF931ADE59A30056F7DA /* NatalieExample */,
 				C4D441AA1D9CFAAC005198F4 /* NatalieOSXExample */,
+				C428BDE91ECD71DD00F037BA /* NatalieTVOSExample */,
 				75FBDF921ADE59A30056F7DA /* Products */,
 			);
 			indentWidth = 4;
@@ -80,6 +101,7 @@
 			children = (
 				75FBDF911ADE59A30056F7DA /* NatalieExample.app */,
 				C4D441A91D9CFAAC005198F4 /* NatalieOSXExample.app */,
+				C428BDE81ECD71DD00F037BA /* NatalieTVOSExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -109,13 +131,40 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		C428BDE91ECD71DD00F037BA /* NatalieTVOSExample */ = {
+			isa = PBXGroup;
+			children = (
+				C428BDEE1ECD71DD00F037BA /* Main.storyboard */,
+				C428BDFC1ECD758F00F037BA /* Storyboards.swift */,
+				C428BDF11ECD71DD00F037BA /* Assets.xcassets */,
+				C428BE001ECD7C4100F037BA /* Supporting Files */,
+			);
+			path = NatalieTVOSExample;
+			sourceTree = "<group>";
+		};
+		C428BDFF1ECD7C3E00F037BA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C4D441B41D9CFAAC005198F4 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C428BE001ECD7C4100F037BA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C428BDF31ECD71DD00F037BA /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		C4D441AA1D9CFAAC005198F4 /* NatalieOSXExample */ = {
 			isa = PBXGroup;
 			children = (
-				C4D441AF1D9CFAAC005198F4 /* Assets.xcassets */,
-				C4D441C11D9D027A005198F4 /* Storyboards.swift */,
 				C4D441B11D9CFAAC005198F4 /* Main.storyboard */,
-				C4D441B41D9CFAAC005198F4 /* Info.plist */,
+				C4D441C11D9D027A005198F4 /* Storyboards.swift */,
+				C4D441AF1D9CFAAC005198F4 /* Assets.xcassets */,
+				C428BDFF1ECD7C3E00F037BA /* Supporting Files */,
 			);
 			path = NatalieOSXExample;
 			sourceTree = "<group>";
@@ -140,6 +189,23 @@
 			name = NatalieExample;
 			productName = NatalieExample;
 			productReference = 75FBDF911ADE59A30056F7DA /* NatalieExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C428BDE71ECD71DD00F037BA /* NatalieTVOSExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C428BDF61ECD71DD00F037BA /* Build configuration list for PBXNativeTarget "NatalieTVOSExample" */;
+			buildPhases = (
+				C428BDE41ECD71DD00F037BA /* Sources */,
+				C428BDE51ECD71DD00F037BA /* Frameworks */,
+				C428BDE61ECD71DD00F037BA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NatalieTVOSExample;
+			productName = NatalieTVOSExample;
+			productReference = C428BDE81ECD71DD00F037BA /* NatalieTVOSExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 		C4D441A81D9CFAAC005198F4 /* NatalieOSXExample */ = {
@@ -167,13 +233,17 @@
 		75FBDF891ADE59A30056F7DA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0800;
+				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Marcin Krzyżanowski";
 				TargetAttributes = {
 					75FBDF901ADE59A30056F7DA = {
 						CreatedOnToolsVersion = 6.3;
 						LastSwiftMigration = 0800;
+					};
+					C428BDE71ECD71DD00F037BA = {
+						CreatedOnToolsVersion = 8.3.2;
+						ProvisioningStyle = Automatic;
 					};
 					C4D441A81D9CFAAC005198F4 = {
 						CreatedOnToolsVersion = 8.0;
@@ -196,6 +266,7 @@
 			targets = (
 				75FBDF901ADE59A30056F7DA /* NatalieExample */,
 				C4D441A81D9CFAAC005198F4 /* NatalieOSXExample */,
+				C428BDE71ECD71DD00F037BA /* NatalieTVOSExample */,
 			);
 		};
 /* End PBXProject section */
@@ -208,6 +279,15 @@
 				75FBDF9C1ADE59A30056F7DA /* Main.storyboard in Resources */,
 				75FBDFA11ADE59A30056F7DA /* LaunchScreen.xib in Resources */,
 				75FBDF9E1ADE59A30056F7DA /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C428BDE61ECD71DD00F037BA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C428BDF21ECD71DD00F037BA /* Assets.xcassets in Resources */,
+				C428BDF01ECD71DD00F037BA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +377,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C428BDE41ECD71DD00F037BA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C428BDFD1ECD758F00F037BA /* Storyboards.swift in Sources */,
+				C428BDFB1ECD721200F037BA /* AppDelegate.swift in Sources */,
+				C428BDFA1ECD71F700F037BA /* ScreenSubTwoViewController.swift in Sources */,
+				C428BDF71ECD71F100F037BA /* MainViewController.swift in Sources */,
+				C428BDF91ECD71F700F037BA /* ScreenTwoViewController.swift in Sources */,
+				C428BDF81ECD71F400F037BA /* ScreenOneViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C4D441A51D9CFAAC005198F4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -327,6 +420,14 @@
 				75FBDFA01ADE59A30056F7DA /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		C428BDEE1ECD71DD00F037BA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C428BDEF1ECD71DD00F037BA /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		C4D441B11D9CFAAC005198F4 /* Main.storyboard */ = {
@@ -432,10 +533,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = NatalieExample/Info.plist;
+				INFOPLIST_OUTPUT_FORMAT = binary;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.krzyzanowskim.NatalieExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -444,10 +547,52 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = NatalieExample/Info.plist;
+				INFOPLIST_OUTPUT_FORMAT = binary;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.krzyzanowskim.NatalieExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		C428BDF41ECD71DD00F037BA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = NatalieTVOSExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.phimage.NatalieTVOSExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.2;
+			};
+			name = Debug;
+		};
+		C428BDF51ECD71DD00F037BA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				INFOPLIST_FILE = NatalieTVOSExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = me.phimage.NatalieTVOSExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.2;
 			};
 			name = Release;
 		};
@@ -515,6 +660,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		C428BDF61ECD71DD00F037BA /* Build configuration list for PBXNativeTarget "NatalieTVOSExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C428BDF41ECD71DD00F037BA /* Debug */,
+				C428BDF51ECD71DD00F037BA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C4D441B71D9CFAAC005198F4 /* Build configuration list for PBXNativeTarget "NatalieOSXExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -522,6 +676,7 @@
 				C4D441B61D9CFAAC005198F4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

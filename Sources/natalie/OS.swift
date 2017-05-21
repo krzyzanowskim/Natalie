@@ -11,12 +11,14 @@ import Foundation
 enum OS: String, CustomStringConvertible {
     case iOS = "iOS"
     case OSX = "OSX"
+    case tvOS = "tvOS"
 
-    static let allValues = [iOS, OSX]
+    static let allValues = [iOS, OSX, tvOS]
 
     enum Runtime: String {
         case iOSCocoaTouch = "iOS.CocoaTouch"
         case MacOSXCocoa = "MacOSX.Cocoa"
+        case AppleTV = "AppleTV"
 
         init(os: OS) {
             switch os {
@@ -24,6 +26,8 @@ enum OS: String, CustomStringConvertible {
                 self = .iOSCocoaTouch
             case OSX:
                 self = .MacOSXCocoa
+            case tvOS:
+                self = .AppleTV
             }
         }
     }
@@ -34,7 +38,7 @@ enum OS: String, CustomStringConvertible {
 
         init(os: OS) {
             switch os {
-            case iOS:
+            case iOS, .tvOS:
                 self = .UIKit
             case OSX:
                 self = .Cocoa
@@ -48,10 +52,14 @@ enum OS: String, CustomStringConvertible {
             self = .iOS
         case Runtime.MacOSXCocoa.rawValue:
             self = .OSX
+        case Runtime.AppleTV.rawValue:
+            self = .tvOS
+        case "iOS.CocoaTouch.iPad":
+            self = .iOS
         case "iOS.CocoaTouch.iPad":
             self = .iOS
         default:
-            fatalError("Unsupported")
+            fatalError("Unsupported \(targetRuntime)")
         }
     }
 
@@ -69,7 +77,7 @@ enum OS: String, CustomStringConvertible {
 
     var storyboardType: String {
         switch self {
-        case .iOS:
+        case .iOS, .tvOS:
             return "UIStoryboard"
         case .OSX:
             return "NSStoryboard"
@@ -78,7 +86,7 @@ enum OS: String, CustomStringConvertible {
 
     var storyboardSegueType: String {
         switch self {
-        case .iOS:
+        case .iOS, .tvOS:
             return "UIStoryboardSegue"
         case .OSX:
             return "NSStoryboardSegue"
@@ -87,7 +95,7 @@ enum OS: String, CustomStringConvertible {
 
     var storyboardControllerTypes: [String] {
         switch self {
-        case .iOS:
+        case .iOS, .tvOS:
             return ["UIViewController"]
         case .OSX:
             return ["NSViewController", "NSWindowController"]
@@ -96,7 +104,7 @@ enum OS: String, CustomStringConvertible {
 
     var storyboardControllerReturnType: String {
         switch self {
-        case .iOS:
+        case .iOS, .tvOS:
             return "UIViewController"
         case .OSX:
             return "AnyObject" // NSViewController or NSWindowController
@@ -105,7 +113,7 @@ enum OS: String, CustomStringConvertible {
 
     var storyboardControllerSignatureType: String {
         switch self {
-        case .iOS:
+        case .iOS, .tvOS:
             return "ViewController"
         case .OSX:
             return "Controller" // NSViewController or NSWindowController
@@ -114,7 +122,7 @@ enum OS: String, CustomStringConvertible {
 
     var storyboardInstantiationInfo: [(String /* Signature type */, String /* Return type */)] {
         switch self {
-        case .iOS:
+        case .iOS, .tvOS:
             return [("ViewController", "UIViewController")]
         case .OSX:
             return [("Controller", "NSWindowController"), ("Controller", "NSViewController")]
@@ -123,7 +131,7 @@ enum OS: String, CustomStringConvertible {
 
     var viewType: String {
         switch self {
-        case .iOS:
+        case .iOS, .tvOS:
             return "UIView"
         case .OSX:
             return "NSView"
@@ -132,16 +140,16 @@ enum OS: String, CustomStringConvertible {
 
     var resuableViews: [String]? {
         switch self {
-        case .iOS:
+        case .iOS, .tvOS:
             return ["UICollectionReusableView", "UITableViewCell"]
         case .OSX:
             return nil
         }
     }
 
-    func controllerTypeForElementName(name: String) -> String? {
+    func controllerType(for name: String) -> String? {
         switch self {
-        case .iOS:
+        case .iOS, .tvOS:
             switch name {
             case "viewController":
                 return "UIViewController"

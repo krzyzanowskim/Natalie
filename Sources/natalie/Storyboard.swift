@@ -26,7 +26,7 @@ class Storyboard: XMLObject {
                 return customClassName
             }
 
-            if let controllerType = self.os.controllerTypeForElementName(name: vc.name) {
+            if let controllerType = self.os.controllerType(for: vc.name) {
                 return controllerType
             }
         }
@@ -80,13 +80,13 @@ class Storyboard: XMLObject {
         }
         for scene in self.scenes {
             if let viewController = scene.viewController, let storyboardIdentifier = viewController.storyboardIdentifier {
-                guard let controllerClass = viewController.customClass ?? os.controllerTypeForElementName(name: viewController.name) else {
+                guard let controllerClass = viewController.customClass ?? os.controllerType(for: viewController.name) else {
                     continue
                 }
 
                 let cast = (controllerClass == os.storyboardControllerReturnType ? "" : " as! \(controllerClass)")
                 output += "\n"
-                output += "        static func instantiate\(SwiftRepresentationForString(string: storyboardIdentifier, capitalizeFirstLetter: true))() -> \(controllerClass) {\n"
+                output += "        static func instantiate\(swiftRepresentation(for: storyboardIdentifier, capitalizeFirstLetter: true))() -> \(controllerClass) {\n"
                 output += "            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)(withIdentifier: \"\(storyboardIdentifier)\")\(cast)\n"
                 output += "        }\n"
             }
@@ -140,7 +140,7 @@ class Storyboard: XMLObject {
                         for segue in segues {
                             if let identifier = segue.identifier
                             {
-                                output += "        case \(SwiftRepresentationForString(string: identifier)) = \"\(identifier)\"\n"
+                                output += "        case \(swiftRepresentation(for: identifier)) = \"\(identifier)\"\n"
                             }
                         }
                         output += "\n"
@@ -149,7 +149,7 @@ class Storyboard: XMLObject {
                         var needDefaultSegue = false
                         for segue in segues {
                             if let identifier = segue.identifier {
-                                output += "            case .\(SwiftRepresentationForString(string: identifier)):\n"
+                                output += "            case .\(swiftRepresentation(for: identifier)):\n"
                                 output += "                return SegueKind(rawValue: \"\(segue.kind)\")\n"
                             } else {
                                 needDefaultSegue = true
@@ -169,9 +169,9 @@ class Storyboard: XMLObject {
                         for segue in segues {
                             if let identifier = segue.identifier, let destination = segue.destination,
                                 let destinationElement = searchById(id: destination)?.element,
-                                let destinationClass = (destinationElement.attributes["customClass"] ?? os.controllerTypeForElementName(name: destinationElement.name))
+                                let destinationClass = (destinationElement.attributes["customClass"] ?? os.controllerType(for: destinationElement.name))
                             {
-                                output += "            case .\(SwiftRepresentationForString(string: identifier)):\n"
+                                output += "            case .\(swiftRepresentation(for:identifier)):\n"
                                 output += "                return \(destinationClass).self\n"
                             } else {
                                 needDefaultDestination = true
@@ -199,7 +199,7 @@ class Storyboard: XMLObject {
                         output += "    enum Reusable: String, CustomStringConvertible, ReusableViewProtocol {\n"
                         for reusable in reusables {
                             if let identifier = reusable.reuseIdentifier {
-                                output += "        case \(SwiftRepresentationForString(string: identifier, doNotShadow: reusable.customClass)) = \"\(identifier)\"\n"
+                                output += "        case \(swiftRepresentation(for: identifier, doNotShadow: reusable.customClass)) = \"\(identifier)\"\n"
                             }
                         }
                         output += "\n"
@@ -208,7 +208,7 @@ class Storyboard: XMLObject {
                         var needDefault = false
                         for reusable in reusables {
                             if let identifier = reusable.reuseIdentifier {
-                                output += "            case .\(SwiftRepresentationForString(string: identifier, doNotShadow: reusable.customClass)):\n"
+                                output += "            case .\(swiftRepresentation(for: identifier, doNotShadow: reusable.customClass)):\n"
                                 output += "                return ReusableKind(rawValue: \"\(reusable.kind)\")\n"
                             } else {
                                 needDefault = true
@@ -227,7 +227,7 @@ class Storyboard: XMLObject {
                         needDefault = false
                         for reusable in reusables {
                             if let identifier = reusable.reuseIdentifier, let customClass = reusable.customClass {
-                                output += "            case .\(SwiftRepresentationForString(string: identifier, doNotShadow: reusable.customClass)):\n"
+                                output += "            case .\(swiftRepresentation(for:identifier, doNotShadow: reusable.customClass)):\n"
                                 output += "                return \(customClass).self\n"
                             } else {
                                 needDefault = true
