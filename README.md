@@ -14,7 +14,7 @@ Proof of concept implementation to address the String issue for strongly typed S
 
 Natalie is written in Swift and requires Swift to run. The project uses [SWXMLHash](https://github.com/drmohundro/SWXMLHash) as a dependency to parse XML and due to framework limitations.
 
-###Enumerate Storyboards
+### Enumerate Storyboards
 Generated enum Storyboards with a convenient interface (drop-in replacement for UIStoryboard).
 
 ```swift
@@ -47,7 +47,7 @@ override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
 ...it could be `switch { }` statement, but [it's broken](https://twitter.com/krzyzanowskim/status/611686899732869121).
 
-###Segues
+### Segues
 
 Perform segue
 ```swift
@@ -91,7 +91,7 @@ extension MainViewController {
 }
 ```
 
-###Reusable Views To Improve Performance
+### Reusable Views To Improve Performance
 
 Collections and tables views use `reuseidentifier` on cell to recycle a view.
 
@@ -132,9 +132,9 @@ class MyCustomTableViewCell: UITableViewCell {
 }
 ```
 
-##Installation
+## Installation
 
-####Swift Package Manager
+#### Swift Package Manager
 
 ```
 $ git clone https://github.com/krzyzanowskim/Natalie.git
@@ -149,7 +149,7 @@ if you want easy Xcode integration you may want to install the binary to be easi
 $ cp .build/release/natalie /usr/local/bin
 ```
 
-####Homebrew
+#### Homebrew
 
 ```
 $ brew install natalie
@@ -158,7 +158,7 @@ $ brew install natalie
 You can also put `natalie` executable file at the root of your project folder and keep it under version control. This way everyone even your CI will be able to generate the files.
 
 
-###Xcode Integration
+### Xcode Integration
 
 Natalie can be integrated with Xcode in such a way that the `Storyboards.swift` the file will be updated with every build of the project, so you don't have to do it manually every time.
 
@@ -196,7 +196,7 @@ fi
 
 - add `Storyboards.swift` to the project.
 
-##Usage:
+## Usage:
 
 Download Natalie from Github: https://github.com/krzyzanowskim/Natalie and use it in the console, for example like this:
 ```
@@ -215,7 +215,7 @@ If the parameter is a Storyboard file, then this file will be used. If a path to
 $ natalie NatalieExample/NatalieExample/Base.lproj/Main.storyboard > NatalieExample/NatalieExample/Storyboards.swift
 ```
 
-##Contribution
+## Contribution
 
 Please submit Pull Request against current development branch.
 
