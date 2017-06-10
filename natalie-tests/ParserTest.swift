@@ -12,15 +12,15 @@ import Foundation
 
 class ParserTest: XCTestCase {
     let bundle = Bundle(for: ParserTest.self)
-    
+
     override func setUp() {
         super.setUp()
     }
-    
+
     override func tearDown() {
         super.tearDown()
     }
-    
+
     func testBuild() {
 
     }

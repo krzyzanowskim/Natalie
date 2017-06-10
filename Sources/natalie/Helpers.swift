@@ -9,7 +9,7 @@
 import Foundation
 
 func findStoryboards(rootPath: String, suffix: String) -> [String]? {
-    var result = Array<String>()
+    var result = [String]()
     let fm = FileManager.default
     if let paths = fm.subpaths(atPath: rootPath) {
         let storyboardPaths = paths.filter({ return $0.hasSuffix(suffix)})
@@ -18,14 +18,14 @@ func findStoryboards(rootPath: String, suffix: String) -> [String]? {
             result.append((rootPath as NSString).appendingPathComponent(p))
         }
     }
-    return result.count > 0 ? result : nil
+    return result.isEmpty ? nil : result
 }
 
 enum FirstLetterFormat {
     case none
     case capitalize
     case lowercase
-    
+
     func format(_ str: String) -> String {
         switch self {
         case .none:
@@ -42,7 +42,7 @@ func swiftRepresentation(for string: String, firstLetter: FirstLetterFormat = .n
     var str = string.trimAllWhitespacesAndSpecialCharacters()
     str = firstLetter.format(str)
     if str == doNotShadow {
-        str = str + "_"
+        str += "_"
     }
     return str
 }

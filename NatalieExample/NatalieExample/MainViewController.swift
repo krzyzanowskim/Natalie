@@ -25,8 +25,8 @@ class MainViewController: NTLViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
-    //MARK: Navigation
+
+    // MARK: Navigation
 
     override func prepare(for segue: NTLStoryboardSegue, sender: Any?) {
         if segue == MainViewController.Segue.screenOneSegue, let oneViewController = segue.destination as? ScreenOneViewController {
@@ -40,8 +40,8 @@ class MainViewController: NTLViewController {
         }
     }
 
-    //MARK: Actions
-    
+    // MARK: Actions
+
     @IBAction func screen1ButtonPressed(_ button: NTLButton) {
         self.perform(segue: MainViewController.Segue.screenOneSegue)
     }
@@ -58,15 +58,14 @@ class MainViewController: NTLViewController {
         open var destination: Any { return destinationController }
     }
     extension NSView {
-        open var backgroundColor : NSColor {
+        open var backgroundColor: NSColor {
             get {
-                if let color : CGColor = self.layer?.backgroundColor {
+                if let color: CGColor = self.layer?.backgroundColor {
                     return NSColor(cgColor: color)!
                 }
                 return NSColor.clear
             }
-            set(newBG)
-            {
+            set(newBG) {
                 self.wantsLayer = true
                 if let layer = self.layer {
                     layer.backgroundColor = newBG.cgColor
@@ -76,4 +75,3 @@ class MainViewController: NTLViewController {
 
     }
 #endif
-

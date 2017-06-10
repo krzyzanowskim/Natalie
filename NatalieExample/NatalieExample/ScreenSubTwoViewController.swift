@@ -20,11 +20,11 @@ class ScreenSubTwoViewController: ScreenTwoViewController {
 
 #if os(iOS)
 extension ScreenSubTwoViewController {
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeue(reusable: ScreenSubTwoViewController.Reusable.MyCell, for: indexPath)!
         cell.textLabel?.text = "\((indexPath as NSIndexPath).row)"

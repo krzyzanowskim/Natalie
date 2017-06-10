@@ -14,7 +14,7 @@ if CommandLine.arguments.count == 1 {
 }
 
 let argument = CommandLine.arguments[1]
-var filePaths:[String] = []
+var filePaths: [String] = []
 let storyboardSuffix = ".storyboard"
 if argument.hasSuffix(storyboardSuffix) {
     filePaths = [argument]
@@ -24,24 +24,7 @@ if argument.hasSuffix(storyboardSuffix) {
 
 let storyboardFiles = filePaths.flatMap { try? StoryboardFile(filePath: $0) }
 
-for os in OS.allValues {
-    let storyboardsForOS = storyboardFiles.filter({ $0.storyboard.os == os })
-    if !storyboardsForOS.isEmpty {
-        var output = String()
-
-        if storyboardsForOS.count != storyboardFiles.count {
-            output += "#if os(\(os.rawValue))\n"
-        }
-
-        output += Parser(storyboards: storyboardsForOS).process(os: os)
-
-        if storyboardsForOS.count != storyboardFiles.count {
-            output += "#endif\n"
-        }
-
-        print(output)
-    }
-}
+let output = Natalie.process(storyboards: storyboardFiles)
+print(output)
 
 exit(0)
-

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		48E3E55B1EE6D5DF000D4B3F /* Natalie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3E55A1EE6D5DF000D4B3F /* Natalie.swift */; };
+		48E3E55D1EE6D85E000D4B3F /* Storyboard+Natalie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E3E55C1EE6D85E000D4B3F /* Storyboard+Natalie.swift */; };
 		7501493B1D57825F00B22C87 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501493A1D57825F00B22C87 /* ViewController.swift */; };
 		7501493D1D57827800B22C87 /* Segue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501493C1D57827800B22C87 /* Segue.swift */; };
 		7501493F1D57828D00B22C87 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7501493E1D57828D00B22C87 /* Reusable.swift */; };
@@ -17,7 +19,6 @@
 		750EA4CA1D57C65E00782671 /* ParserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EA4C91D57C65E00782671 /* ParserTest.swift */; };
 		75E28AAC1D577D0500A80623 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28AA41D577D0500A80623 /* Helpers.swift */; };
 		75E28AAD1D577D0500A80623 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28AA51D577D0500A80623 /* main.swift */; };
-		75E28AAE1D577D0500A80623 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28AA61D577D0500A80623 /* Parser.swift */; };
 		75E28AAF1D577D0500A80623 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28AA71D577D0500A80623 /* String+Extension.swift */; };
 		75E28AB01D577D0500A80623 /* SWXMLHash+TypeConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28AAA1D577D0500A80623 /* SWXMLHash+TypeConversion.swift */; };
 		75E28AB11D577D0500A80623 /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28AAB1D577D0500A80623 /* SWXMLHash.swift */; };
@@ -37,6 +38,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		48E3E55A1EE6D5DF000D4B3F /* Natalie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Natalie.swift; sourceTree = "<group>"; };
+		48E3E55C1EE6D85E000D4B3F /* Storyboard+Natalie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Storyboard+Natalie.swift"; sourceTree = "<group>"; };
 		7501493A1D57825F00B22C87 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		7501493C1D57827800B22C87 /* Segue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segue.swift; sourceTree = "<group>"; };
 		7501493E1D57828D00B22C87 /* Reusable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
@@ -50,7 +53,6 @@
 		755B834F1D576CBF0020148B /* natalie */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = natalie; sourceTree = BUILT_PRODUCTS_DIR; };
 		75E28AA41D577D0500A80623 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		75E28AA51D577D0500A80623 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = main.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		75E28AA61D577D0500A80623 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Parser.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		75E28AA71D577D0500A80623 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		75E28AA91D577D0500A80623 /* Notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes.txt; sourceTree = "<group>"; };
 		75E28AAA1D577D0500A80623 /* SWXMLHash+TypeConversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SWXMLHash+TypeConversion.swift"; sourceTree = "<group>"; };
@@ -114,13 +116,14 @@
 		75E28AA31D577D0500A80623 /* natalie */ = {
 			isa = PBXGroup;
 			children = (
-				75E28AA81D577D0500A80623 /* SWXMLHash */,
 				75E28AA51D577D0500A80623 /* main.swift */,
+				48E3E55A1EE6D5DF000D4B3F /* Natalie.swift */,
+				48E3E55C1EE6D85E000D4B3F /* Storyboard+Natalie.swift */,
 				750149441D5782F100B22C87 /* OS.swift */,
 				750149461D57830A00B22C87 /* StoryboardFile.swift */,
-				75E28AA61D577D0500A80623 /* Parser.swift */,
 				75E28AB21D577EEA00A80623 /* XMLObject.swift */,
 				C428BDFE1ECD79D800F037BA /* XMLObject */,
+				75E28AA81D577D0500A80623 /* SWXMLHash */,
 				75E28AA41D577D0500A80623 /* Helpers.swift */,
 				75E28AA71D577D0500A80623 /* String+Extension.swift */,
 			);
@@ -176,6 +179,7 @@
 				755B834B1D576CBF0020148B /* Sources */,
 				755B834C1D576CBF0020148B /* Frameworks */,
 				755B834D1D576CBF0020148B /* CopyFiles */,
+				48E3E5571EE6CCD7000D4B3F /* swiftlint */,
 			);
 			buildRules = (
 			);
@@ -236,6 +240,23 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		48E3E5571EE6CCD7000D4B3F /* swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = swiftlint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		750EA4C31D57C65E00782671 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -252,14 +273,15 @@
 				750149471D57830A00B22C87 /* StoryboardFile.swift in Sources */,
 				75E28AAF1D577D0500A80623 /* String+Extension.swift in Sources */,
 				750149411D5782AC00B22C87 /* Storyboard.swift in Sources */,
+				48E3E55D1EE6D85E000D4B3F /* Storyboard+Natalie.swift in Sources */,
 				75E28AB11D577D0500A80623 /* SWXMLHash.swift in Sources */,
 				75E28AAD1D577D0500A80623 /* main.swift in Sources */,
 				75E28AAC1D577D0500A80623 /* Helpers.swift in Sources */,
 				7501493F1D57828D00B22C87 /* Reusable.swift in Sources */,
 				75E28AB31D577EEA00A80623 /* XMLObject.swift in Sources */,
-				75E28AAE1D577D0500A80623 /* Parser.swift in Sources */,
 				750149451D5782F100B22C87 /* OS.swift in Sources */,
 				750149431D5782CA00B22C87 /* Scene.swift in Sources */,
+				48E3E55B1EE6D5DF000D4B3F /* Natalie.swift in Sources */,
 				7501493B1D57825F00B22C87 /* ViewController.swift in Sources */,
 				7501493D1D57827800B22C87 /* Segue.swift in Sources */,
 				75E28AB01D577D0500A80623 /* SWXMLHash+TypeConversion.swift in Sources */,
