@@ -16,9 +16,10 @@ class ViewController: XMLObject {
     lazy var userLabel: String? = self.xml.element?.attributes["userLabel"]
 
     lazy var reusables: [Reusable]? = {
-        if let reusables = self.searchAll(root: self.xml, attributeKey: "reuseIdentifier"){
+        if let reusables = self.searchAll(root: self.xml, attributeKey: "reuseIdentifier") {
             return reusables.map { Reusable(xml: $0) }
         }
         return nil
     }()
+
 }

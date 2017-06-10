@@ -7,16 +7,19 @@
 //
 
 class Segue: XMLObject {
+
     let kind: String
     let identifier: String?
     lazy var destination: String? = self.xml.element?.attributes["destination"]
 
     override init(xml: XMLIndexer) {
         self.kind = xml.element!.attributes["kind"]!
-        if let id = xml.element?.attributes["identifier"], id.characters.count > 0 {self.identifier = id}
-        else                                                                            {self.identifier = nil}
+        if let id = xml.element?.attributes["identifier"], !id.characters.isEmpty {
+            self.identifier = id
+        } else {
+            self.identifier = nil
+        }
         super.init(xml: xml)
     }
-    
-}
 
+}

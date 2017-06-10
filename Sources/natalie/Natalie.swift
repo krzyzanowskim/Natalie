@@ -1,5 +1,5 @@
 //
-//  Parser.swift
+//  Natalie.swift
 //  Natalie
 //
 //  Created by Marcin Krzyzanowski on 07/08/16.
@@ -8,8 +8,7 @@
 
 import Foundation
 
-
-struct Parser {
+struct Natalie {
 
     struct Header: CustomStringConvertible {
         var description: String {
@@ -27,6 +26,27 @@ struct Parser {
 
     init(storyboards: [StoryboardFile]) {
         self.storyboards = storyboards
+        assert(Set(storyboards.map { $0.storyboard.os }).count < 2)
+    }
+
+    static func process(storyboards: [StoryboardFile]) -> String {
+        var output = String()
+        for os in OS.allValues {
+            let storyboardsForOS = storyboards.filter { $0.storyboard.os == os }
+            if !storyboardsForOS.isEmpty {
+
+                if storyboardsForOS.count != storyboardFiles.count {
+                    output += "#if os(\(os.rawValue))\n"
+                }
+
+                output += Natalie(storyboards: storyboardsForOS).process(os: os)
+
+                if storyboardsForOS.count != storyboardFiles.count {
+                    output += "#endif\n"
+                }
+            }
+        }
+        return output
     }
 
     func process(os: OS) -> String {
@@ -38,7 +58,7 @@ struct Parser {
             output += "import \(module)\n"
         }
         output += "\n"
-        output += "//MARK: - Storyboards\n"
+        output += "// MARK: - Storyboards\n"
 
         output += "\n"
         output += "extension \(os.storyboardType) {\n"
@@ -68,7 +88,7 @@ struct Parser {
         output += "}\n"
         output += "\n"
 
-        output += "//MARK: - ReusableKind\n"
+        output += "// MARK: - ReusableKind\n"
         output += "enum ReusableKind: String, CustomStringConvertible {\n"
         output += "    case tableViewCell = \"tableViewCell\"\n"
         output += "    case collectionViewCell = \"collectionViewCell\"\n"
@@ -77,29 +97,29 @@ struct Parser {
         output += "}\n"
         output += "\n"
 
-        output += "//MARK: - SegueKind\n"
-        output += "enum SegueKind: String, CustomStringConvertible {    \n"
-        output += "    case relationship = \"relationship\" \n"
-        output += "    case show = \"show\"                 \n"
-        output += "    case presentation = \"presentation\" \n"
-        output += "    case embed = \"embed\"               \n"
-        output += "    case unwind = \"unwind\"             \n"
-        output += "    case push = \"push\"                 \n"
-        output += "    case modal = \"modal\"               \n"
-        output += "    case popover = \"popover\"           \n"
-        output += "    case replace = \"replace\"           \n"
-        output += "    case custom = \"custom\"             \n"
+        output += "// MARK: - SegueKind\n"
+        output += "enum SegueKind: String, CustomStringConvertible {\n"
+        output += "    case relationship = \"relationship\"\n"
+        output += "    case show = \"show\"\n"
+        output += "    case presentation = \"presentation\"\n"
+        output += "    case embed = \"embed\"\n"
+        output += "    case unwind = \"unwind\"\n"
+        output += "    case push = \"push\"\n"
+        output += "    case modal = \"modal\"\n"
+        output += "    case popover = \"popover\"\n"
+        output += "    case replace = \"replace\"\n"
+        output += "    case custom = \"custom\"\n"
         output += "\n"
-        output += "    var description: String { return self.rawValue } \n"
+        output += "    var description: String { return self.rawValue }\n"
         output += "}\n"
         output += "\n"
-        output += "//MARK: - IdentifiableProtocol\n"
+        output += "// MARK: - IdentifiableProtocol\n"
         output += "\n"
         output += "public protocol IdentifiableProtocol: Equatable {\n"
         output += "    var storyboardIdentifier: String? { get }\n"
         output += "}\n"
         output += "\n"
-        output += "//MARK: - SegueProtocol\n"
+        output += "// MARK: - SegueProtocol\n"
         output += "\n"
         output += "public protocol SegueProtocol {\n"
         output += "    var identifier: String? { get }\n"
@@ -131,7 +151,7 @@ struct Parser {
         output += "}\n"
         output += "\n"
 
-        output += "//MARK: - ReusableViewProtocol\n"
+        output += "// MARK: - ReusableViewProtocol\n"
         output += "public protocol ReusableViewProtocol: IdentifiableProtocol {\n"
         output += "    var viewType: \(os.viewType).Type? { get }\n"
         output += "}\n"
@@ -142,7 +162,7 @@ struct Parser {
         output += "}\n"
         output += "\n"
 
-        output += "//MARK: - Protocol Implementation\n"
+        output += "// MARK: - Protocol Implementation\n"
         output += "extension \(os.storyboardSegueType): SegueProtocol {\n"
         output += "}\n"
         output += "\n"
@@ -158,7 +178,7 @@ struct Parser {
         }
 
         for controllerType in os.storyboardControllerTypes {
-            output += "//MARK: - \(controllerType) extension\n"
+            output += "// MARK: - \(controllerType) extension\n"
             output += "extension \(controllerType) {\n"
             output += "    func perform<T: SegueProtocol>(segue: T, sender: Any?) {\n"
             output += "        if let identifier = segue.identifier {\n"
@@ -170,11 +190,10 @@ struct Parser {
             output += "        perform(segue: segue, sender: nil)\n"
             output += "    }\n"
             output += "}\n"
-            output += "\n"
         }
 
         if os == OS.iOS {
-            output += "//MARK: - UICollectionView\n"
+            output += "// MARK: - UICollectionView\n"
             output += "\n"
             output += "extension UICollectionView {\n"
             output += "\n"
@@ -205,7 +224,7 @@ struct Parser {
             output += "    }\n"
             output += "}\n"
 
-            output += "//MARK: - UITableView\n"
+            output += "// MARK: - UITableView\n"
             output += "\n"
             output += "extension UITableView {\n"
             output += "\n"
@@ -235,7 +254,6 @@ struct Parser {
             output += "        }\n"
             output += "    }\n"
             output += "}\n"
-            output += "\n"
         }
 
         for file in storyboards {

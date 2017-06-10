@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -745,12 +746,12 @@
         <!--Screen One View Controller-->
         <scene sceneID="9PX-ig-VPA">
             <objects>
-                <viewController id="czY-Zo-ls1" customClass="ScreenOneViewController" customModule="NatalieOSXExample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Screen One ViewController" id="czY-Zo-ls1" customClass="ScreenOneViewController" customModule="NatalieOSXExample" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="biF-Mf-L0Y">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fW3-iT-K5o">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fW3-iT-K5o">
                                 <rect key="frame" x="197" y="142" width="56" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Screen 1" id="PNY-1P-ROq">
                                     <font key="font" metaFont="system"/>
@@ -772,12 +773,12 @@
         <!--Screen Two View Controller-->
         <scene sceneID="5R9-cb-j3E">
             <objects>
-                <viewController id="MRJ-zS-Tgv" customClass="ScreenTwoViewController" customModule="NatalieOSXExample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="secondViewController" id="MRJ-zS-Tgv" customClass="ScreenTwoViewController" customModule="NatalieOSXExample" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="6Mh-x0-YJn">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="waE-AH-auY">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="waE-AH-auY">
                                 <rect key="frame" x="196" y="141" width="58" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Screen 2" id="MS2-ph-NVc">
                                     <font key="font" metaFont="system"/>

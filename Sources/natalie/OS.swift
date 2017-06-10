@@ -47,7 +47,7 @@ enum OS: String, CustomStringConvertible {
     }
 
     init(targetRuntime: String) {
-        switch (targetRuntime) {
+        switch targetRuntime {
         case Runtime.iOSCocoaTouch.rawValue:
             self = .iOS
         case Runtime.MacOSXCocoa.rawValue:
@@ -191,5 +191,5 @@ enum OS: String, CustomStringConvertible {
             }
         }
     }
-    
+
 }

@@ -1,0 +1,25 @@
+
+# rule identifiers to exclude from running
+disabled_rules:
+    - force_cast
+    - redundant_string_enum_value
+    - type_name
+    - identifier_name
+    - trailing_newline
+
+shorthand_operator: warning
+
+# some rules are only opt-in
+opt_in_rules:
+    - empty_count
+
+# configurable rules can be customized from this configuration file
+line_length:
+- 300
+- 320
+function_body_length:
+- 200
+- 220
+type_body_length:
+- 300
+- 320

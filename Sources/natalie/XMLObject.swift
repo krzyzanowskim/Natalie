@@ -21,7 +21,7 @@ class XMLObject {
     }
 
     func searchAll(root: XMLIndexer, attributeKey: String, attributeValue: String? = nil) -> [XMLIndexer]? {
-        var result = Array<XMLIndexer>()
+        var result = [XMLIndexer]()
         for child in root.children {
 
             for childAtLevel in child.all {
@@ -38,7 +38,7 @@ class XMLObject {
                 }
             }
         }
-        return result.count > 0 ? result : nil
+        return result.isEmpty ? nil : result
     }
 
     func searchNamed(name: String) -> [XMLIndexer]? {
@@ -46,7 +46,7 @@ class XMLObject {
     }
 
     func searchNamed(root: XMLIndexer, name: String) -> [XMLIndexer]? {
-        var result = Array<XMLIndexer>()
+        var result = [XMLIndexer]()
         for child in root.children {
 
             for childAtLevel in child.all {
@@ -58,7 +58,7 @@ class XMLObject {
                 }
             }
         }
-        return result.count > 0 ? result : nil
+        return result.isEmpty ? nil : result
     }
 
     func searchById(id: String) -> XMLIndexer? {

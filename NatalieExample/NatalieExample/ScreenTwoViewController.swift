@@ -16,7 +16,7 @@
 
 class ScreenTwoViewController: NTLViewController {
     @IBOutlet var tableView: NTLTableView!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -24,11 +24,11 @@ class ScreenTwoViewController: NTLViewController {
 
 #if os(iOS)
 extension ScreenTwoViewController: UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeue(reusable: Reusable.MyCell, for: indexPath)!
         cell.textLabel?.text = "\((indexPath as NSIndexPath).row)"

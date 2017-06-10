@@ -4,7 +4,7 @@
 //
 import UIKit
 
-//MARK: - Storyboards
+// MARK: - Storyboards
 
 extension UIStoryboard {
     func instantiateViewController<T: UIViewController>(ofType type: T.Type) -> T? where T: IdentifiableProtocol {
@@ -46,7 +46,7 @@ struct Storyboards {
     }
 }
 
-//MARK: - ReusableKind
+// MARK: - ReusableKind
 enum ReusableKind: String, CustomStringConvertible {
     case tableViewCell = "tableViewCell"
     case collectionViewCell = "collectionViewCell"
@@ -54,29 +54,29 @@ enum ReusableKind: String, CustomStringConvertible {
     var description: String { return self.rawValue }
 }
 
-//MARK: - SegueKind
-enum SegueKind: String, CustomStringConvertible {    
-    case relationship = "relationship" 
-    case show = "show"                 
-    case presentation = "presentation" 
-    case embed = "embed"               
-    case unwind = "unwind"             
-    case push = "push"                 
-    case modal = "modal"               
-    case popover = "popover"           
-    case replace = "replace"           
-    case custom = "custom"             
+// MARK: - SegueKind
+enum SegueKind: String, CustomStringConvertible {
+    case relationship = "relationship"
+    case show = "show"
+    case presentation = "presentation"
+    case embed = "embed"
+    case unwind = "unwind"
+    case push = "push"
+    case modal = "modal"
+    case popover = "popover"
+    case replace = "replace"
+    case custom = "custom"
 
-    var description: String { return self.rawValue } 
+    var description: String { return self.rawValue }
 }
 
-//MARK: - IdentifiableProtocol
+// MARK: - IdentifiableProtocol
 
 public protocol IdentifiableProtocol: Equatable {
     var storyboardIdentifier: String? { get }
 }
 
-//MARK: - SegueProtocol
+// MARK: - SegueProtocol
 
 public protocol SegueProtocol {
     var identifier: String? { get }
@@ -106,7 +106,7 @@ public func ~=<T: SegueProtocol>(lhs: String, rhs: T) -> Bool {
     return lhs == rhs.identifier
 }
 
-//MARK: - ReusableViewProtocol
+// MARK: - ReusableViewProtocol
 public protocol ReusableViewProtocol: IdentifiableProtocol {
     var viewType: UIView.Type? { get }
 }
@@ -115,7 +115,7 @@ public func ==<T: ReusableViewProtocol, U: ReusableViewProtocol>(lhs: T, rhs: U)
     return lhs.storyboardIdentifier == rhs.storyboardIdentifier
 }
 
-//MARK: - Protocol Implementation
+// MARK: - Protocol Implementation
 extension UIStoryboardSegue: SegueProtocol {
 }
 
@@ -129,7 +129,7 @@ extension UITableViewCell: ReusableViewProtocol {
     public var storyboardIdentifier: String? { return self.reuseIdentifier }
 }
 
-//MARK: - UIViewController extension
+// MARK: - UIViewController extension
 extension UIViewController {
     func perform<T: SegueProtocol>(segue: T, sender: Any?) {
         if let identifier = segue.identifier {
@@ -142,8 +142,7 @@ extension UIViewController {
     }
 }
 
-
-//MARK: - MainViewController
+// MARK: - MainViewController
 extension UIStoryboardSegue {
     func selection() -> MainViewController.Segue? {
         if let identifier = self.identifier {
@@ -152,8 +151,7 @@ extension UIStoryboardSegue {
         return nil
     }
 }
-
-extension MainViewController { 
+extension MainViewController {
 
     enum Segue: String, CustomStringConvertible, SegueProtocol {
         case screenOneSegueButton = "Screen One Segue Button"
@@ -162,7 +160,7 @@ extension MainViewController {
         case screenOneSegue = "ScreenOneSegue"
 
         var kind: SegueKind? {
-            switch (self) {
+            switch self {
             case .screenOneSegueButton:
                 return SegueKind(rawValue: "show")
             case .sceneOneGestureRecognizerSegue:
@@ -175,7 +173,7 @@ extension MainViewController {
         }
 
         var destination: UIViewController.Type? {
-            switch (self) {
+            switch self {
             case .screenOneSegueButton:
                 return ScreenOneViewController.self
             case .sceneOneGestureRecognizerSegue:
@@ -187,13 +185,13 @@ extension MainViewController {
             }
         }
 
-        var identifier: String? { return self.description } 
+        var identifier: String? { return self.description }
         var description: String { return self.rawValue }
     }
 
 }
 
-//MARK: - ScreenTwoViewController
+// MARK: - ScreenTwoViewController
 
-//MARK: - ScreenOneViewController
+// MARK: - ScreenOneViewController
 

@@ -24,5 +24,5 @@ class Scene: XMLObject {
     lazy var customModule: String? = self.viewController?.customModule
     lazy var customModuleProvider: String? = self.viewController?.customModuleProvider
     lazy var userLabel: String? = self.viewController?.userLabel
-    
+
 }

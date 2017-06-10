@@ -12,9 +12,9 @@ class Reusable: XMLObject {
     lazy var reuseIdentifier: String? = self.xml.element?.attributes["reuseIdentifier"]
     lazy var customClass: String? = self.xml.element?.attributes["customClass"]
 
-
     override init(xml: XMLIndexer) {
         kind = xml.element!.name
         super.init(xml: xml)
     }
+
 }
