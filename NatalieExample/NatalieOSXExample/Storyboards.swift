@@ -27,14 +27,14 @@ extension NSStoryboard {
 
 protocol Storyboard {
     static var storyboard: NSStoryboard { get }
-    static var identifier: String { get }
+    static var identifier: NSStoryboard.Name { get }
 }
 
 struct Storyboards {
 
     struct Main: Storyboard {
 
-        static let identifier = "Main"
+        static let identifier: NSStoryboard.Name = NSStoryboard.Name("Main")
 
         static var storyboard: NSStoryboard {
             return NSStoryboard(name: self.identifier, bundle: nil)
@@ -44,7 +44,7 @@ struct Storyboards {
             return self.storyboard.instantiateInitialController() as! NSWindowController
         }
 
-        static func instantiateController(withIdentifier: String) -> NSWindowController {
+        static func instantiateController(withIdentifier identifier: NSStoryboard.SceneIdentifier) -> NSWindowController {
             return self.storyboard.instantiateController(withIdentifier: identifier) as! NSWindowController
         }
 
@@ -52,7 +52,7 @@ struct Storyboards {
             return self.storyboard.instantiateViewController(ofType: type)
         }
 
-        static func instantiateController(withIdentifier: String) -> NSViewController {
+        static func instantiateController(withIdentifier identifier: NSStoryboard.SceneIdentifier) -> NSViewController {
             return self.storyboard.instantiateController(withIdentifier: identifier) as! NSViewController
         }
 
@@ -61,11 +61,11 @@ struct Storyboards {
         }
 
         static func instantiateScreenOneViewController() -> ScreenOneViewController {
-            return self.storyboard.instantiateController(withIdentifier: "Screen One ViewController") as! ScreenOneViewController
+            return self.storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("Screen One ViewController")) as! ScreenOneViewController
         }
 
         static func instantiateSecondViewController() -> ScreenTwoViewController {
-            return self.storyboard.instantiateController(withIdentifier: "secondViewController") as! ScreenTwoViewController
+            return self.storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("secondViewController")) as! ScreenTwoViewController
         }
     }
 }
@@ -97,13 +97,13 @@ enum SegueKind: String, CustomStringConvertible {
 // MARK: - IdentifiableProtocol
 
 public protocol IdentifiableProtocol: Equatable {
-    var storyboardIdentifier: String? { get }
+    var storyboardIdentifier: NSStoryboard.SceneIdentifier? { get }
 }
 
 // MARK: - SegueProtocol
 
 public protocol SegueProtocol {
-    var identifier: String? { get }
+    var identifier: NSStoryboardSegue.Identifier? { get }
 }
 
 public func ==<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {
@@ -114,20 +114,43 @@ public func ~=<T: SegueProtocol, U: SegueProtocol>(lhs: T, rhs: U) -> Bool {
     return lhs.identifier == rhs.identifier
 }
 
-public func ==<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {
+public func ==<T: SegueProtocol>(lhs: T, rhs: NSStoryboardSegue.Identifier) -> Bool {
     return lhs.identifier == rhs
+}
+
+public func ~=<T: SegueProtocol>(lhs: T, rhs: NSStoryboardSegue.Identifier) -> Bool {
+    return lhs.identifier == rhs
+}
+
+public func ==<T: SegueProtocol>(lhs: NSStoryboardSegue.Identifier, rhs: T) -> Bool {
+    return lhs == rhs.identifier
+}
+
+public func ~=<T: SegueProtocol>(lhs: NSStoryboardSegue.Identifier, rhs: T) -> Bool {
+    return lhs == rhs.identifier
+}
+
+extension NSStoryboardSegue.Identifier: ExpressibleByStringLiteral {
+    public typealias StringLiteralType = String
+    public init(stringLiteral value: StringLiteralType) {
+        self.init(rawValue: value)
+    }
+}
+
+public func ==<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {
+    return lhs.identifier?.rawValue == rhs
 }
 
 public func ~=<T: SegueProtocol>(lhs: T, rhs: String) -> Bool {
-    return lhs.identifier == rhs
+    return lhs.identifier?.rawValue == rhs
 }
 
 public func ==<T: SegueProtocol>(lhs: String, rhs: T) -> Bool {
-    return lhs == rhs.identifier
+    return lhs == rhs.identifier?.rawValue
 }
 
 public func ~=<T: SegueProtocol>(lhs: String, rhs: T) -> Bool {
-    return lhs == rhs.identifier
+    return lhs == rhs.identifier?.rawValue
 }
 
 // MARK: - ReusableViewProtocol
@@ -179,7 +202,7 @@ extension NSStoryboardSegue {
 }
 extension MainViewController {
 
-    enum Segue: String, CustomStringConvertible, SegueProtocol {
+    enum Segue: NSStoryboardSegue.Identifier, CustomStringConvertible, SegueProtocol {
         case screenOneSegue = "ScreenOneSegue"
         case screenTwoSegue = "ScreenTwoSegue"
         case screenOneSegueButton = "ScreenOneSegueButton"
@@ -211,8 +234,8 @@ extension MainViewController {
             }
         }
 
-        var identifier: String? { return self.description }
-        var description: String { return self.rawValue }
+        var identifier: NSStoryboardSegue.Identifier? { return self.rawValue }
+        var description: String { return "\(self.rawValue)" }
     }
 
 }
@@ -223,8 +246,8 @@ protocol ScreenOneViewControllerIdentifiableProtocol: IdentifiableProtocol { }
 extension ScreenOneViewController: ScreenOneViewControllerIdentifiableProtocol { }
 
 extension IdentifiableProtocol where Self: ScreenOneViewController {
-    var storyboardIdentifier: String? { return "Screen One ViewController" }
-    static var storyboardIdentifier: String? { return "Screen One ViewController" }
+    var storyboardIdentifier: NSStoryboard.SceneIdentifier? { return NSStoryboard.SceneIdentifier("Screen One ViewController") }
+    static var storyboardIdentifier: NSStoryboard.SceneIdentifier? { return NSStoryboard.SceneIdentifier("Screen One ViewController") }
 }
 
 // MARK: - ScreenTwoViewController
@@ -233,7 +256,7 @@ protocol ScreenTwoViewControllerIdentifiableProtocol: IdentifiableProtocol { }
 extension ScreenTwoViewController: ScreenTwoViewControllerIdentifiableProtocol { }
 
 extension IdentifiableProtocol where Self: ScreenTwoViewController {
-    var storyboardIdentifier: String? { return "secondViewController" }
-    static var storyboardIdentifier: String? { return "secondViewController" }
+    var storyboardIdentifier: NSStoryboard.SceneIdentifier? { return NSStoryboard.SceneIdentifier("secondViewController") }
+    static var storyboardIdentifier: NSStoryboard.SceneIdentifier? { return NSStoryboard.SceneIdentifier("secondViewController") }
 }
 

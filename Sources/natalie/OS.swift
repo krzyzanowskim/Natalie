@@ -83,6 +83,24 @@ enum OS: String, CustomStringConvertible {
             return "NSStoryboard"
         }
     }
+    
+    var storyboardIdentifierType: String {
+        switch self {
+        case .iOS, .tvOS:
+            return "String"
+        case .OSX:
+            return "NSStoryboard.Name"
+        }
+    }
+    
+    var storyboardSceneIdentifierType: String {
+        switch self {
+        case .iOS, .tvOS:
+            return "String"
+        case .OSX:
+            return "NSStoryboard.SceneIdentifier"
+        }
+    }
 
     var storyboardSegueType: String {
         switch self {
@@ -93,6 +111,15 @@ enum OS: String, CustomStringConvertible {
         }
     }
 
+    var storyboardSegueIdentifierType: String {
+        switch self {
+        case .iOS, .tvOS:
+            return "String"
+        case .OSX:
+            return "NSStoryboardSegue.Identifier"
+        }
+    }
+    
     var storyboardControllerTypes: [String] {
         switch self {
         case .iOS, .tvOS:

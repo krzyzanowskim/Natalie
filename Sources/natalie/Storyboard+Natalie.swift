@@ -16,7 +16,7 @@ extension Storyboard {
         output += "\n"
         output += "    struct \(storyboardName): Storyboard {\n"
         output += "\n"
-        output += "        static let identifier = \"\(storyboardName)\"\n"
+        output += "        static let identifier = \(initIdentifier(for: os.storyboardIdentifierType, value: storyboardName))\n"
         output += "\n"
         output += "        static var storyboard: \(os.storyboardType) {\n"
         output += "            return \(os.storyboardType)(name: self.identifier, bundle: nil)\n"
@@ -31,7 +31,7 @@ extension Storyboard {
         for (signatureType, returnType) in os.storyboardInstantiationInfo {
             let cast = (returnType == os.storyboardControllerReturnType ? "" : " as! \(returnType)")
             output += "\n"
-            output += "        static func instantiate\(signatureType)(withIdentifier: String) -> \(returnType) {\n"
+            output += "        static func instantiate\(signatureType)(withIdentifier identifier: \(os.storyboardSceneIdentifierType)) -> \(returnType) {\n"
             output += "            return self.storyboard.instantiate\(signatureType)(withIdentifier: identifier)\(cast)\n"
             output += "        }\n"
 
@@ -49,13 +49,21 @@ extension Storyboard {
                 let cast = (controllerClass == os.storyboardControllerReturnType ? "" : " as! \(controllerClass)")
                 output += "\n"
                 output += "        static func instantiate\(swiftRepresentation(for: storyboardIdentifier, firstLetter: .capitalize))() -> \(controllerClass) {\n"
-                output += "            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)(withIdentifier: \"\(storyboardIdentifier)\")\(cast)\n"
+                output += "            return self.storyboard.instantiate\(os.storyboardControllerSignatureType)(withIdentifier: \(initIdentifier(for: os.storyboardSceneIdentifierType, value: storyboardIdentifier)))\(cast)\n"
                 output += "        }\n"
             }
         }
         output += "    }\n"
 
         return output
+    }
+    
+    func initIdentifier(for identifierString: String, value: String) -> String {
+        if identifierString == "String" {
+            return "\"\(value)\""
+        } else {
+            return "\(identifierString)(\"\(value)\")"
+        }
     }
 
     func processViewControllers() -> String {
@@ -84,19 +92,22 @@ extension Storyboard {
                         output += "extension \(customClass): \(customClass)IdentifiableProtocol { }\n"
                         output += "\n"
                         output += "extension IdentifiableProtocol where Self: \(customClass) {\n"
+                        
+                        let initIdentifierString = initIdentifier(for: os.storyboardSceneIdentifierType, value: storyboardIdentifier)
+                        
                         if viewController.customModule != nil {
-                            output += "    var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }\n"
+                            output += "    var storyboardIdentifier: \(os.storyboardSceneIdentifierType)? { return \(initIdentifierString) }\n"
                         } else {
-                            output += "    public var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }\n"
+                            output += "    public var storyboardIdentifier: \(os.storyboardSceneIdentifierType)? { return \(initIdentifierString) }\n"
                         }
-                        output += "    static var storyboardIdentifier: String? { return \"\(storyboardIdentifier)\" }\n"
+                        output += "    static var storyboardIdentifier: \(os.storyboardSceneIdentifierType)? { return \(initIdentifierString) }\n"
                         output += "}\n"
                     }
 
                     if let segues = scene.segues?.filter({ return $0.identifier != nil }), !segues.isEmpty {
                         output += "extension \(customClass) {\n"
                         output += "\n"
-                        output += "    enum Segue: String, CustomStringConvertible, SegueProtocol {\n"
+                        output += "    enum Segue: \(os.storyboardSegueIdentifierType), CustomStringConvertible, SegueProtocol {\n"
                         for segue in segues {
                             if let identifier = segue.identifier {
                                 output += "        case \(swiftRepresentation(for: identifier, firstLetter: .lowercase)) = \"\(identifier)\"\n"
@@ -143,8 +154,8 @@ extension Storyboard {
                         output += "            }\n"
                         output += "        }\n"
                         output += "\n"
-                        output += "        var identifier: String? { return self.description }\n"
-                        output += "        var description: String { return self.rawValue }\n"
+                        output += "        var identifier: \(os.storyboardSegueIdentifierType)? { return self.rawValue }\n"
+                        output += "        var description: String { return \"\\(self.rawValue)\" }\n"
                         output += "    }\n"
                         output += "\n"
                         output += "}\n"

@@ -47,7 +47,7 @@ class MainViewController: NTLViewController {
     }
 
     @IBAction func screen22ButtonPressed(_ button: NTLButton) {
-        self.performSegue(withIdentifier: MainViewController.Segue.screenTwoSegue.rawValue, sender: nil)
+        self.perform(segue: MainViewController.Segue.screenTwoSegue)
     }
 
 }
