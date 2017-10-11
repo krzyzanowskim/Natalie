@@ -9,8 +9,8 @@
 class Reusable: XMLObject {
 
     let kind: String
-    lazy var reuseIdentifier: String? = self.xml.element?.attributes["reuseIdentifier"]
-    lazy var customClass: String? = self.xml.element?.attributes["customClass"]
+    lazy var reuseIdentifier: String? = self.xml.element?.attribute(by: "reuseIdentifier")?.text
+    lazy var customClass: String? = self.xml.element?.attribute(by:"customClass")?.text
 
     override init(xml: XMLIndexer) {
         kind = xml.element!.name

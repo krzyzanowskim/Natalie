@@ -10,7 +10,7 @@ class Storyboard: XMLObject {
 
     let version: String
     lazy var os: OS = {
-        guard let targetRuntime = self.xml["document"].element?.attributes["targetRuntime"] else {
+        guard let targetRuntime = self.xml["document"].element?.attribute(by: "targetRuntime")?.text else {
             return OS.iOS
         }
 
@@ -18,7 +18,7 @@ class Storyboard: XMLObject {
     }()
 
     lazy var initialViewControllerClass: String? = {
-        if let initialViewControllerId = self.xml["document"].element?.attributes["initialViewController"],
+        if let initialViewControllerId = self.xml["document"].element?.attribute(by: "initialViewController")?.text,
             let xmlVC = self.searchById(id: initialViewControllerId) {
             let vc = ViewController(xml: xmlVC)
             if let customClassName = vc.customClass {
@@ -43,7 +43,7 @@ class Storyboard: XMLObject {
     lazy var customModules: Set<String> = Set(self.scenes.filter { $0.customModule != nil && $0.customModuleProvider == nil }.map { $0.customModule! })
 
     override init(xml: XMLIndexer) {
-        self.version = xml["document"].element!.attributes["version"]!
+        self.version = xml["document"].element!.attribute(by: "version")!.text
         super.init(xml: xml)
     }
 

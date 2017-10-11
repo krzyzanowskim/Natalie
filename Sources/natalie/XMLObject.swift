@@ -26,10 +26,10 @@ class XMLObject {
 
             for childAtLevel in child.all {
                 if let attributeValue = attributeValue {
-                    if let element = childAtLevel.element, element.attributes[attributeKey] == attributeValue {
+                    if let element = childAtLevel.element, element.attribute(by: attributeKey)?.text == attributeValue {
                         result += [childAtLevel]
                     }
-                } else if let element = childAtLevel.element, element.attributes[attributeKey] != nil {
+                } else if let element = childAtLevel.element, element.attribute(by: attributeKey)?.text != nil {
                     result += [childAtLevel]
                 }
 
