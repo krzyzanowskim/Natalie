@@ -19,7 +19,7 @@ class Scene: XMLObject {
         return self.searchNamed(name: "segue")?.map { Segue(xml: $0) }
     }()
 
-    lazy var sceneID: String? = self.xml.element?.attributes["sceneID"]
+    lazy var sceneID: String? = self.xml.element?.attribute(by: "sceneID")?.text
 
     lazy var customModule: String? = self.viewController?.customModule
     lazy var customModuleProvider: String? = self.viewController?.customModuleProvider

@@ -128,7 +128,7 @@ extension Storyboard {
                         for segue in segues {
                             if let identifier = segue.identifier, let destination = segue.destination,
                                 let destinationElement = searchById(id: destination)?.element,
-                                let destinationClass = (destinationElement.attributes["customClass"] ?? os.controllerType(for: destinationElement.name)) {
+                                let destinationClass = (destinationElement.attribute(by: "customClass")?.text ?? os.controllerType(for: destinationElement.name)) {
                                 output += "            case .\(swiftRepresentation(for:identifier, firstLetter: .lowercase)):\n"
                                 output += "                return \(destinationClass).self\n"
                             } else {

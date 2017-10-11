@@ -10,11 +10,11 @@ class Segue: XMLObject {
 
     let kind: String
     let identifier: String?
-    lazy var destination: String? = self.xml.element?.attributes["destination"]
+    lazy var destination: String? = self.xml.element?.attribute(by: "destination")?.text
 
     override init(xml: XMLIndexer) {
-        self.kind = xml.element!.attributes["kind"]!
-        if let id = xml.element?.attributes["identifier"], !id.characters.isEmpty {
+        self.kind = xml.element!.attribute(by: "kind")!.text
+        if let id = xml.element?.attribute(by: "identifier")?.text, !id.characters.isEmpty {
             self.identifier = id
         } else {
             self.identifier = nil
