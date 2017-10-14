@@ -3,8 +3,9 @@ Natalie - Storyboard Code Generator (for Swift)
 
 ## Swift
 
-Current codebase is Swift 3 compatible.
+Current codebase is Swift 4 compatible.
 
+Swift 3.x code may be found from [swift2](https://github.com/krzyzanowskim/Natalie/tree/swift3) branch
 Swift 2.x code may be found from [swift2](https://github.com/krzyzanowskim/Natalie/tree/swift2) branch
 
 ## Synopsis
@@ -63,7 +64,7 @@ Each custom view controller is extended with this code and provide a list of ava
 `destination` property return type of destination view controller.
 
 ```swift
-extension MainViewController { 
+extension MainViewController {
 
     enum Segue: String, Printable, SegueProtocol {
         case ScreenOneSegueButton = "Screen One Segue Button"
@@ -85,7 +86,7 @@ extension MainViewController {
             }
         }
 
-        var identifier: String { return self.description } 
+        var identifier: String { return self.description }
         var description: String { return self.rawValue }
     }
 }
@@ -179,7 +180,7 @@ NATALIE_PATH="/usr/local/bin/natalie"
 if [ -f $NATALIE_PATH ]; then
     BASE_PATH="$PROJECT_DIR/$PROJECT_NAME"
     OUTPUT_PATH="$BASE_PATH/Storyboards.swift"
-    
+
     if [ ! -e "$OUTPUT_PATH" ] || [ -n "$(find "$BASE_PATH" -type f -name "*.storyboard" -newer "$OUTPUT_PATH" -print -quit)" ]; then
         echo "Natalie Generator: Generated Swift is out-of-date; re-generating..."
 
@@ -206,7 +207,7 @@ $ cd Natalie
 
 The command expects one of two types of parameters:
 
-* path to a single .storyboard file 
+* path to a single .storyboard file
 * path to a folder
 
 If the parameter is a Storyboard file, then this file will be used. If a path to a folder is provided Natalie will generate code for every storyboard found inside.
@@ -220,7 +221,7 @@ $ natalie NatalieExample/NatalieExample/Base.lproj/Main.storyboard > NatalieExam
 Please submit Pull Request against current development branch.
 
 ## Author and contact
-Marcin Krzyżanowski 
+Marcin Krzyżanowski
 
 * [@krzyzanowskim](http://twitter.com/krzyzanowskim)
 * http://blog.krzyzanowskim.com
@@ -247,4 +248,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
- 

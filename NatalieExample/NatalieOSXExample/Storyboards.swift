@@ -34,7 +34,7 @@ struct Storyboards {
 
     struct Main: Storyboard {
 
-        static let identifier: NSStoryboard.Name = NSStoryboard.Name("Main")
+        static let identifier = NSStoryboard.Name("Main")
 
         static var storyboard: NSStoryboard {
             return NSStoryboard(name: self.identifier, bundle: nil)

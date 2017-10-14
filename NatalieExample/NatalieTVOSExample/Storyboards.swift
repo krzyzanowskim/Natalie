@@ -26,7 +26,7 @@ struct Storyboards {
 
     struct Main: Storyboard {
 
-        static let identifier: String = "Main"
+        static let identifier = "Main"
 
         static var storyboard: UIStoryboard {
             return UIStoryboard(name: self.identifier, bundle: nil)
