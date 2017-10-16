@@ -36,7 +36,7 @@ struct Storyboards {
             return self.storyboard.instantiateInitialViewController() as! UINavigationController
         }
 
-        static func instantiateViewController(withIdentifier: String) -> UIViewController {
+        static func instantiateViewController(withIdentifier identifier: String) -> UIViewController {
             return self.storyboard.instantiateViewController(withIdentifier: identifier)
         }
 
@@ -269,8 +269,8 @@ extension MainViewController {
             }
         }
 
-        var identifier: String? { return self.description }
-        var description: String { return self.rawValue }
+        var identifier: String? { return self.rawValue }
+        var description: String { return "\(self.rawValue)" }
     }
 
 }
