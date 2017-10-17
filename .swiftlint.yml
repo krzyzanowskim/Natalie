@@ -22,8 +22,8 @@ line_length:
 - 250
 - 280
 function_body_length:
-- 200
-- 220
+- 300
+- 320
 type_body_length:
 - 300
 - 320

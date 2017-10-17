@@ -57,7 +57,7 @@ extension Storyboard {
 
         return output
     }
-    
+
     func initIdentifier(for identifierString: String, value: String) -> String {
         if identifierString == "String" {
             return "\"\(value)\""
@@ -92,9 +92,9 @@ extension Storyboard {
                         output += "extension \(customClass): \(customClass)IdentifiableProtocol { }\n"
                         output += "\n"
                         output += "extension IdentifiableProtocol where Self: \(customClass) {\n"
-                        
+
                         let initIdentifierString = initIdentifier(for: os.storyboardSceneIdentifierType, value: storyboardIdentifier)
-                        
+
                         if viewController.customModule != nil {
                             output += "    var storyboardIdentifier: \(os.storyboardSceneIdentifierType)? { return \(initIdentifierString) }\n"
                         } else {
@@ -140,7 +140,7 @@ extension Storyboard {
                             if let identifier = segue.identifier, let destination = segue.destination,
                                 let destinationElement = searchById(id: destination)?.element,
                                 let destinationClass = (destinationElement.attribute(by: "customClass")?.text ?? os.controllerType(for: destinationElement.name)) {
-                                output += "            case .\(swiftRepresentation(for:identifier, firstLetter: .lowercase)):\n"
+                                output += "            case .\(swiftRepresentation(for: identifier, firstLetter: .lowercase)):\n"
                                 output += "                return \(destinationClass).self\n"
                             } else {
                                 needDefaultDestination = true
@@ -196,7 +196,7 @@ extension Storyboard {
                         needDefault = false
                         for reusable in reusables {
                             if let identifier = reusable.reuseIdentifier, let customClass = reusable.customClass {
-                                output += "            case .\(swiftRepresentation(for:identifier, doNotShadow: reusable.customClass)):\n"
+                                output += "            case .\(swiftRepresentation(for: identifier, doNotShadow: reusable.customClass)):\n"
                                 output += "                return \(customClass).self\n"
                             } else {
                                 needDefault = true

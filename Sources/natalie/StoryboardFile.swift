@@ -18,6 +18,6 @@ class StoryboardFile {
         let url = URL(fileURLWithPath: filePath)
         self.data = try Data(contentsOf: url)
         self.storyboardName = ((filePath as NSString).lastPathComponent as NSString).deletingPathExtension
-        self.storyboard = Storyboard(xml:SWXMLHash.parse(self.data))
+        self.storyboard = Storyboard(xml: SWXMLHash.parse(self.data))
     }
 }
