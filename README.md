@@ -9,6 +9,8 @@ Swift 3.x code may be found from [swift3](https://github.com/krzyzanowskim/Natal
 
 Swift 2.x code may be found from [swift2](https://github.com/krzyzanowskim/Natalie/tree/swift2) branch
 
+Swift 1.x code may be found from [swift2](https://github.com/krzyzanowskim/Natalie/tree/swift12) branch
+
 ## Synopsis
 Natalie generates Swift code based on storyboard files to make work with Storyboards and segues easier. Generated file **reduce usage of Strings** as identifiers for Segues or Storyboards.
 
@@ -141,14 +143,14 @@ class MyCustomTableViewCell: UITableViewCell {
 ```
 $ git clone https://github.com/krzyzanowskim/Natalie.git
 $ cd Natalie
-$ swift build -c release -Xswiftc -static-stdlib
-$ cp .build/release/natalie ./natalie
+$ ./scripts/build.sh
+$ Binary at path ./Natalie/natalie
 ```
 
 if you want easy Xcode integration you may want to install the binary to be easily accessible for any application from `/usr/local/bin`
 
 ```
-$ cp .build/release/natalie /usr/local/bin
+$ cp natalie /usr/local/bin
 ```
 
 #### Homebrew
