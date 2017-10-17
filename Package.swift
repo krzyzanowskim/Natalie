@@ -4,7 +4,8 @@ import PackageDescription
 _ = Package(
     name: "natalie",
     targets: [
-        .target(name: "natalie")
+        .target(name: "natalie"),
+        .testTarget(name: "natalie-tests", path: "natalie-tests")
     ],
     swiftLanguageVersions: [4]
 )
