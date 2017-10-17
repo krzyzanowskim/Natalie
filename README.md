@@ -5,7 +5,8 @@ Natalie - Storyboard Code Generator (for Swift)
 
 Current codebase is Swift 4 compatible.
 
-Swift 3.x code may be found from [swift2](https://github.com/krzyzanowskim/Natalie/tree/swift3) branch
+Swift 3.x code may be found from [swift3](https://github.com/krzyzanowskim/Natalie/tree/swift3) branch
+
 Swift 2.x code may be found from [swift2](https://github.com/krzyzanowskim/Natalie/tree/swift2) branch
 
 ## Synopsis
