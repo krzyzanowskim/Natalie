@@ -14,7 +14,7 @@ class Segue: XMLObject {
 
     override init(xml: XMLIndexer) {
         self.kind = xml.element!.attribute(by: "kind")!.text
-        if let id = xml.element?.attribute(by: "identifier")?.text, !id.characters.isEmpty {
+        if let id = xml.element?.attribute(by: "identifier")?.text, !id.isEmpty {
             self.identifier = id
         } else {
             self.identifier = nil
