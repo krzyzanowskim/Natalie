@@ -97,7 +97,7 @@ struct Natalie {
             output += "@available(\(os.colorOS), *)\n"
             output += "extension \(os.colorType) {\n"
             for colorName in Set(colors) {
-                output += "    static let \(colorName) = \(os.colorType)(named: \(initIdentifier(for: os.colorNameType, value: colorName)))\n"
+                output += "    static let \(swiftRepresentation(for: colorName, firstLetter: .none)) = \(os.colorType)(named: \(initIdentifier(for: os.colorNameType, value: colorName)))\n"
             }
             output += "}\n"
             output += "\n"
