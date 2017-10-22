@@ -70,6 +70,13 @@ struct Storyboards {
     }
 }
 
+// MARK: - Colors
+@available(OSX 10.13, *)
+extension NSColor {
+    static let Screen1 = NSColor(named: NSColor.Name("Screen1"))
+    static let Screen2 = NSColor(named: NSColor.Name("Screen2"))
+}
+
 // MARK: - ReusableKind
 enum ReusableKind: String, CustomStringConvertible {
     case tableViewCell = "tableViewCell"

@@ -23,6 +23,7 @@
 		75E28AB01D577D0500A80623 /* SWXMLHash+TypeConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28AAA1D577D0500A80623 /* SWXMLHash+TypeConversion.swift */; };
 		75E28AB11D577D0500A80623 /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28AAB1D577D0500A80623 /* SWXMLHash.swift */; };
 		75E28AB31D577EEA00A80623 /* XMLObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E28AB21D577EEA00A80623 /* XMLObject.swift */; };
+		C4F8BEDF1F9C79BD0031195F /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F8BEDE1F9C79BD0031195F /* Color.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -58,6 +59,7 @@
 		75E28AAA1D577D0500A80623 /* SWXMLHash+TypeConversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SWXMLHash+TypeConversion.swift"; sourceTree = "<group>"; };
 		75E28AAB1D577D0500A80623 /* SWXMLHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWXMLHash.swift; sourceTree = "<group>"; };
 		75E28AB21D577EEA00A80623 /* XMLObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLObject.swift; sourceTree = "<group>"; };
+		C4F8BEDE1F9C79BD0031195F /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 				7501493A1D57825F00B22C87 /* ViewController.swift */,
 				7501493C1D57827800B22C87 /* Segue.swift */,
 				7501493E1D57828D00B22C87 /* Reusable.swift */,
+				C4F8BEDE1F9C79BD0031195F /* Color.swift */,
 			);
 			name = XMLObject;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 				750149411D5782AC00B22C87 /* Storyboard.swift in Sources */,
 				48E3E55D1EE6D85E000D4B3F /* Storyboard+Natalie.swift in Sources */,
 				75E28AB11D577D0500A80623 /* SWXMLHash.swift in Sources */,
+				C4F8BEDF1F9C79BD0031195F /* Color.swift in Sources */,
 				75E28AAD1D577D0500A80623 /* main.swift in Sources */,
 				75E28AAC1D577D0500A80623 /* Helpers.swift in Sources */,
 				7501493F1D57828D00B22C87 /* Reusable.swift in Sources */,

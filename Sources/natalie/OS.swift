@@ -165,6 +165,35 @@ enum OS: String, CustomStringConvertible {
         }
     }
 
+    var colorType: String {
+        switch self {
+        case .iOS, .tvOS:
+            return "UIColor"
+        case .OSX:
+            return "NSColor"
+        }
+    }
+
+    var colorNameType: String {
+        switch self {
+        case .iOS, .tvOS:
+            return "String"
+        case .OSX:
+            return "NSColor.Name"
+        }
+    }
+
+    var colorOS: String {
+        switch self {
+        case .iOS:
+            return "iOS 11.0"
+        case .tvOS:
+            return "tvOS 11.0"
+        case .OSX:
+            return "OSX 10.13"
+        }
+    }
+
     var resuableViews: [String]? {
         switch self {
         case .iOS, .tvOS:

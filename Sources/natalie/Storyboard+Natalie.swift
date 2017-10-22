@@ -58,14 +58,6 @@ extension Storyboard {
         return output
     }
 
-    func initIdentifier(for identifierString: String, value: String) -> String {
-        if identifierString == "String" {
-            return "\"\(value)\""
-        } else {
-            return "\(identifierString)(\"\(value)\")"
-        }
-    }
-
     func processViewControllers() -> String {
         var output = String()
 

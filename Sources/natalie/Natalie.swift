@@ -35,13 +35,13 @@ struct Natalie {
             let storyboardsForOS = storyboards.filter { $0.storyboard.os == os }
             if !storyboardsForOS.isEmpty {
 
-                if storyboardsForOS.count != storyboardFiles.count {
+                if storyboardsForOS.count != storyboards.count {
                     output += "#if os(\(os.rawValue))\n"
                 }
 
                 output += Natalie(storyboards: storyboardsForOS).process(os: os)
 
-                if storyboardsForOS.count != storyboardFiles.count {
+                if storyboardsForOS.count != storyboards.count {
                     output += "#endif\n"
                 }
             }
@@ -87,6 +87,21 @@ struct Natalie {
         }
         output += "}\n"
         output += "\n"
+        
+        let colors = storyboards
+            .flatMap { $0.storyboard.colors }
+            .filter { $0.catalog != .system }
+            .flatMap { $0.assetName }
+        if !colors.isEmpty {
+            output += "// MARK: - Colors\n"
+            output += "@available(\(os.colorOS), *)\n"
+            output += "extension \(os.colorType) {\n"
+            for colorName in Set(colors) {
+                output += "    static let \(colorName) = \(os.colorType)(named: \(initIdentifier(for: os.colorNameType, value: colorName)))\n"
+            }
+            output += "}\n"
+            output += "\n"
+        }
 
         output += "// MARK: - ReusableKind\n"
         output += "enum ReusableKind: String, CustomStringConvertible {\n"

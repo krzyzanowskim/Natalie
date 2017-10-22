@@ -10,6 +10,7 @@ disabled_rules:
     - redundant_string_enum_value
     - type_name
     - identifier_name
+    - large_tuple
 
 shorthand_operator: warning
 

@@ -30,13 +30,21 @@ class MainViewController: NTLViewController {
 
     override func prepare(for segue: NTLStoryboardSegue, sender: Any?) {
         if segue == MainViewController.Segue.screenOneSegue, let oneViewController = segue.destination as? ScreenOneViewController {
-            oneViewController.view.backgroundColor = NTLColor.yellow
+            if #available(OSX 10.13, iOS 11.0, tvOS 11.0, *) {
+                oneViewController.view.backgroundColor = NTLColor.Screen1 ?? .orange
+            } else {
+                oneViewController.view.backgroundColor = .orange
+            }
         } else if segue == MainViewController.Segue.screenOneSegueButton, let oneViewController = segue.destination as? ScreenOneViewController {
-            oneViewController.view.backgroundColor = NTLColor.brown
+                oneViewController.view.backgroundColor = .brown
         } else if segue == MainViewController.Segue.screenTwoSegue, let twoViewController = segue.destination as? ScreenTwoViewController {
-            twoViewController.view.backgroundColor = NTLColor.magenta
+            if #available(OSX 10.13, iOS 11.0, tvOS 11.0, *) {
+                twoViewController.view.backgroundColor = NTLColor.Screen2 ?? .blue
+            } else {
+                twoViewController.view.backgroundColor = .blue
+            }
         } else if segue == MainViewController.Segue.sceneOneGestureRecognizerSegue, let oneViewController = segue.destination as? ScreenOneViewController {
-            oneViewController.view.backgroundColor = NTLColor.green
+            oneViewController.view.backgroundColor = .green
         }
     }
 
@@ -58,7 +66,7 @@ class MainViewController: NTLViewController {
         open var destination: Any { return destinationController }
     }
     extension NSView {
-        open var backgroundColor: NSColor {
+       @IBInspectable open var backgroundColor: NSColor {
             get {
                 if let color: CGColor = self.layer?.backgroundColor {
                     return NSColor(cgColor: color)!

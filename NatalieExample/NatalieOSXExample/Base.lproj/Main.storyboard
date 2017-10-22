@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13196"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -669,6 +670,9 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <connections>
+                            <outlet property="delegate" destination="B8D-0N-5wS" id="bIY-2Z-duN"/>
+                        </connections>
                     </window>
                     <connections>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
@@ -729,6 +733,9 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="dtE-q0-A3X" firstAttribute="leading" secondItem="6D8-4A-XEz" secondAttribute="leading" id="035-ma-dwg"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dtE-q0-A3X" secondAttribute="trailing" constant="20" symbolic="YES" id="4np-2X-vS2"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6D8-4A-XEz" secondAttribute="trailing" constant="20" symbolic="YES" id="DLx-jB-Q0y"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hAH-QC-9mD" secondAttribute="trailing" constant="20" symbolic="YES" id="N9q-Zw-igg"/>
                             <constraint firstItem="hAH-QC-9mD" firstAttribute="top" secondItem="dtE-q0-A3X" secondAttribute="bottom" constant="12" id="Q1l-6i-Kxk"/>
                             <constraint firstItem="6D8-4A-XEz" firstAttribute="top" secondItem="54q-h3-MlB" secondAttribute="bottom" constant="12" id="UqZ-Zn-D4w"/>
                             <constraint firstItem="hAH-QC-9mD" firstAttribute="leading" secondItem="dtE-q0-A3X" secondAttribute="leading" id="Urn-Ow-SqG"/>
@@ -736,6 +743,7 @@
                             <constraint firstItem="dtE-q0-A3X" firstAttribute="top" secondItem="6D8-4A-XEz" secondAttribute="bottom" constant="12" id="hzs-Lf-DAc"/>
                             <constraint firstItem="54q-h3-MlB" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="rP2-zv-Kt6"/>
                             <constraint firstItem="6D8-4A-XEz" firstAttribute="leading" secondItem="54q-h3-MlB" secondAttribute="leading" id="seJ-go-uJf"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="54q-h3-MlB" secondAttribute="trailing" constant="20" symbolic="YES" id="z4F-z6-6MO"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -751,7 +759,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fW3-iT-K5o">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fW3-iT-K5o">
                                 <rect key="frame" x="197" y="142" width="56" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Screen 1" id="PNY-1P-ROq">
                                     <font key="font" metaFont="system"/>
@@ -764,6 +772,11 @@
                             <constraint firstItem="fW3-iT-K5o" firstAttribute="centerY" secondItem="biF-Mf-L0Y" secondAttribute="centerY" id="IIg-zu-hFM"/>
                             <constraint firstItem="fW3-iT-K5o" firstAttribute="centerX" secondItem="biF-Mf-L0Y" secondAttribute="centerX" id="kTE-mF-pd0"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                <color key="value" name="Screen2"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                 </viewController>
                 <customObject id="BRD-8X-Us9" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -778,7 +791,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="waE-AH-auY">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="waE-AH-auY">
                                 <rect key="frame" x="196" y="141" width="58" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Screen 2" id="MS2-ph-NVc">
                                     <font key="font" metaFont="system"/>
@@ -791,6 +804,11 @@
                             <constraint firstItem="waE-AH-auY" firstAttribute="centerY" secondItem="6Mh-x0-YJn" secondAttribute="centerY" id="Lu0-XL-MM1"/>
                             <constraint firstItem="waE-AH-auY" firstAttribute="centerX" secondItem="6Mh-x0-YJn" secondAttribute="centerX" id="P1o-co-PmH"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                <color key="value" name="Screen1"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                 </viewController>
                 <customObject id="mZQ-KA-Oog" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -798,6 +816,14 @@
             <point key="canvasLocation" x="312" y="1111"/>
         </scene>
     </scenes>
+    <resources>
+        <namedColor name="Screen1">
+            <color red="0.98100000620000005" green="0.57200002670000005" blue="0.041999999429999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Screen2">
+            <color red="0.093999996779999997" green="0.5" blue="0.84600001570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="rIw-t2-zng"/>
     </inferredMetricsTieBreakers>
