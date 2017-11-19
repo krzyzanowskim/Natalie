@@ -39,6 +39,13 @@ class Storyboard: XMLObject {
 
         return scenes.map { Scene(xml: $0) }
     }()
+    lazy var colors: [Color] = {
+        guard let colors = self.searchNamed(root: self.xml, name: "color") else {
+            return []
+        }
+
+        return colors.map { Color(xml: $0) }
+    }()
 
     lazy var customModules: Set<String> = Set(self.scenes.filter { $0.customModule != nil && $0.customModuleProvider == nil }.map { $0.customModule! })
 

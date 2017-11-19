@@ -136,6 +136,10 @@ class MyCustomTableViewCell: UITableViewCell {
 }
 ```
 
+### Colors (iOS 11, macOS 10.13)
+
+Generate an `UIColor` (or `NSColor`) static property for each asset colors used in your storyboard.
+
 ## Installation
 
 #### Swift Package Manager

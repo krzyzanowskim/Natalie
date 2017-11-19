@@ -46,3 +46,11 @@ func swiftRepresentation(for string: String, firstLetter: FirstLetterFormat = .n
     }
     return str
 }
+
+func initIdentifier(for identifierString: String, value: String) -> String {
+    if identifierString == "String" {
+        return "\"\(value)\""
+    } else {
+        return "\(identifierString)(\"\(value)\")"
+    }
+}
