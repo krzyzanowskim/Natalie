@@ -55,7 +55,7 @@ override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
 Perform segue
 ```swift
-self.performSegue(MainViewController.Segue.ScreenOneSegue, sender:nil)
+self.perform(segue: MainViewController.Segue.ScreenOneSegue, sender: nil)
 ```
 
 Each custom view controller is extended with this code and provide a list of available segues and additional information from Storyboard.
