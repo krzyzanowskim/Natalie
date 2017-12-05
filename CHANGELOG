@@ -1,3 +1,9 @@
+0.6.5
+- Generate UIColor (or NSColor) static property for each asset colors used in storyboard
+- Update docs
+- Fix build script
+- Update examples
+
 0.6.0
 - Xcode 9 and Swift 4 compatibility
 - Adds tvOS support
