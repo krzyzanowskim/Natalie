@@ -22,4 +22,15 @@ class ViewController: XMLObject {
         return nil
     }()
 
+    lazy var customClassWithModule: String? = {
+        if let className = self.customClass {
+            if let moduleName = self.customModule {
+                return "\(moduleName).\(className)"
+            } else {
+                return className
+            }
+        }
+        return nil
+    }()
+
 }

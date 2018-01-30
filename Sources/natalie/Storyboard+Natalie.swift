@@ -42,7 +42,9 @@ extension Storyboard {
         }
         for scene in self.scenes {
             if let viewController = scene.viewController, let storyboardIdentifier = viewController.storyboardIdentifier {
-                guard let controllerClass = viewController.customClass ?? os.controllerType(for: viewController.name) else {
+                // The returned class could have the same name as the enclosing Storyboard struct,
+                // so we must qualify controllerClass with the module name.
+                guard let controllerClass = viewController.customClassWithModule ?? os.controllerType(for: viewController.name) else {
                     continue
                 }
 
