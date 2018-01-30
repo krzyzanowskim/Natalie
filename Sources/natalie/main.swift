@@ -8,15 +8,23 @@
 
 import Foundation
 
+func printUsage() {
+    print("Usage:")
+    print("natalie <storyboard-path or directory>")
+}
+
 if CommandLine.arguments.count == 1 {
-    print("Invalid usage. Missing path to storyboard.")
+    printUsage()
     exit(1)
 }
 
 let argument = CommandLine.arguments[1]
 var filePaths: [String] = []
 let storyboardSuffix = ".storyboard"
-if argument.hasSuffix(storyboardSuffix) {
+if argument == "--help" {
+    printUsage()
+    exit(0)
+} else if argument.hasSuffix(storyboardSuffix) {
     filePaths = [argument]
 } else if let s = findStoryboards(rootPath: argument, suffix: storyboardSuffix) {
     filePaths = s
