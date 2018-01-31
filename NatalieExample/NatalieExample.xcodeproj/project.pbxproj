@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5217B2BD2021CEA50034839C /* FrameworkExample.h in Headers */ = {isa = PBXBuildFile; fileRef = 5217B2BB2021CEA50034839C /* FrameworkExample.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5217B2C02021CEA50034839C /* FrameworkExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5217B2B92021CEA50034839C /* FrameworkExample.framework */; };
+		5217B2C12021CEA50034839C /* FrameworkExample.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5217B2B92021CEA50034839C /* FrameworkExample.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5217B2C72021CECB0034839C /* FrameworkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5217B2C62021CECB0034839C /* FrameworkViewController.swift */; };
 		752F16EF1E070A9800E685FB /* ScreenSubTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752F16EE1E070A9800E685FB /* ScreenSubTwoViewController.swift */; };
 		752F16F01E070C1400E685FB /* ScreenSubTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752F16EE1E070A9800E685FB /* ScreenSubTwoViewController.swift */; };
 		75FBDF971ADE59A30056F7DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FBDF961ADE59A30056F7DA /* AppDelegate.swift */; };
@@ -34,7 +38,35 @@
 		C4D441C21D9D027A005198F4 /* Storyboards.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D441C11D9D027A005198F4 /* Storyboards.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		5217B2BE2021CEA50034839C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 75FBDF891ADE59A30056F7DA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5217B2B82021CEA50034839C;
+			remoteInfo = FrameworkExample;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5217B2C52021CEA50034839C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				5217B2C12021CEA50034839C /* FrameworkExample.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		5217B2B92021CEA50034839C /* FrameworkExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FrameworkExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5217B2BB2021CEA50034839C /* FrameworkExample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkExample.h; sourceTree = "<group>"; };
+		5217B2BC2021CEA50034839C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5217B2C62021CECB0034839C /* FrameworkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkViewController.swift; sourceTree = "<group>"; };
 		752F16EE1E070A9800E685FB /* ScreenSubTwoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenSubTwoViewController.swift; sourceTree = "<group>"; };
 		75FBDF911ADE59A30056F7DA /* NatalieExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NatalieExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75FBDF951ADE59A30056F7DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,10 +91,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5217B2B52021CEA50034839C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		75FBDF8E1ADE59A30056F7DA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5217B2C02021CEA50034839C /* FrameworkExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,12 +123,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5217B2BA2021CEA50034839C /* FrameworkExample */ = {
+			isa = PBXGroup;
+			children = (
+				5217B2BB2021CEA50034839C /* FrameworkExample.h */,
+				5217B2C62021CECB0034839C /* FrameworkViewController.swift */,
+				5217B2BC2021CEA50034839C /* Info.plist */,
+			);
+			path = FrameworkExample;
+			sourceTree = "<group>";
+		};
 		75FBDF881ADE59A30056F7DA = {
 			isa = PBXGroup;
 			children = (
 				75FBDF931ADE59A30056F7DA /* NatalieExample */,
 				C4D441AA1D9CFAAC005198F4 /* NatalieOSXExample */,
 				C428BDE91ECD71DD00F037BA /* NatalieTVOSExample */,
+				5217B2BA2021CEA50034839C /* FrameworkExample */,
 				75FBDF921ADE59A30056F7DA /* Products */,
 			);
 			indentWidth = 4;
@@ -102,6 +153,7 @@
 				75FBDF911ADE59A30056F7DA /* NatalieExample.app */,
 				C4D441A91D9CFAAC005198F4 /* NatalieOSXExample.app */,
 				C428BDE81ECD71DD00F037BA /* NatalieTVOSExample.app */,
+				5217B2B92021CEA50034839C /* FrameworkExample.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -171,7 +223,36 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		5217B2B62021CEA50034839C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5217B2BD2021CEA50034839C /* FrameworkExample.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		5217B2B82021CEA50034839C /* FrameworkExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5217B2C42021CEA50034839C /* Build configuration list for PBXNativeTarget "FrameworkExample" */;
+			buildPhases = (
+				5217B2B42021CEA50034839C /* Sources */,
+				5217B2B52021CEA50034839C /* Frameworks */,
+				5217B2B62021CEA50034839C /* Headers */,
+				5217B2B72021CEA50034839C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FrameworkExample;
+			productName = FrameworkExample;
+			productReference = 5217B2B92021CEA50034839C /* FrameworkExample.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		75FBDF901ADE59A30056F7DA /* NatalieExample */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 75FBDFB01ADE59A30056F7DA /* Build configuration list for PBXNativeTarget "NatalieExample" */;
@@ -181,10 +262,12 @@
 				75FBDF8E1ADE59A30056F7DA /* Frameworks */,
 				75FBDF8F1ADE59A30056F7DA /* Resources */,
 				48E3E55E1EE6D971000D4B3F /* swiftlint */,
+				5217B2C52021CEA50034839C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5217B2BF2021CEA50034839C /* PBXTargetDependency */,
 			);
 			name = NatalieExample;
 			productName = NatalieExample;
@@ -239,6 +322,11 @@
 				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Marcin Krzyżanowski";
 				TargetAttributes = {
+					5217B2B82021CEA50034839C = {
+						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
+						ProvisioningStyle = Automatic;
+					};
 					75FBDF901ADE59A30056F7DA = {
 						CreatedOnToolsVersion = 6.3;
 						LastSwiftMigration = 0800;
@@ -269,11 +357,19 @@
 				75FBDF901ADE59A30056F7DA /* NatalieExample */,
 				C4D441A81D9CFAAC005198F4 /* NatalieOSXExample */,
 				C428BDE71ECD71DD00F037BA /* NatalieTVOSExample */,
+				5217B2B82021CEA50034839C /* FrameworkExample */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5217B2B72021CEA50034839C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		75FBDF8F1ADE59A30056F7DA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -345,7 +441,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "echo \"Natalie Generator: Determining if generated Swift file is up-to-date.\"\n\nNATALIE_PATH=\"$SRCROOT/../.build/release/natalie\"\n\nif [ -f $NATALIE_PATH ]; then\n    BASE_PATH=\"$PROJECT_DIR/$PROJECT_NAME\"\n    OUTPUT_PATH=\"$BASE_PATH/Storyboards.swift\"\n    \n#    if [ ! -e \"$OUTPUT_PATH\" ] || [ -n \"$(find \"$BASE_PATH\" -type f -name \"*.storyboard\" -newer \"$OUTPUT_PATH\" -print -quit)\" ]; then\necho \"Natalie Generator: Generated Swift is out-of-date; re-generating...\"\n\n#        /usr/bin/chflags nouchg \"$OUTPUT_PATH\"\n\"$NATALIE_PATH\" \"$BASE_PATH\" > \"$OUTPUT_PATH\"\n#        /usr/bin/chflags uchg \"$OUTPUT_PATH\"\n\necho \"Natalie Generator: Done.\"\n#    else\n#        echo \"Natalie Generator: Generated Swift is up-to-date; skipping re-generation.\"\n#    fi\nfi\n\n";
+			shellScript = "echo \"Natalie Generator: Determining if generated Swift file is up-to-date.\"\n\nNATALIE_PATH=\"$SRCROOT/../build/Release/natalie\"\n\nif [ -f $NATALIE_PATH ]; then\n    BASE_PATH=\"$PROJECT_DIR/$PROJECT_NAME\"\n    OUTPUT_PATH=\"$BASE_PATH/Storyboards.swift\"\n    \n#    if [ ! -e \"$OUTPUT_PATH\" ] || [ -n \"$(find \"$BASE_PATH\" -type f -name \"*.storyboard\" -newer \"$OUTPUT_PATH\" -print -quit)\" ]; then\necho \"Natalie Generator: Generated Swift is out-of-date; re-generating...\"\n\n#        /usr/bin/chflags nouchg \"$OUTPUT_PATH\"\n\"$NATALIE_PATH\" \"$BASE_PATH\" > \"$OUTPUT_PATH\"\n#        /usr/bin/chflags uchg \"$OUTPUT_PATH\"\n\necho \"Natalie Generator: Done.\"\n#    else\n#        echo \"Natalie Generator: Generated Swift is up-to-date; skipping re-generation.\"\n#    fi\nelse\n    echo \"error: 'natalie' tool not found. Please install via Homebrew\"\n    exit 1\nfi\n\n";
 			showEnvVarsInLog = 0;
 		};
 		C493E66A1ED246EB00A171BE /* Natalie generator */ = {
@@ -360,7 +456,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Natalie Generator: Determining if generated Swift file is up-to-date.\"\n\nNATALIE_PATH=\"$SRCROOT/../.build/release/natalie\"\n\nif [ -f $NATALIE_PATH ]; then\nBASE_PATH=\"$PROJECT_DIR/$TARGET_NAME\"\nOUTPUT_PATH=\"$BASE_PATH/Storyboards.swift\"\n\n#    if [ ! -e \"$OUTPUT_PATH\" ] || [ -n \"$(find \"$BASE_PATH\" -type f -name \"*.storyboard\" -newer \"$OUTPUT_PATH\" -print -quit)\" ]; then\necho \"Natalie Generator: Generated Swift is out-of-date; re-generating...\"\n\n#        /usr/bin/chflags nouchg \"$OUTPUT_PATH\"\n\"$NATALIE_PATH\" \"$BASE_PATH\" > \"$OUTPUT_PATH\"\n#        /usr/bin/chflags uchg \"$OUTPUT_PATH\"\n\necho \"Natalie Generator: Done.\"\n#    else\n#        echo \"Natalie Generator: Generated Swift is up-to-date; skipping re-generation.\"\n#    fi\nfi\n\n";
+			shellScript = "echo \"Natalie Generator: Determining if generated Swift file is up-to-date.\"\n\nNATALIE_PATH=\"$SRCROOT/../build/Release/natalie\"\n\nif [ -f $NATALIE_PATH ]; then\nBASE_PATH=\"$PROJECT_DIR/$TARGET_NAME\"\nOUTPUT_PATH=\"$BASE_PATH/Storyboards.swift\"\n\n#    if [ ! -e \"$OUTPUT_PATH\" ] || [ -n \"$(find \"$BASE_PATH\" -type f -name \"*.storyboard\" -newer \"$OUTPUT_PATH\" -print -quit)\" ]; then\necho \"Natalie Generator: Generated Swift is out-of-date; re-generating...\"\n\n#        /usr/bin/chflags nouchg \"$OUTPUT_PATH\"\n\"$NATALIE_PATH\" \"$BASE_PATH\" > \"$OUTPUT_PATH\"\n#        /usr/bin/chflags uchg \"$OUTPUT_PATH\"\n\necho \"Natalie Generator: Done.\"\n#    else\n#        echo \"Natalie Generator: Generated Swift is up-to-date; skipping re-generation.\"\n#    fi\nfi\n\n";
 		};
 		C4D441C31D9D052B005198F4 /* Natalie build */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -388,12 +484,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "echo \"Natalie Generator: Determining if generated Swift file is up-to-date.\"\n\nNATALIE_PATH=\"$SRCROOT/../.build/release/natalie\"\n\nif [ -f $NATALIE_PATH ]; then\nBASE_PATH=\"$PROJECT_DIR/$TARGET_NAME\"\nOUTPUT_PATH=\"$BASE_PATH/Storyboards.swift\"\n\n#    if [ ! -e \"$OUTPUT_PATH\" ] || [ -n \"$(find \"$BASE_PATH\" -type f -name \"*.storyboard\" -newer \"$OUTPUT_PATH\" -print -quit)\" ]; then\necho \"Natalie Generator: Generated Swift is out-of-date; re-generating...\"\n\n#        /usr/bin/chflags nouchg \"$OUTPUT_PATH\"\n\"$NATALIE_PATH\" \"$BASE_PATH\" > \"$OUTPUT_PATH\"\n#        /usr/bin/chflags uchg \"$OUTPUT_PATH\"\n\necho \"Natalie Generator: Done.\"\n#    else\n#        echo \"Natalie Generator: Generated Swift is up-to-date; skipping re-generation.\"\n#    fi\nfi\n\n";
+			shellScript = "echo \"Natalie Generator: Determining if generated Swift file is up-to-date.\"\n\nNATALIE_PATH=\"$SRCROOT/../build/Release/natalie\"\n\nif [ -f $NATALIE_PATH ]; then\nBASE_PATH=\"$PROJECT_DIR/$TARGET_NAME\"\nOUTPUT_PATH=\"$BASE_PATH/Storyboards.swift\"\n\n#    if [ ! -e \"$OUTPUT_PATH\" ] || [ -n \"$(find \"$BASE_PATH\" -type f -name \"*.storyboard\" -newer \"$OUTPUT_PATH\" -print -quit)\" ]; then\necho \"Natalie Generator: Generated Swift is out-of-date; re-generating...\"\n\n#        /usr/bin/chflags nouchg \"$OUTPUT_PATH\"\n\"$NATALIE_PATH\" \"$BASE_PATH\" > \"$OUTPUT_PATH\"\n#        /usr/bin/chflags uchg \"$OUTPUT_PATH\"\n\necho \"Natalie Generator: Done.\"\n#    else\n#        echo \"Natalie Generator: Generated Swift is up-to-date; skipping re-generation.\"\n#    fi\nfi\n\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5217B2B42021CEA50034839C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5217B2C72021CECB0034839C /* FrameworkViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		75FBDF8D1ADE59A30056F7DA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -435,6 +539,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		5217B2BF2021CEA50034839C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5217B2B82021CEA50034839C /* FrameworkExample */;
+			targetProxy = 5217B2BE2021CEA50034839C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		75FBDF9A1ADE59A30056F7DA /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -471,6 +583,69 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		5217B2C22021CEA50034839C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = FrameworkExample/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.krzyzanowskim.FrameworkExample;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		5217B2C32021CEA50034839C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = FrameworkExample/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.krzyzanowskim.FrameworkExample;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		75FBDFAE1ADE59A30056F7DA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -577,7 +752,9 @@
 		75FBDFB11ADE59A30056F7DA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = NatalieExample/Info.plist;
 				INFOPLIST_OUTPUT_FORMAT = binary;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -593,7 +770,9 @@
 		75FBDFB21ADE59A30056F7DA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = NatalieExample/Info.plist;
 				INFOPLIST_OUTPUT_FORMAT = binary;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -696,6 +875,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5217B2C42021CEA50034839C /* Build configuration list for PBXNativeTarget "FrameworkExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5217B2C22021CEA50034839C /* Debug */,
+				5217B2C32021CEA50034839C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		75FBDF8C1ADE59A30056F7DA /* Build configuration list for PBXProject "NatalieExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
