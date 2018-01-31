@@ -21,7 +21,7 @@ if CommandLine.arguments.count == 1 {
 var filePaths: [String] = []
 let storyboardSuffix = ".storyboard"
 
-for arg in CommandLine.arguments {
+for arg in CommandLine.arguments.dropFirst() {
     if arg == "--help" {
         printUsage()
         exit(0)
