@@ -24,6 +24,10 @@ struct Natalie {
     let storyboards: [StoryboardFile]
     let header = Header()
 
+    var storyboardCustomModules: Set<String> {
+        return Set(storyboards.lazy.flatMap { $0.storyboard.customModules })
+    }
+
     init(storyboards: [StoryboardFile]) {
         self.storyboards = storyboards
         assert(Set(storyboards.map { $0.storyboard.os }).count < 2)
@@ -54,7 +58,7 @@ struct Natalie {
 
         output += header.description
         output += "import \(os.framework)\n"
-        for module in Set(storyboards.lazy.flatMap { $0.storyboard.customModules }) {
+        for module in storyboardCustomModules {
             output += "import \(module)\n"
         }
         output += "\n"
@@ -87,7 +91,7 @@ struct Natalie {
         }
         output += "}\n"
         output += "\n"
-        
+
         let colors = storyboards
             .flatMap { $0.storyboard.colors }
             .filter { $0.catalog != .system }
@@ -297,8 +301,9 @@ struct Natalie {
             output += "}\n"
         }
 
+        let storyboardModules = storyboardCustomModules
         for file in storyboards {
-            output += file.storyboard.processViewControllers()
+            output += file.storyboard.processViewControllers(storyboardCustomModules: storyboardModules)
         }
 
         return output
