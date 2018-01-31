@@ -60,7 +60,7 @@ extension Storyboard {
         return output
     }
 
-    func processViewControllers() -> String {
+    func processViewControllers(storyboardCustomModules: Set<String>) -> String {
         var output = String()
 
         for scene in self.scenes {
@@ -89,9 +89,16 @@ extension Storyboard {
 
                         let initIdentifierString = initIdentifier(for: os.storyboardSceneIdentifierType, value: storyboardIdentifier)
 
-                        if viewController.customModule != nil {
+                        var isCurrentModule = false
+                        if let customModule = viewController.customModule {
+                            isCurrentModule = !storyboardCustomModules.contains(customModule)
+                        }
+
+                        if isCurrentModule {
+                            // Accessors for view controllers defined in the current module should be "internal".
                             output += "    var storyboardIdentifier: \(os.storyboardSceneIdentifierType)? { return \(initIdentifierString) }\n"
                         } else {
+                            // Accessors for view controllers in external modules (whether system or custom frameworks), should be marked public.
                             output += "    public var storyboardIdentifier: \(os.storyboardSceneIdentifierType)? { return \(initIdentifierString) }\n"
                         }
                         output += "    static var storyboardIdentifier: \(os.storyboardSceneIdentifierType)? { return \(initIdentifierString) }\n"
