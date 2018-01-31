@@ -3,6 +3,7 @@
 // by Marcin Krzyzanowski http://krzyzanowskim.com
 //
 import UIKit
+import FrameworkExample
 
 // MARK: - Storyboards
 
@@ -44,20 +45,24 @@ struct Storyboards {
             return self.storyboard.instantiateViewController(ofType: type)
         }
 
-        static func instantiateMainViewController() -> MainViewController {
-            return self.storyboard.instantiateViewController(withIdentifier: "MainViewController") as! MainViewController
+        static func instantiateMainViewController() -> NatalieExample.MainViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "MainViewController") as! NatalieExample.MainViewController
         }
 
-        static func instantiateSecondViewController() -> ScreenTwoViewController {
-            return self.storyboard.instantiateViewController(withIdentifier: "secondViewController") as! ScreenTwoViewController
+        static func instantiateSecondViewController() -> NatalieExample.ScreenTwoViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "secondViewController") as! NatalieExample.ScreenTwoViewController
         }
 
-        static func instantiateScreenOneViewController() -> ScreenOneViewController {
-            return self.storyboard.instantiateViewController(withIdentifier: "Screen One ViewController") as! ScreenOneViewController
+        static func instantiateScreenOneViewController() -> NatalieExample.ScreenOneViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "Screen One ViewController") as! NatalieExample.ScreenOneViewController
         }
 
-        static func instantiateSecondSubViewController() -> ScreenSubTwoViewController {
-            return self.storyboard.instantiateViewController(withIdentifier: "secondSubViewController") as! ScreenSubTwoViewController
+        static func instantiateFrameworkViewController() -> FrameworkExample.FrameworkViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "Framework View Controller") as! FrameworkExample.FrameworkViewController
+        }
+
+        static func instantiateSecondSubViewController() -> NatalieExample.ScreenSubTwoViewController {
+            return self.storyboard.instantiateViewController(withIdentifier: "secondSubViewController") as! NatalieExample.ScreenSubTwoViewController
         }
     }
 }
@@ -324,6 +329,16 @@ extension ScreenOneViewController: ScreenOneViewControllerIdentifiableProtocol {
 extension IdentifiableProtocol where Self: ScreenOneViewController {
     var storyboardIdentifier: String? { return "Screen One ViewController" }
     static var storyboardIdentifier: String? { return "Screen One ViewController" }
+}
+
+// MARK: - FrameworkViewController
+protocol FrameworkViewControllerIdentifiableProtocol: IdentifiableProtocol { }
+
+extension FrameworkViewController: FrameworkViewControllerIdentifiableProtocol { }
+
+extension IdentifiableProtocol where Self: FrameworkViewController {
+    public var storyboardIdentifier: String? { return "Framework View Controller" }
+    static var storyboardIdentifier: String? { return "Framework View Controller" }
 }
 
 // MARK: - ScreenSubTwoViewController

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="Wjb-mG-J1I">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="Wjb-mG-J1I">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -47,7 +47,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h7R-xk-Pzn">
-                                <rect key="frame" x="157" y="129" width="59" height="30"/>
+                                <rect key="frame" x="158" y="129" width="59" height="30"/>
                                 <state key="normal" title="Screen 1">
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -64,8 +64,17 @@
                                     <segue destination="H01-d9-gf7" kind="push" identifier="Screen One Segue Button" id="0VR-ft-sgf"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x3c-Uk-uIk">
+                                <rect key="frame" x="130" y="288" width="114" height="30"/>
+                                <state key="normal" title="Framework View">
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="wOU-hW-xrT" kind="push" id="Y0b-Ni-txJ"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Screen 1 Gesture Recognizer Segue" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tv5-gO-yQr">
-                                <rect key="frame" x="50.5" y="288" width="274" height="21"/>
+                                <rect key="frame" x="50.5" y="341" width="274" height="21"/>
                                 <gestureRecognizers/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -78,11 +87,13 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="2ta-XX-XmY" firstAttribute="centerX" secondItem="Tdz-cR-4J7" secondAttribute="centerX" id="0yW-bq-sWP"/>
+                            <constraint firstItem="x3c-Uk-uIk" firstAttribute="top" secondItem="J7J-zu-N6U" secondAttribute="bottom" constant="23" id="36Q-hy-WuU"/>
                             <constraint firstItem="2ta-XX-XmY" firstAttribute="centerX" secondItem="J7J-zu-N6U" secondAttribute="centerX" id="F6E-LK-775"/>
-                            <constraint firstItem="tv5-gO-yQr" firstAttribute="top" secondItem="J7J-zu-N6U" secondAttribute="bottom" constant="23" id="GOS-Up-SES"/>
-                            <constraint firstItem="h7R-xk-Pzn" firstAttribute="leading" secondItem="2ta-XX-XmY" secondAttribute="leading" id="InD-u7-cWp"/>
+                            <constraint firstItem="x3c-Uk-uIk" firstAttribute="centerX" secondItem="Tdz-cR-4J7" secondAttribute="centerX" id="Gfm-gC-OuN"/>
+                            <constraint firstItem="tv5-gO-yQr" firstAttribute="top" secondItem="x3c-Uk-uIk" secondAttribute="bottom" constant="23" id="M7p-yf-AKd"/>
                             <constraint firstItem="J7J-zu-N6U" firstAttribute="top" secondItem="2ta-XX-XmY" secondAttribute="bottom" constant="23" id="MKj-Ou-K2Z"/>
                             <constraint firstItem="2ta-XX-XmY" firstAttribute="top" secondItem="h7R-xk-Pzn" secondAttribute="bottom" constant="23" id="Sgq-5I-5UZ"/>
+                            <constraint firstItem="h7R-xk-Pzn" firstAttribute="centerX" secondItem="Tdz-cR-4J7" secondAttribute="centerX" id="nHQ-tW-l14"/>
                             <constraint firstItem="h7R-xk-Pzn" firstAttribute="top" secondItem="PS3-vn-EBy" secondAttribute="bottom" constant="65" id="nN7-Fw-RSf"/>
                             <constraint firstAttribute="centerX" secondItem="tv5-gO-yQr" secondAttribute="centerX" id="yL2-rQ-7Ti"/>
                         </constraints>
@@ -196,6 +207,37 @@
             </objects>
             <point key="canvasLocation" x="804" y="-27"/>
         </scene>
+        <!--Framework View Controller-->
+        <scene sceneID="NUa-Rh-lHE">
+            <objects>
+                <viewController storyboardIdentifier="Framework View Controller" id="wOU-hW-xrT" customClass="FrameworkViewController" customModule="FrameworkExample" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bht-RC-v4D"/>
+                        <viewControllerLayoutGuide type="bottom" id="gpg-h0-LrM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="z3T-VN-GpH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Framework View Controller" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1vO-du-xwt">
+                                <rect key="frame" x="84" y="323" width="207" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="1vO-du-xwt" firstAttribute="centerY" secondItem="z3T-VN-GpH" secondAttribute="centerY" id="1MF-ok-Dqd"/>
+                            <constraint firstItem="1vO-du-xwt" firstAttribute="centerX" secondItem="z3T-VN-GpH" secondAttribute="centerX" id="tUE-HC-bvJ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="f32-4m-cUb"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qkS-el-WDq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1256" y="395"/>
+        </scene>
         <!--Screen Sub Two View Controller-->
         <scene sceneID="6Q4-bA-Bxb">
             <objects>
@@ -269,6 +311,6 @@
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="0VR-ft-sgf"/>
+        <segue reference="tRQ-ZB-XZP"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -60,12 +60,12 @@ struct Storyboards {
             return self.storyboard.instantiateViewController(ofType: type)
         }
 
-        static func instantiateScreenOneViewController() -> ScreenOneViewController {
-            return self.storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("Screen One ViewController")) as! ScreenOneViewController
+        static func instantiateScreenOneViewController() -> NatalieOSXExample.ScreenOneViewController {
+            return self.storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("Screen One ViewController")) as! NatalieOSXExample.ScreenOneViewController
         }
 
-        static func instantiateSecondViewController() -> ScreenTwoViewController {
-            return self.storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("secondViewController")) as! ScreenTwoViewController
+        static func instantiateSecondViewController() -> NatalieOSXExample.ScreenTwoViewController {
+            return self.storyboard.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier("secondViewController")) as! NatalieOSXExample.ScreenTwoViewController
         }
     }
 }
