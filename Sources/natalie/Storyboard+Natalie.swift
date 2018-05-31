@@ -111,7 +111,12 @@ extension Storyboard {
                         output += "    enum Segue: \(os.storyboardSegueIdentifierType), CustomStringConvertible, SegueProtocol {\n"
                         for segue in segues {
                             if let identifier = segue.identifier {
-                                output += "        case \(swiftRepresentation(for: identifier, firstLetter: .lowercase)) = \"\(identifier)\"\n"
+                                let swiftIdentifier = swiftRepresentation(for: identifier, firstLetter: .lowercase)
+                                if swiftIdentifier == identifier {
+                                    output += "        case \(swiftIdentifier)\n"
+                                } else {
+                                    output += "        case \(swiftIdentifier) = \"\(identifier)\"\n"
+                                }
                             }
                         }
                         output += "\n"

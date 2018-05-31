@@ -252,7 +252,7 @@ extension MainViewController {
     enum Segue: String, CustomStringConvertible, SegueProtocol {
         case screenOneSegueButton = "Screen One Segue Button"
         case screenOneSegue = "ScreenOneSegue"
-        case screenTwoSegue = "ScreenTwoSegue"
+        case screenTwoSegue
         case sceneOneGestureRecognizerSegue = "SceneOneGestureRecognizerSegue"
 
         var kind: SegueKind? {
