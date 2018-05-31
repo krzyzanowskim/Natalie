@@ -1,2 +1,2 @@
 https://github.com/drmohundro/SWXMLHash
-Based on commit: 49dee5d3c448685ca3f511792f5b679423d36475
+Based on commit: 2211b35c2e0e8b08493f86ba52b26e530cabb751

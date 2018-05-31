@@ -32,7 +32,7 @@ for arg in CommandLine.arguments.dropFirst() {
     }
 }
 
-let storyboardFiles = filePaths.flatMap { try? StoryboardFile(filePath: $0) }
+let storyboardFiles = filePaths.compactMap { try? StoryboardFile(filePath: $0) }
 
 let output = Natalie.process(storyboards: storyboardFiles)
 print(output)
