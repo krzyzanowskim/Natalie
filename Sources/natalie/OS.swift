@@ -56,8 +56,6 @@ enum OS: String, CustomStringConvertible {
             self = .tvOS
         case "iOS.CocoaTouch.iPad":
             self = .iOS
-        case "iOS.CocoaTouch.iPad":
-            self = .iOS
         default:
             fatalError("Unsupported \(targetRuntime)")
         }
