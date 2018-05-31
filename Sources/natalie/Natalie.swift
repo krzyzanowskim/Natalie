@@ -95,7 +95,7 @@ struct Natalie {
         let colors = storyboards
             .flatMap { $0.storyboard.colors }
             .filter { $0.catalog != .system }
-            .flatMap { $0.assetName }
+            .compactMap { $0.assetName }
         if !colors.isEmpty {
             output += "// MARK: - Colors\n"
             output += "@available(\(os.colorOS), *)\n"
