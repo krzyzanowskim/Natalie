@@ -24,7 +24,7 @@ class ViewController: XMLObject {
 
     lazy var customClassWithModule: String? = {
         if let className = self.customClass {
-            if let moduleName = self.customModule {
+            if let moduleName = self.customModule, customModuleProvider != "target" {
                 return "\(moduleName).\(className)"
             } else {
                 return className
