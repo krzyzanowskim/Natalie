@@ -1,3 +1,10 @@
+0.7.0
+- Fixes "Inherit Module From Target" support
+- Improves to customModule support
+- Permits processing more than 1 storyboard file (or parent directory) via cmd line args
+- Updates Swift support
+- Updates examples
+
 0.6.5
 - Generate UIColor (or NSColor) static property for each asset colors used in storyboard
 - Update docs
