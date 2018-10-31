@@ -178,13 +178,13 @@ This is my setup created with **New Run Script Phase** on **Build Phase** Xcode 
 - Click on the "+" button on the upper left corner and choose "New Run Script Phase" and copy/paste script:
 
 ```sh
-echo "Natalie Generator: Determining if generated Swift file is up-to-date."
-
 # Adjust path to "natalie" binary
 # NATALIE_PATH="$PROJECT_DIR/natalie"
 NATALIE_PATH="/usr/local/bin/natalie"
 
 if [ -f $NATALIE_PATH ]; then
+    echo "Natalie Generator: Determining if generated Swift file is up-to-date."
+    
     BASE_PATH="$PROJECT_DIR/$PROJECT_NAME"
     OUTPUT_PATH="$BASE_PATH/Storyboards.swift"
 
@@ -199,6 +199,9 @@ if [ -f $NATALIE_PATH ]; then
     else
         echo "Natalie Generator: Generated Swift is up-to-date; skipping re-generation."
     fi
+else 
+    echo "error: Could not find Natalie Generator at $NATALIE_PATH; Please visit https://github.com/krzyzanowskim/Natalie for installation instructions."
+    exit 1
 fi
 ```
 
